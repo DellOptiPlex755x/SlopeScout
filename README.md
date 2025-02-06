@@ -1,2 +1,2 @@
 # SlopeScout
-SlopeScout Github Repository (add more sometime later)
+SlopeScout Github Repository (add more to description sometime later)
