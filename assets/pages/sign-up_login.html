@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Forms</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        :root {
+            --primary-blue: #003D69;
+            --secondary-blue: #083C5A;
+            --text-light: #fff;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: var(--primary-blue);
+            color: var(--text-light);
+        }
+
+        .container {
+            position: relative;
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            width: 350px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            height: 420px; /* Reduced height by 30px */
+        }
+
+        #login-form, #signup-form {
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 30px;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: var(--primary-blue);
+            font-size: 24px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+            z-index: 9999; /* Ensuring button is on top of everything */
+        }
+
+        h1 {
+            text-align: center;
+            margin: 10px 0 25px 0; /* Adjusted margins for better centering */
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 16px; /* Slightly reduced space between form groups */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-blue);
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .forgot-password {
+            text-align: left;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .forgot-password a {
+            color: #0095ff;
+            text-decoration: none;
+        }
+
+        .form-toggle {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .form-toggle a {
+            color: #000;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .or-divider {
+            text-align: center;
+            margin: 15px 0;
+            color: #333; /* Changed from white to dark gray */
+        }
+
+        /* Animation styles */
+        @keyframes fadeDownOut {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+
+        @keyframes fadeUpIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-animate-out {
+            animation: fadeDownOut 0.5s ease forwards;
+            pointer-events: none;
+        }
+
+        .form-animate-in {
+            animation: fadeUpIn 0.5s ease forwards;
+        }
+
+        #login-form {
+            display: none;
+        }
+
+        #signup-form {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <button class="back-button" id="backButton">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <!-- Sign Up Form -->
+    <div id="signup-form">
+        <h1>Create Account</h1>
+        <form>
+            <div class="form-group">
+                <label for="signup-email">Email</label>
+                <input type="email" id="signup-email" required>
+            </div>
+            <div class="form-group">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Password Confirmation</label>
+                <input type="password" id="confirm-password" required>
+            </div>
+            <button type="submit">Sign Up</button>
+        </form>
+        <div class="form-toggle">
+            <a href="#" id="show-login">Already have an account?</a>
+        </div>
+    </div>
+
+    <!-- Login Form (Initially Hidden) -->
+    <div id="login-form">
+        <h1>Log In</h1>
+        <form>
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" required>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" required>
+                <div class="forgot-password">
+                    <a href="#">forgot password?</a>
+                </div>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <div class="or-divider">or</div>
+        <div class="form-toggle">
+            <a href="#" id="show-signup">Create an Account</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    let animationInProgress = false;
+
+    document.getElementById('show-login').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        // Prevent multiple animations from running simultaneously
+        if (animationInProgress) return;
+        animationInProgress = true;
+
+        const signupForm = document.getElementById('signup-form');
+        const loginForm = document.getElementById('login-form');
+
+        // Add the fade out animation
+        signupForm.classList.add('form-animate-out');
+
+        // After animation completes, hide signup and show login
+        setTimeout(function() {
+            signupForm.style.display = 'none';
+            signupForm.classList.remove('form-animate-out');
+            loginForm.style.display = 'block';
+
+            // Add fade in animation
+            loginForm.classList.add('form-animate-in');
+
+            // Remove animation class after animation completes
+            setTimeout(function() {
+                loginForm.classList.remove('form-animate-in');
+                animationInProgress = false;
+            }, 500);
+        }, 500);
+    });
+
+    document.getElementById('show-signup').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        // Prevent multiple animations from running simultaneously
+        if (animationInProgress) return;
+        animationInProgress = true;
+
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+
+        // Add the fade out animation
+        loginForm.classList.add('form-animate-out');
+
+        // After animation completes, hide login and show signup
+        setTimeout(function() {
+            loginForm.style.display = 'none';
+            loginForm.classList.remove('form-animate-out');
+            signupForm.style.display = 'block';
+
+            // Add fade in animation
+            signupForm.classList.add('form-animate-in');
+
+            // Remove animation class after animation completes
+            setTimeout(function() {
+                signupForm.classList.remove('form-animate-in');
+                animationInProgress = false;
+            }, 500);
+        }, 500);
+    });
+
+    // Back button functionality
+    document.getElementById('backButton').addEventListener('click', () => {
+        window.location.href = '../../index.html';
+    });
+</script>
+</body>
+</html>
