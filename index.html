@@ -8,57 +8,57 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <span>Loading...</span>
+<!-- Loading Screen -->
+<div id="loading-screen">
+    <span>Loading...</span>
+</div>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">SlopeScout</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="assets/pages/getting_started.html">Getting Started</a></li>
+                <li class="nav-item"><a class="nav-link" href="assets/pages/sign-up_login.html">Sign-Up/Login</a></li>
+                <a class="nav-link" href="Assets/Pages/explore.html">Explore</a>
+                <li class="nav-item"><a class="nav-link" href="assets/pages/profile.html">Profile</a></li>
+            </ul>
+        </div>
     </div>
+</nav>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="index.html">SlopeScout</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="assets/pages/getting_started.html">Getting Started</a></li>
-                    <li class="nav-item"><a class="nav-link" href="assets/pages/sign-up_login.html">Sign-Up/Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="assets/pages/explore.html">Explore</a></li>
-                    <li class="nav-item"><a class="nav-link" href="assets/pages/profile.html">Profile</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<!-- Home Content -->
+<section class="text-center p-5">
+    <div class="container">
+        <h1 class="display-4">Welcome to SlopeScout</h1>
+        <p class="lead">Gear up and explore the slopes in real-time with trails, and lift updates, adventure can't wait!</p>
+        <img src="assets/images/slopescout-explore.webp" alt="SlopeScout" class="rounded-circle" width="150">
+    </div>
+</section>
 
-    <!-- Home Content -->
-    <section class="text-center p-5">
-        <div class="container">
-            <h1 class="display-4">Welcome to SlopeScout</h1>
-            <p class="lead">Gear up and explore the slopes in real-time with trails, and lift updates, adventure can't wait!</p>
-            <img src="assets/images/slopescout-explore.webp" alt="SlopeScout" class="rounded-circle" width="150">
-        </div>
-    </section>
+<!-- Footer -->
+<footer class="text-center">
+    <div class="container">
+        <p class="mb-1">&copy; 2024 SlopeScout. All Rights Reserved.</p>
+        <p>
+            <!-- <a href="https://github.com/DellOptiPlex755x/SlopeScout" target="_blank">GitHub</a> -->
+        </p>
+    </div>
+</footer>
 
-    <!-- Footer -->
-    <footer class="text-center">
-        <div class="container">
-            <p class="mb-1">&copy; 2024 SlopeScout. All Rights Reserved.</p>
-            <p>
-                <!-- <a href="https://github.com/DellOptiPlex755x/SlopeScout" target="_blank">GitHub</a> -->
-            </p>
-        </div>
-    </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const loadingScreen = document.getElementById('loading-screen');
-            setTimeout(() => {
-                loadingScreen.style.display = 'none';
-            }, 300); //delay time in milliseconds
-        });
-    </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const loadingScreen = document.getElementById('loading-screen');
+        setTimeout(() => {
+            loadingScreen.style.display = 'none';
+        }, 300); //delay time in milliseconds
+    });
+</script>
 </body>
 </html>
