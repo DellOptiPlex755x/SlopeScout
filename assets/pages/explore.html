@@ -270,7 +270,7 @@
         // Mountain suggestions (just Big Bear for now as requested)
         const mountainSuggestions = ['Big Bear'];
 
-        // Function to show search results
+        // Function to show search results (update the existing function)
         function showSearchResults(query) {
             // Clear previous results
             searchResults.innerHTML = '';
@@ -296,30 +296,262 @@
                 resultItem.className = 'search-result-item';
                 resultItem.textContent = mountain;
                 resultItem.addEventListener('click', () => {
-                    searchBar.value = mountain;
+                    // Store the selected mountain for later use
+                    const selectedMountain = mountain;
+
+                    // 1. Text Removal: Clear text immediately
+                    searchBar.value = '';
                     searchResults.style.display = 'none';
-                    fetchWeatherData(mountain);
-                    contentContainer.style.display = 'block';
 
-                    // Reset animations
-                    tempRow.classList.remove('fade-in');
-                    conditionRow.classList.remove('fade-in');
-                    windRow.classList.remove('fade-in');
-                    addParkBtn.classList.remove('fade-in');
+                    // Create a clone of the search bar for animation
+                    const searchBarClone = document.createElement('div');
+                    const searchBarRect = searchBar.getBoundingClientRect();
 
-                    // Trigger sequential animations
-                    setTimeout(() => tempRow.classList.add('fade-in'), 100);
-                    setTimeout(() => conditionRow.classList.add('fade-in'), 400);
-                    setTimeout(() => windRow.classList.add('fade-in'), 700);
-                    setTimeout(() => addParkBtn.classList.add('fade-in'), 1000);
+                    // Style the clone to match the search bar's initial appearance
+                    searchBarClone.style.position = 'fixed';
+                    searchBarClone.style.width = searchBarRect.width + 'px';
+                    searchBarClone.style.height = searchBarRect.height + 'px';
+                    searchBarClone.style.top = searchBarRect.top + 'px';
+                    searchBarClone.style.left = searchBarRect.left + 'px';
+                    searchBarClone.style.backgroundColor = '#FFFFFF'; // 100% opaque
+                    searchBarClone.style.borderRadius = '35';
+                    searchBarClone.style.zIndex = '100';
+
+                    // Add the clone to the document
+                    document.body.appendChild(searchBarClone);
+
+                    // Hide the original search container
+                    document.querySelector('.search-container').style.opacity = '0';
+
+                    // Set up animation variables
+                    let startTime = null;
+                    const animationDuration = 1750; // How long animation takes
+
+                    // 2. Morphing Animation function using requestAnimationFrame
+                    function animateSearchBar(timestamp) {
+                        if (!startTime) startTime = timestamp;
+                        const elapsed = timestamp - startTime;
+                        const progress = Math.min(elapsed / animationDuration, 1);
+
+                        // Use a cubic-bezier easing function for smooth animation
+                        const easeProgress = easeInOutCubic(progress);
+
+                        // Calculate dimensions with faster bottom expansion
+                        const width = searchBarRect.width + (window.innerWidth - searchBarRect.width) * easeProgress;
+                        const height = searchBarRect.height + (window.innerHeight * 0.5 - searchBarRect.height) * Math.pow(easeProgress, 0.7); // Bottom expands faster
+                        const top = searchBarRect.top - searchBarRect.top * easeProgress;
+                        const left = searchBarRect.left - searchBarRect.left * easeProgress;
+                        const borderRadius = 25 * (1 - easeProgress);
+
+                        // Apply the calculated styles
+                        searchBarClone.style.width = width + 'px';
+                        searchBarClone.style.height = height + 'px';
+                        searchBarClone.style.top = top + 'px';
+                        searchBarClone.style.left = left + 'px';
+                        searchBarClone.style.borderRadius = borderRadius + 'px';
+
+                        if (progress < 1) {
+                            requestAnimationFrame(animateSearchBar);
+                        } else {
+                            // Animation completed
+                            // Remove the clone
+                            searchBarClone.remove();
+
+                            // Show content container
+                            contentContainer.style.display = 'block';
+
+                            // 3. Image Fade-In with background fade-out
+                            const mountainImage = document.querySelector('.mountain-image');
+                            mountainImage.style.opacity = '0';
+
+                            // Create a background overlay element
+                            const backgroundOverlay = document.createElement('div');
+                            backgroundOverlay.style.position = 'fixed';
+                            backgroundOverlay.style.top = '0';
+                            backgroundOverlay.style.left = '0';
+                            backgroundOverlay.style.width = '100%';
+                            backgroundOverlay.style.height = '50vh';
+                            backgroundOverlay.style.backgroundColor = '#FFFFFF'; // 100% opaque
+                            backgroundOverlay.style.zIndex = '0';
+                            document.body.appendChild(backgroundOverlay);
+
+                            // Create the text container for the location name (single line)
+                            const textContainer = document.createElement('div');
+                            textContainer.style.position = 'absolute';
+                            textContainer.style.left = '40px';
+                            textContainer.style.bottom = 'calc(50vh - 25px)'; // 25px from bottom of image (image height is 50vh)
+                            textContainer.style.zIndex = '50';
+                            textContainer.style.display = 'flex';
+                            textContainer.style.lineHeight = '1';
+                            textContainer.style.fontWeight = 'bold';
+                            textContainer.style.fontSize = '70px';
+                            textContainer.style.color = 'white';
+
+                            // Create a single container for all letters
+                            const textLineContainer = document.createElement('div');
+                            textLineContainer.style.display = 'flex'; // Use flex to keep letters on one line
+
+                            // Determine if we need to add spacing
+                            const hasSpace = selectedMountain.includes(' ');
+                            const wordParts = selectedMountain.split(' ');
+
+                            // Add each letter of the location name as a separate span with animation
+                            if (hasSpace) {
+                                // If there's already a space, use the parts and add extra spacing
+                                wordParts.forEach((word, wordIndex) => {
+                                    // Add each letter of the word
+                                    [...word].forEach((letter, letterIndex) => {
+                                        const span = document.createElement('span');
+                                        span.textContent = letter;
+                                        span.style.display = 'inline-block';
+                                        span.style.position = 'relative';
+                                        span.style.opacity = '0';
+                                        span.style.transform = 'translateX(-100px)';
+                                        textLineContainer.appendChild(span);
+                                    });
+
+                                    // Add wider space between words (except after the last word)
+                                    if (wordIndex < wordParts.length - 1) {
+                                        const spaceSpan = document.createElement('span');
+                                        spaceSpan.innerHTML = '&nbsp;&nbsp;'; // Two non-breaking spaces for wider gap
+                                        spaceSpan.style.display = 'inline-block';
+                                        spaceSpan.style.position = 'relative';
+                                        spaceSpan.style.opacity = '0';
+                                        spaceSpan.style.transform = 'translateX(-100px)';
+                                        textLineContainer.appendChild(spaceSpan);
+                                    }
+                                });
+                            } else if (selectedMountain.toLowerCase() === 'bigbear') {
+                                // Special case for "BigBear" - split after "Big"
+                                const firstPart = selectedMountain.substring(0, 3); // "Big"
+                                const secondPart = selectedMountain.substring(3);  // "Bear"
+
+                                // Add first part
+                                [...firstPart].forEach(letter => {
+                                    const span = document.createElement('span');
+                                    span.textContent = letter;
+                                    span.style.display = 'inline-block';
+                                    span.style.position = 'relative';
+                                    span.style.opacity = '0';
+                                    span.style.transform = 'translateX(-100px)';
+                                    textLineContainer.appendChild(span);
+                                });
+
+                                // Add space
+                                const spaceSpan = document.createElement('span');
+                                spaceSpan.innerHTML = '&nbsp;&nbsp;'; // Two non-breaking spaces
+                                spaceSpan.style.display = 'inline-block';
+                                spaceSpan.style.position = 'relative';
+                                spaceSpan.style.opacity = '0';
+                                spaceSpan.style.transform = 'translateX(-100px)';
+                                textLineContainer.appendChild(spaceSpan);
+
+                                // Add second part
+                                [...secondPart].forEach(letter => {
+                                    const span = document.createElement('span');
+                                    span.textContent = letter;
+                                    span.style.display = 'inline-block';
+                                    span.style.position = 'relative';
+                                    span.style.opacity = '0';
+                                    span.style.transform = 'translateX(-100px)';
+                                    textLineContainer.appendChild(span);
+                                });
+                            } else {
+                                // For any other text, just show as is
+                                [...selectedMountain].forEach((letter) => {
+                                    const span = document.createElement('span');
+                                    span.textContent = letter;
+                                    span.style.display = 'inline-block';
+                                    span.style.position = 'relative';
+                                    span.style.opacity = '0';
+                                    span.style.transform = 'translateX(-100px)';
+                                    textLineContainer.appendChild(span);
+                                });
+                            }
+
+                            // Add the container to the main text container
+                            textContainer.appendChild(textLineContainer);
+                            contentContainer.appendChild(textContainer);
+
+                            // Animate image fade-in and background fade-out
+                            let imgStartTime = null;
+                            function fadeInImage(imgTimestamp) {
+                                if (!imgStartTime) imgStartTime = imgTimestamp;
+                                const imgElapsed = imgTimestamp - imgStartTime;
+                                const imgProgress = Math.min(imgElapsed / animationDuration, 1);
+
+                                // Increase image opacity to 100%
+                                mountainImage.style.opacity = imgProgress;
+
+                                // Decrease background opacity to 0%
+                                backgroundOverlay.style.opacity = 1 - imgProgress;
+
+                                if (imgProgress < 1) {
+                                    requestAnimationFrame(fadeInImage);
+                                } else {
+                                    // Remove the background overlay when animation is complete
+                                    backgroundOverlay.remove();
+
+                                    // Animate each letter of the location name
+                                    const animateLetters = () => {
+                                        // Get all spans
+                                        const allSpans = Array.from(textLineContainer.children);
+
+                                        // Animate each letter with different timing based on final position
+                                        allSpans.forEach((span, idx) => {
+                                            // Set up the animation with different timing for each letter
+                                            span.style.transition = `transform 1.75s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.75s ease`;
+
+                                            // Slightly stagger the start times for a more natural effect
+                                            setTimeout(() => {
+                                                span.style.opacity = '1';
+                                                span.style.transform = 'translateX(0)';
+                                            }, 50 * idx);
+                                        });
+                                    };
+
+                                    // Start the text animation
+                                    animateLetters();
+
+                                    // Image fade-in complete, continue with the rest
+                                    fetchWeatherData(selectedMountain);
+
+                                    // Reset animations for weather rows
+                                    tempRow.classList.remove('fade-in');
+                                    conditionRow.classList.remove('fade-in');
+                                    windRow.classList.remove('fade-in');
+                                    addParkBtn.classList.remove('fade-in');
+
+                                    // Trigger sequential animations
+                                    setTimeout(() => tempRow.classList.add('fade-in'), 200);
+                                    setTimeout(() => conditionRow.classList.add('fade-in'), 800);
+                                    setTimeout(() => windRow.classList.add('fade-in'), 1400);
+                                    setTimeout(() => addParkBtn.classList.add('fade-in'), 2000);
+
+                                    // Show the original search container again
+                                    setTimeout(() => {
+                                        document.querySelector('.search-container').style.opacity = '1';
+                                    }, 2000);
+                                }
+                            }
+
+                            requestAnimationFrame(fadeInImage);
+                        }
+                    }
+
+                    // Easing function for smooth animation
+                    function easeInOutCubic(x) {
+                        return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+                    }
+
+                    // Start the animation
+                    requestAnimationFrame(animateSearchBar);
                 });
                 searchResults.appendChild(resultItem);
             });
 
             searchResults.style.display = 'block';
         }
-
-        // Function to fetch weather data from open-meteo API
         async function fetchWeatherData(location) {
             try {
                 // For Big Bear, using approximate coordinates
