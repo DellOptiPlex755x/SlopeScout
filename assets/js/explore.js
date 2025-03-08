@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
         searchBarClone.style.height = searchBarRect.height + 'px';
         searchBarClone.style.top = searchBarRect.top + 'px';
         searchBarClone.style.left = searchBarRect.left + 'px';
-        searchBarClone.style.backgroundColor = '#FFFFFF'; // 100% opaque
+        searchBarClone.style.backgroundColor = '#FFFFFF'; // 100% opaque white
         searchBarClone.style.borderRadius = '35';
         searchBarClone.style.zIndex = '100';
 
