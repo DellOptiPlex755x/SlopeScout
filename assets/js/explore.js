@@ -55,8 +55,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle mountain selection and animations
     function handleMountainSelection(selectedMountain) {
-        // Store the selected mountain for later use
-        // 1. Text Removal: Clear text immediately
+        // Reset any existing content before starting a new search
+        resetPage();
+
+        // Reset search bar to initial state if expanded
+        if (document.activeElement === searchBar) {
+            searchBar.blur();
+        }
+
+        // Clear text and hide results
         searchBar.value = '';
         searchResults.style.display = 'none';
 
@@ -65,9 +72,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Hide the original search container
         document.querySelector('.search-container').style.opacity = '0';
+        // Remove any transition to prevent conflicts with later fade-in
+        document.querySelector('.search-container').style.transition = 'none';
 
         // Start the animation
         requestAnimationFrame(timestamp => animateSearchBar(timestamp, searchBarClone, selectedMountain));
+    }
+
+    // Reset the page to initial state
+    function resetPage() {
+        // Hide content container
+        contentContainer.style.display = 'none';
+
+        // Remove any existing location name displays
+        const existingLocationDisplay = document.querySelector('.location-name-display');
+        if (existingLocationDisplay) {
+            existingLocationDisplay.remove();
+        }
+
+        // Reset weather rows animation classes
+        tempRow.classList.remove('fade-in');
+        conditionRow.classList.remove('fade-in');
+        windRow.classList.remove('fade-in');
+        addParkBtn.classList.remove('fade-in');
+
+        // Reset mountain image opacity
+        const mountainImage = document.querySelector('.mountain-image');
+        if (mountainImage) {
+            mountainImage.style.opacity = '0';
+        }
     }
 
     // Create search bar clone for animation
@@ -162,6 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function createLocationNameDisplay(locationName) {
         // Create the text container for the location name
         const textContainer = document.createElement('div');
+        textContainer.className = 'location-name-display'; // Add class for easier selection later
         textContainer.style.position = 'absolute';
         textContainer.style.left = '40px';
         textContainer.style.bottom = 'calc(50vh - 25px)'; // 25px from bottom of image
@@ -201,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Add wider space between words (except after the last word)
                 if (wordIndex < wordParts.length - 1) {
                     const spaceSpan = document.createElement('span');
-                    spaceSpan.innerHTML = '&nbsp;&nbsp;'; // Two non-breaking spaces for wider gap
+                    spaceSpan.innerHTML = '&nbsp;'; // Single non-breaking space for reduced gap
                     spaceSpan.style.display = 'inline-block';
                     spaceSpan.style.position = 'relative';
                     spaceSpan.style.opacity = '0';
@@ -219,9 +253,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 addAnimatedLetter(letter, container);
             });
 
-            // Add space
+            // Add space - reduced to a single space
             const spaceSpan = document.createElement('span');
-            spaceSpan.innerHTML = '&nbsp;&nbsp;'; // Two non-breaking spaces
+            spaceSpan.innerHTML = '&nbsp;'; // Single non-breaking space
             spaceSpan.style.display = 'inline-block';
             spaceSpan.style.position = 'relative';
             spaceSpan.style.opacity = '0';
@@ -257,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const elapsed = timestamp - startTime;
         const progress = Math.min(elapsed / ANIMATION_DURATION, 1);
 
-        // Increase image opacity to 100%
+        // Increase image opacity to 100% as background fades out
         mountainImage.style.opacity = progress;
 
         // Decrease background opacity to 0%
@@ -281,16 +315,37 @@ document.addEventListener('DOMContentLoaded', function() {
             windRow.classList.remove('fade-in');
             addParkBtn.classList.remove('fade-in');
 
+            // Prepare search container for fade-in animation
+            const searchContainer = document.querySelector('.search-container');
+            searchContainer.style.opacity = '0';
+            searchContainer.style.transition = 'opacity 2s ease';
+
             // Trigger sequential animations
             setTimeout(() => tempRow.classList.add('fade-in'), 200);
-            setTimeout(() => conditionRow.classList.add('fade-in'), 800);
-            setTimeout(() => windRow.classList.add('fade-in'), 1400);
+
+            // Start fading in the search container when first data appears
+            setTimeout(() => {
+                searchContainer.style.opacity = '0.3';
+            }, 200);
+
+            setTimeout(() => {
+                searchContainer.style.opacity = '0.6';
+                conditionRow.classList.add('fade-in');
+            }, 800);
+
+            setTimeout(() => {
+                searchContainer.style.opacity = '1';
+                windRow.classList.add('fade-in');
+            }, 1400);
+
             setTimeout(() => addParkBtn.classList.add('fade-in'), 2000);
 
-            // Show the original search container again
+            // Ensure search bar opacity is 100% after animations complete
             setTimeout(() => {
-                document.querySelector('.search-container').style.opacity = '1';
-            }, 2000);
+                searchContainer.style.opacity = '1';
+                // Force browser to apply the style
+                void searchContainer.offsetWidth;
+            }, 2500);
         }
     }
 

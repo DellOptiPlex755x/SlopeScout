@@ -69,13 +69,19 @@
         }
 
         .search-bar {
-            width: 100%;
+            width: 200px;
             height: var(--search-height);
             border-radius: 25px;
             border: none;
             padding: 0 20px;
             font-size: 16px;
             background-color: rgba(255, 255, 255, 0.9);
+            transition: width 0.5s ease;
+        }
+
+        .search-bar:focus {
+            width: 100%;
+            outline: none;
         }
 
         .search-bar::placeholder {
@@ -121,9 +127,11 @@
         .mountain-image {
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
+            left: 50%;
+            transform: translateX(-50%);
             height: 50vh;
+            width: auto;
+            min-width: 100%;
             object-fit: cover;
             object-position: center;
             z-index: -1;
