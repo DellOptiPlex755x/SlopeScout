@@ -115,8 +115,8 @@ document.addEventListener('DOMContentLoaded', function() {
         searchBarClone.style.top = searchBarRect.top + 'px';
         searchBarClone.style.left = searchBarRect.left + 'px';
         searchBarClone.style.backgroundColor = '#FFFFFF'; // 100% opaque white
-        searchBarClone.style.borderRadius = '35';
-        searchBarClone.style.zIndex = '100';
+        searchBarClone.style.borderRadius = '35px';
+        searchBarClone.style.zIndex = '90'; // Lower than button z-index
 
         // Add the clone to the document
         document.body.appendChild(searchBarClone);
@@ -136,9 +136,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Calculate dimensions with complete coverage of the image area (50vh)
         const width = searchBarClone.rect.width + (window.innerWidth - searchBarClone.rect.width) * easeProgress;
 
-        // Calculate viewport-relative height to ensure full coverage
-        // Adding extra padding (20% more) to ensure it covers the entire image area on all devices
-        const targetHeight = Math.max(window.innerHeight * 0.5, window.innerHeight * 0.5 + 100);
+        // Calculate viewport-relative height to ensure it doesn't go beyond the image area
+        // Limit the target height to exactly 50vh to prevent overflow
+        const targetHeight = Math.min(window.innerHeight * 0.5, window.innerHeight * 0.5);
         const height = searchBarClone.rect.height + (targetHeight - searchBarClone.rect.height) * Math.pow(easeProgress, 0.7);
 
         const top = searchBarClone.rect.top - searchBarClone.rect.top * easeProgress;
@@ -178,8 +178,8 @@ document.addEventListener('DOMContentLoaded', function() {
         backgroundOverlay.style.top = '0';
         backgroundOverlay.style.left = '0';
         backgroundOverlay.style.width = '100%';
-        backgroundOverlay.style.height = '50vh';
-        backgroundOverlay.style.backgroundColor = '#FFFFFF'; // 100% opaque
+        backgroundOverlay.style.height = '50vh'; // Exactly match image height
+        backgroundOverlay.style.backgroundColor = '#FFFFFF'; // 100% opaque white
         backgroundOverlay.style.zIndex = '0';
         document.body.appendChild(backgroundOverlay);
 
@@ -197,13 +197,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const textContainer = document.createElement('div');
         textContainer.className = 'location-name-display'; // Add class for easier selection later
         textContainer.style.position = 'absolute';
-        textContainer.style.left = '40px';
-        textContainer.style.bottom = 'calc(50vh - 25px)'; // 25px from bottom of image
+        textContainer.style.left = '30px';
+        textContainer.style.bottom = 'calc(50vh + 30px)'; // 30px from bottom of visible image
         textContainer.style.zIndex = '50';
         textContainer.style.display = 'flex';
         textContainer.style.lineHeight = '1';
         textContainer.style.fontWeight = 'bold';
-        textContainer.style.fontSize = '70px';
+        textContainer.style.fontSize = '91px'; // Increased by 30% from original
         textContainer.style.color = 'white';
 
         // Create a single container for all letters
