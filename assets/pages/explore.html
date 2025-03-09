@@ -21,10 +21,11 @@
         body {
             background-color: var(--primary-blue);
             color: var(--text-light);
-            font-family: sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            min-height: 150vh; /* Extend the page length */
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .search-container {
@@ -36,6 +37,7 @@
             display: flex;
             align-items: center;
             z-index: 100;
+            transition: opacity 0.5s ease;
         }
 
         .content-container::before {
@@ -45,7 +47,7 @@
             left: 0;
             right: 0;
             height: 50vh;
-            background: linear-gradient(to bottom, rgba(0,61,105,0.4) 0%, rgba(0,61,105,0.8) 100%);
+            background: linear-gradient(to bottom, rgba(8,60,90,0.4) 0%, rgba(8,60,90,0.8) 100%);
             z-index: -1;
         }
 
@@ -61,6 +63,11 @@
             border: none;
             background: transparent;
             padding: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
         }
 
         .search-bar-container {
@@ -69,7 +76,7 @@
         }
 
         .search-bar {
-            width: 200px;
+            width: 50%;  /* Reduced to 60% of original width when unfocused */
             height: var(--search-height);
             border-radius: 25px;
             border: none;
@@ -77,11 +84,13 @@
             font-size: 16px;
             background-color: #FFFFFF;
             transition: width 0.5s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .search-bar:focus {
-            width: 100%;
+            width: calc(100%);  /* Expands to full width when focused */
             outline: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
         .search-bar::placeholder {
@@ -95,7 +104,7 @@
             width: 100%;
             background-color: white;
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             max-height: 200px;
             overflow-y: auto;
             display: none;
@@ -107,10 +116,11 @@
             border-bottom: 1px solid #eee;
             color: #333;
             cursor: pointer;
+            transition: background-color 0.2s ease;
         }
 
         .search-result-item:hover {
-            background-color: #f8f8f8;
+            background-color: #f0f0f0;
         }
 
         .search-result-item:last-child {
@@ -127,14 +137,21 @@
         .mountain-image {
             position: absolute;
             top: 0;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 0;
+            width: 100%;
             height: 50vh;
-            width: auto;
-            min-width: 100%;
             object-fit: cover;
             object-position: center;
-            z-index: -1;
+            z-index: -2;
+            transition: opacity 1s ease;
+        }
+
+        .location-name-display {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            position: absolute;
+            left: 30px;
+            bottom: 30px;
+            z-index: 10;
         }
 
         .weather-card {
@@ -143,6 +160,12 @@
             padding: 20px;
             margin: 0 auto;
             max-width: 90%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .weather-content {
+            display: flex;
+            flex-direction: column;
         }
 
         .weather-row {
@@ -175,11 +198,14 @@
             padding: 15px 30px;
             border-radius: 5px;
             font-size: 18px;
+            font-weight: 500;
             margin-top: 20px;
             cursor: pointer;
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
+            width: 100%;
+            max-width: 300px;
         }
 
         .add-park-btn:hover {
@@ -191,6 +217,29 @@
             transform: translateY(0);
         }
 
+        /* Responsive Styles */
+        @media (min-width: 992px) {
+            .weather-content {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .weather-row {
+                flex: 1;
+                margin-right: 15px;
+                margin-bottom: 0;
+            }
+
+            .weather-row:last-child {
+                margin-right: 0;
+            }
+
+            .weather-card {
+                max-width: 80%;
+                padding: 25px;
+            }
+        }
+
         @media (max-width: 768px) {
             .search-container {
                 padding: 0 10px;
@@ -198,6 +247,31 @@
 
             .weather-text {
                 font-size: 18px;
+            }
+
+            .location-name-display {
+                font-size: 50px !important;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .weather-icon {
+                width: 40px;
+                margin-right: 15px;
+                font-size: 24px;
+            }
+
+            .weather-text {
+                font-size: 16px;
+            }
+
+            .location-name-display {
+                font-size: 36px !important;
+            }
+
+            .add-park-btn {
+                padding: 12px 20px;
+                font-size: 16px;
             }
         }
     </style>
@@ -217,37 +291,41 @@
 
 <!-- Content Container (hidden initially) -->
 <div class="content-container" id="contentContainer">
-    <img src="https://unsplash.com/photos/rMWmDMeaoBk/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzQwODE2ODIzfA&force=true" alt="Mountain View" class="mountain-image">
+    <img src="../images/mountainImage.jpg" alt="Mountain View" class="mountain-image">
 
     <div class="weather-card">
-        <div class="weather-row" id="tempRow">
-            <div class="weather-icon">
-                <i class="fas fa-thermometer-half"></i>
+        <div class="weather-content">
+            <div class="weather-row" id="tempRow">
+                <div class="weather-icon">
+                    <i class="fas fa-thermometer-half"></i>
+                </div>
+                <div class="weather-text">
+                    Temperature: <span id="tempValue">--</span> °F
+                </div>
             </div>
-            <div class="weather-text">
-                Temperature: <span id="tempValue">--</span> °F
+
+            <div class="weather-row" id="conditionRow">
+                <div class="weather-icon">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <div class="weather-text">
+                    Conditions: <span id="conditionValue">--</span>
+                </div>
+            </div>
+
+            <div class="weather-row" id="windRow">
+                <div class="weather-icon">
+                    <i class="fas fa-wind"></i>
+                </div>
+                <div class="weather-text">
+                    Wind Speed: <span id="windValue">--</span> mph <span id="windDirection">--</span>
+                </div>
             </div>
         </div>
 
-        <div class="weather-row" id="conditionRow">
-            <div class="weather-icon">
-                <i class="fas fa-cloud"></i>
-            </div>
-            <div class="weather-text">
-                Conditions: <span id="conditionValue">--</span>
-            </div>
+        <div class="text-center">
+            <button class="add-park-btn" id="addParkBtn">Add Park</button>
         </div>
-
-        <div class="weather-row" id="windRow">
-            <div class="weather-icon">
-                <i class="fas fa-wind"></i>
-            </div>
-            <div class="weather-text">
-                Wind Speed: <span id="windValue">--</span> mph <span id="windDirection">--</span>
-            </div>
-        </div>
-
-        <button class="add-park-btn" id="addParkBtn">Add Park</button>
     </div>
 </div>
 
