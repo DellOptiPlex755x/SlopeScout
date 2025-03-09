@@ -72,11 +72,14 @@
 
         .search-bar-container {
             position: relative;
-            flex-grow: 1;
+            width: 80%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
         }
 
         .search-bar {
-            width: 50%;  /* Reduced to 60% of original width when unfocused */
+            width: 50%;  /* Reduced to 50% of original width when unfocused */
             height: var(--search-height);
             border-radius: 25px;
             border: none;
@@ -85,6 +88,7 @@
             background-color: #FFFFFF;
             transition: width 0.5s ease;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
         }
 
         .search-bar:focus {
@@ -129,9 +133,11 @@
 
         .content-container {
             padding-top: 50vh;
+            padding-bottom: 0;
             text-align: center;
             display: none;
             position: relative;
+            margin-top: 10px; /* Add margin to prevent overlap with image */
         }
 
         .mountain-image {
@@ -150,8 +156,9 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             position: absolute;
             left: 30px;
-            bottom: 30px;
+            bottom: calc(50vh + 30px); /* 30px from bottom of visible portion */
             z-index: 10;
+            font-size: 91px; /* Increased by 30% from base size of 70px */
         }
 
         .weather-card {
@@ -171,8 +178,8 @@
         .weather-row {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            padding: 10px 0;
+            margin-bottom: 16px; /* Reduced by 20% from 20px */
+            padding: 8px 0; /* Reduced by 20% from 10px */
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.3s ease, transform 0.3s ease;
@@ -250,7 +257,7 @@
             }
 
             .location-name-display {
-                font-size: 50px !important;
+                font-size: 65px !important; /* Increased by 30% from 50px */
             }
         }
 
@@ -266,7 +273,7 @@
             }
 
             .location-name-display {
-                font-size: 36px !important;
+                font-size: 47px !important; /* Increased by 30% from 36px */
             }
 
             .add-park-btn {
