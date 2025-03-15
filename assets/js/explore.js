@@ -22,49 +22,49 @@ document.addEventListener('DOMContentLoaded', function() {
     // Animation utility functions
     const easeInOutCubic = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 
-    // Hardcoded resort data from pyresort.txt
+    // pyresort.txt
     const resortData = [
         {
             name: "SNOW VALLEY",
             lifts: [
-                { name: "Chair 1 (6 Chair)", status: "Closed" },
-                { name: "Chair 2 (Triple Chair)", status: "Closed" },
-                { name: "Chair 3 (Triple Chair)", status: "Closed" },
-                { name: "Chair 6 (Double)", status: "Closed" },
+                { name: "Chair 1 (6 Chair)", status: "Open" },
+                { name: "Chair 2 (Triple Chair)", status: "Open" },
+                { name: "Chair 3 (Triple Chair)", status: "Open" },
+                { name: "Chair 6 (Double)", status: "Open" },
                 { name: "Chair 8 (Double)", status: "Closed" },
-                { name: "Chair 9 (Double)", status: "Closed" },
-                { name: "Chair 11 (Triple Chair)", status: "Closed" },
+                { name: "Chair 9 (Double)", status: "Open" },
+                { name: "Chair 11 (Triple Chair)", status: "Open" },
                 { name: "Chair 12 (Double)", status: "Closed" },
-                { name: "Chair 13 (Triple Chair)", status: "Closed" },
-                { name: "MC 16 (Magic Carpet)", status: "Closed" }
+                { name: "Chair 13 (Triple Chair)", status: "Open" },
+                { name: "MC 16 (Magic Carpet)", status: "Open" }
             ]
         },
         {
             name: "SNOW SUMMIT",
             lifts: [
-                { name: "Chair 1 (High-Speed Quad)", status: "Closed" },
-                { name: "Chair 2 (High-Speed Quad)", status: "Closed" },
-                { name: "Chair 3 (Double)", status: "Closed" },
-                { name: "Chair 4 (Triple Chair)", status: "Closed" },
+                { name: "Chair 1 (High-Speed Quad)", status: "Open" },
+                { name: "Chair 2 (High-Speed Quad)", status: "Open" },
+                { name: "Chair 3 (Double)", status: "Open" },
+                { name: "Chair 4 (Triple Chair)", status: "Open" },
                 { name: "Chair 5 (Double)", status: "Closed" },
-                { name: "Chair 6 (Double)", status: "Closed" },
-                { name: "Chair 7 (Double)", status: "Closed" },
-                { name: "Chair 8 (Triple Chair)", status: "Closed" },
-                { name: "Chair 9 (Triple Chair)", status: "Closed" },
+                { name: "Chair 6 (Double)", status: "Open" },
+                { name: "Chair 7 (Double)", status: "Open" },
+                { name: "Chair 8 (Triple Chair)", status: "Open" },
+                { name: "Chair 9 (Triple Chair)", status: "Open" },
                 { name: "Chair 10 (Triple Chair)", status: "Closed" },
-                { name: "MC 1 (Magic Carpet)", status: "Closed" }
+                { name: "MC 1 (Magic Carpet)", status: "Open" }
             ]
         },
         {
             name: "BEAR MOUNTAIN",
             lifts: [
                 { name: "Chair 3 (Double)", status: "Closed" },
-                { name: "Chair 4 (Double)", status: "Closed" },
-                { name: "Chair 5 (6 Chair)", status: "Closed" },
-                { name: "Chair 6 (High-Speed Quad)", status: "Closed" },
-                { name: "Chair 7 (Triple Chair)", status: "Closed" },
-                { name: "Chair 8 (Triple Chair)", status: "Closed" },
-                { name: "Chair 9 (High-Speed Quad)", status: "Closed" }
+                { name: "Chair 4 (Double)", status: "Open" },
+                { name: "Chair 5 (6 Chair)", status: "Open" },
+                { name: "Chair 6 (High-Speed Quad)", status: "Open" },
+                { name: "Chair 7 (Triple Chair)", status: "Open" },
+                { name: "Chair 8 (Triple Chair)", status: "Open" },
+                { name: "Chair 9 (High-Speed Quad)", status: "Open" }
             ]
         }
     ];
