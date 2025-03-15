@@ -14,8 +14,13 @@
         :root {
             --primary-blue: #083C5A;
             --secondary-blue: #083C5A;
+            --darker-blue: #052940;
             --text-light: #fff;
             --search-height: 50px;
+            --status-open: #34c759;
+            --status-closed: #ff3b30;
+            --status-scheduled: #ff9500;
+            --status-hold: #5856d6;
         }
 
         body {
@@ -29,14 +34,13 @@
         }
 
         .search-container {
-            position: fixed;
+            position: absolute; /* Changed from fixed to absolute */
             top: 20px;
             left: 0;
             right: 0;
             display: flex;
             align-items: center;
             z-index: 100;
-            transition: opacity 0.5s ease;
             padding: 0;
         }
 
@@ -165,17 +169,20 @@
         .location-name-display {
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             position: absolute;
-            left: 30px;
-            bottom: calc(50vh + 30px); /* 30px from bottom of visible portion */
+            left: 50%;
+            transform: translateX(-50%);
+            top: 25vh; /* Position in the middle of the image */
             z-index: 10;
             font-size: 91px; /* Increased by 30% from base size of 70px */
+            width: 100%;
+            text-align: center;
         }
 
         .weather-card {
             background-color: var(--secondary-blue);
             border-radius: 10px;
             padding: 20px;
-            margin: 0 auto;
+            margin: 0 auto 20px auto;
             max-width: 90%;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
@@ -229,6 +236,88 @@
             background-color: #222;
         }
 
+        /* Lift status styles */
+        .lifts-container {
+            margin: 20px auto 40px auto;
+            max-width: 90%;
+        }
+
+        .resort-section {
+            background-color: var(--darker-blue);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .resort-header {
+            text-align: left;
+            margin-bottom: 15px;
+            font-size: 24px;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+        }
+
+        .lifts-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        .lifts-table tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background-color 0.2s ease;
+        }
+
+        .lifts-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .lifts-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .lifts-table td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .lifts-table td:last-child {
+            text-align: right;
+        }
+
+        .lift-status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-open {
+            background-color: var(--status-open);
+            color: #fff;
+        }
+
+        .status-closed {
+            background-color: var(--status-closed);
+            color: #fff;
+        }
+
+        .status-scheduled {
+            background-color: var(--status-scheduled);
+            color: #fff;
+        }
+
+        .status-hold {
+            background-color: var(--status-hold);
+            color: #fff;
+        }
+
         .fade-in {
             opacity: 1;
             transform: translateY(0);
@@ -259,7 +348,7 @@
                 margin-right: 0;
             }
 
-            .weather-card {
+            .weather-card, .lifts-container {
                 max-width: 80%;
                 padding: 25px;
             }
@@ -276,6 +365,15 @@
 
             .location-name-display {
                 font-size: 65px !important; /* Increased by 30% from 50px */
+                top: 15vh; /* Adjusted for mobile */
+            }
+
+            .resort-header {
+                font-size: 22px;
+            }
+
+            .lifts-table td {
+                padding: 10px;
             }
         }
 
@@ -300,11 +398,21 @@
 
             .location-name-display {
                 font-size: 47px !important; /* Increased by 30% from 36px */
+                top: 12vh; /* Moved higher on small screens */
             }
 
             .add-park-btn {
                 padding: 12px 20px;
                 font-size: 16px;
+            }
+
+            .resort-header {
+                font-size: 20px;
+            }
+
+            .lift-status-badge {
+                padding: 4px 8px;
+                font-size: 12px;
             }
         }
     </style>
@@ -362,6 +470,9 @@
             <button class="add-park-btn" id="addParkBtn">Add Park</button>
         </div>
     </div>
+
+    <!-- Lift Status Container (added below the Add Park button) -->
+    <div class="lifts-container" id="liftsContainer"></div>
 </div>
 
 <!-- Bootstrap JS -->

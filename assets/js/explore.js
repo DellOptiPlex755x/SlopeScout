@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const conditionRow = document.getElementById('conditionRow');
     const windRow = document.getElementById('windRow');
     const addParkBtn = document.getElementById('addParkBtn');
+    const liftsContainer = document.getElementById('liftsContainer');
 
     // Mountain suggestions (just Big Bear for now as requested)
     const mountainSuggestions = ['Big Bear'];
@@ -21,17 +22,77 @@ document.addEventListener('DOMContentLoaded', function() {
     // Animation utility functions
     const easeInOutCubic = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 
+    // Hardcoded resort data from pyresort.txt
+    const resortData = [
+        {
+            name: "SNOW VALLEY",
+            lifts: [
+                { name: "Chair 1 (6 Chair)", status: "Closed" },
+                { name: "Chair 2 (Triple Chair)", status: "Closed" },
+                { name: "Chair 3 (Triple Chair)", status: "Closed" },
+                { name: "Chair 6 (Double)", status: "Closed" },
+                { name: "Chair 8 (Double)", status: "Closed" },
+                { name: "Chair 9 (Double)", status: "Closed" },
+                { name: "Chair 11 (Triple Chair)", status: "Closed" },
+                { name: "Chair 12 (Double)", status: "Closed" },
+                { name: "Chair 13 (Triple Chair)", status: "Closed" },
+                { name: "MC 16 (Magic Carpet)", status: "Closed" }
+            ]
+        },
+        {
+            name: "SNOW SUMMIT",
+            lifts: [
+                { name: "Chair 1 (High-Speed Quad)", status: "Closed" },
+                { name: "Chair 2 (High-Speed Quad)", status: "Closed" },
+                { name: "Chair 3 (Double)", status: "Closed" },
+                { name: "Chair 4 (Triple Chair)", status: "Closed" },
+                { name: "Chair 5 (Double)", status: "Closed" },
+                { name: "Chair 6 (Double)", status: "Closed" },
+                { name: "Chair 7 (Double)", status: "Closed" },
+                { name: "Chair 8 (Triple Chair)", status: "Closed" },
+                { name: "Chair 9 (Triple Chair)", status: "Closed" },
+                { name: "Chair 10 (Triple Chair)", status: "Closed" },
+                { name: "MC 1 (Magic Carpet)", status: "Closed" }
+            ]
+        },
+        {
+            name: "BEAR MOUNTAIN",
+            lifts: [
+                { name: "Chair 3 (Double)", status: "Closed" },
+                { name: "Chair 4 (Double)", status: "Closed" },
+                { name: "Chair 5 (6 Chair)", status: "Closed" },
+                { name: "Chair 6 (High-Speed Quad)", status: "Closed" },
+                { name: "Chair 7 (Triple Chair)", status: "Closed" },
+                { name: "Chair 8 (Triple Chair)", status: "Closed" },
+                { name: "Chair 9 (High-Speed Quad)", status: "Closed" }
+            ]
+        }
+    ];
+
     // Function to show search results
     function showSearchResults(query) {
         // Clear previous results
         searchResults.innerHTML = '';
 
+        // Only show results if there's a query
         if (!query) {
             searchResults.style.display = 'none';
             return;
         }
 
-        // Filter mountains that match the query
+        // Special case - if query is just "b" or "B", show Big Bear suggestion
+        if (query.toLowerCase() === 'b') {
+            const resultItem = document.createElement('div');
+            resultItem.className = 'search-result-item';
+            resultItem.textContent = 'Big Bear';
+            resultItem.addEventListener('click', () => handleMountainSelection('Big Bear'));
+
+            searchResults.appendChild(resultItem);
+            searchResults.style.display = 'block';
+            return;
+        }
+
+        // Regular filtering for other queries
         const filteredMountains = mountainSuggestions.filter(mountain =>
             mountain.toLowerCase().includes(query.toLowerCase())
         );
@@ -95,6 +156,11 @@ document.addEventListener('DOMContentLoaded', function() {
         conditionRow.classList.remove('fade-in');
         windRow.classList.remove('fade-in');
         addParkBtn.classList.remove('fade-in');
+
+        // Clear lifts container
+        if (liftsContainer) {
+            liftsContainer.innerHTML = '';
+        }
 
         // Reset mountain image opacity
         const mountainImage = document.querySelector('.mountain-image');
@@ -196,11 +262,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create the text container for the location name
         const textContainer = document.createElement('div');
         textContainer.className = 'location-name-display'; // Add class for easier selection later
-        textContainer.style.position = 'absolute';
-        textContainer.style.left = '30px';
-        textContainer.style.bottom = 'calc(50vh + 30px)'; // 30px from bottom of visible image
-        textContainer.style.zIndex = '50';
         textContainer.style.display = 'flex';
+        textContainer.style.justifyContent = 'center'; // Center the content horizontally
         textContainer.style.lineHeight = '1';
         textContainer.style.fontWeight = 'bold';
         textContainer.style.fontSize = '91px'; // Increased by 30% from original
@@ -309,6 +372,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Image fade-in complete, continue with the rest
             fetchWeatherData(selectedMountain);
 
+            // Check if Big Bear to display lift statuses
+            if (selectedMountain.toLowerCase().includes('big bear')) {
+                displayLiftStatuses();
+            }
+
             // Reset animations for weather rows
             tempRow.classList.remove('fade-in');
             conditionRow.classList.remove('fade-in');
@@ -367,11 +435,63 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Display lift status tables
+    function displayLiftStatuses() {
+        // Clear any existing content
+        liftsContainer.innerHTML = '';
+
+        // Loop through each resort and create a section
+        resortData.forEach((resort, index) => {
+            // Create resort section
+            const resortSection = document.createElement('div');
+            resortSection.className = 'resort-section';
+
+            // Create resort header
+            const resortHeader = document.createElement('h2');
+            resortHeader.className = 'resort-header';
+            resortHeader.textContent = resort.name;
+            resortSection.appendChild(resortHeader);
+
+            // Create lift table
+            const liftTable = document.createElement('table');
+            liftTable.className = 'lifts-table';
+
+            // Add lift rows
+            resort.lifts.forEach(lift => {
+                const row = document.createElement('tr');
+
+                // Lift name cell
+                const nameCell = document.createElement('td');
+                nameCell.textContent = lift.name;
+                row.appendChild(nameCell);
+
+                // Lift status cell
+                const statusCell = document.createElement('td');
+                const statusBadge = document.createElement('span');
+                statusBadge.className = 'lift-status-badge status-closed'; // All are closed in the data
+                statusBadge.textContent = lift.status;
+                statusCell.appendChild(statusBadge);
+                row.appendChild(statusCell);
+
+                liftTable.appendChild(row);
+            });
+
+            resortSection.appendChild(liftTable);
+            liftsContainer.appendChild(resortSection);
+
+            // Stagger the animation of each resort section
+            setTimeout(() => {
+                resortSection.classList.add('fade-in');
+            }, 2600 + (index * 200)); // Start after Add Park button animation
+        });
+    }
+
     // Event listeners
     searchBar.addEventListener('input', () => {
         showSearchResults(searchBar.value);
     });
 
+    // No longer showing suggestion on focus - only on typing "b"
     searchBar.addEventListener('focus', () => {
         if (searchBar.value) {
             showSearchResults(searchBar.value);
