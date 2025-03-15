@@ -12,42 +12,107 @@
     <script type="module">
         import { auth } from './assets/firebase/config.js';
         import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-    
+
         console.log("Firebase loaded.");
-    
+
         onAuthStateChanged(auth, (user) => {
-            const loadingScreen = document.getElementById("loading-screen");
             const profilePic = document.getElementById("profile-pic");
             const profileName = document.getElementById("profile-name");
-            const authLink = document.getElementById("auth-link");
-    
+            const profileDropdown = document.getElementById("profile-dropdown");
+
             if (user) {
-                profilePic.src = user.photoURL || "assets/images/blankperson.png";
+                profilePic.src = user.photoURL || "assets/images/defaultprofile.png";
                 profileName.textContent = user.displayName || "My Profile";
-                authLink.textContent = "Logout";
-                authLink.href = "#";
-                authLink.onclick = () => {
+
+                // Show dropdown menu with profile options
+                profileDropdown.innerHTML = `
+                    <a href="assets/pages/profile.html">View Profile</a>
+                    <a id="logout-link" href="#">Logout</a>
+                `;
+
+                document.getElementById("logout-link").addEventListener("click", (e) => {
+                    e.preventDefault();
                     signOut(auth).then(() => location.reload());
-                    return false;
-                };
+                });
             } else {
-                profilePic.src = "assets/images/blankperson.png";
+                profilePic.src = "assets/images/defaultprofile.png";
                 profileName.textContent = "Profile";
-                authLink.textContent = "Sign Up / Login";
-                authLink.href = "assets/pages/sign-up_login.html";
+
+                // Show Sign Up/Login dropdown
+                profileDropdown.innerHTML = `
+                    <a href="assets/pages/sign-up_login.html">Sign Up / Login</a>
+                `;
             }
-    
-            // Hide loading screen after Firebase loads
-            if (loadingScreen) loadingScreen.style.display = "none";
         });
-    
+
         // Failsafe timeout in case Firebase is slow
         setTimeout(() => {
-            const loadingScreen = document.getElementById("loading-screen");
-            if (loadingScreen) loadingScreen.style.display = "none";
+            document.getElementById("loading-screen").style.display = "none";
         }, 5000);
     </script>
-    
+
+    <style>
+        /* Profile Dropdown */
+        .profile-nav {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 8px 12px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            min-width: 180px;
+            white-space: nowrap;
+        }
+
+        .profile-nav:hover .profile-dropdown {
+            display: block;
+        }
+
+        .profile-dropdown a {
+            display: block;
+            padding: 8px;
+            text-decoration: none;
+            color: blue;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .profile-dropdown a:hover {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 8px;
+        }
+
+        .profile-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: black;
+            padding: 5px 10px;
+        }
+
+        .profile-container:hover {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
 </head>
 <body>
 
@@ -71,13 +136,11 @@
 
                 <!-- Profile Dropdown -->
                 <li class="nav-item profile-nav">
-                    <a class="nav-link profile-container" href="assets/pages/profile.html">
-                        <img id="profile-pic" src="assets/images/blankperson.png" alt="Profile" class="profile-img">
+                    <a class="nav-link profile-container">
+                        <img id="profile-pic" src="assets/images/defaultprofile.png" alt="Profile" class="profile-img">
                         <span id="profile-name">Profile</span>
                     </a>
-                    <div class="profile-dropdown">
-                        <a id="auth-link" href="assets/pages/sign-up_login.html">Sign Up / Login</a>
-                    </div>
+                    <div id="profile-dropdown" class="profile-dropdown"></div>
                 </li>
             </ul>
         </div>
