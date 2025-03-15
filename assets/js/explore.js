@@ -439,46 +439,50 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayLiftStatuses() {
         // Clear any existing content
         liftsContainer.innerHTML = '';
-
+    
         // Loop through each resort and create a section
         resortData.forEach((resort, index) => {
             // Create resort section
             const resortSection = document.createElement('div');
             resortSection.className = 'resort-section';
-
+    
             // Create resort header
             const resortHeader = document.createElement('h2');
             resortHeader.className = 'resort-header';
             resortHeader.textContent = resort.name;
             resortSection.appendChild(resortHeader);
-
+    
             // Create lift table
             const liftTable = document.createElement('table');
             liftTable.className = 'lifts-table';
-
+    
             // Add lift rows
             resort.lifts.forEach(lift => {
                 const row = document.createElement('tr');
-
+    
                 // Lift name cell
                 const nameCell = document.createElement('td');
                 nameCell.textContent = lift.name;
                 row.appendChild(nameCell);
-
+    
                 // Lift status cell
                 const statusCell = document.createElement('td');
                 const statusBadge = document.createElement('span');
-                statusBadge.className = 'lift-status-badge status-closed'; // All are closed in the data
+                
+                // Set the appropriate class based on the status
+                statusBadge.className = 'lift-status-badge ' + 
+                    (lift.status === 'Open' ? 'status-open' : 'status-closed');
+                
                 statusBadge.textContent = lift.status;
                 statusCell.appendChild(statusBadge);
                 row.appendChild(statusCell);
-
+    
                 liftTable.appendChild(row);
             });
-
+    
             resortSection.appendChild(liftTable);
             liftsContainer.appendChild(resortSection);
-
+    
             // Stagger the animation of each resort section
             setTimeout(() => {
                 resortSection.classList.add('fade-in');
