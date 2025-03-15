@@ -1,4 +1,4 @@
 # SlopeScout
-SlopeScout Github Repository (add more to description sometime later)
+SlopeScout Website
 
 www.slopescout.org

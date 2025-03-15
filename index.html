@@ -6,8 +6,51 @@
     <title>SlopeScout</title>
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { auth } from './assets/firebase/config.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+    
+        console.log("Firebase loaded.");
+    
+        onAuthStateChanged(auth, (user) => {
+            const loadingScreen = document.getElementById("loading-screen");
+            const profilePic = document.getElementById("profile-pic");
+            const profileName = document.getElementById("profile-name");
+            const authLink = document.getElementById("auth-link");
+    
+            if (user) {
+                profilePic.src = user.photoURL || "assets/images/blankperson.png";
+                profileName.textContent = user.displayName || "My Profile";
+                authLink.textContent = "Logout";
+                authLink.href = "#";
+                authLink.onclick = () => {
+                    signOut(auth).then(() => location.reload());
+                    return false;
+                };
+            } else {
+                profilePic.src = "assets/images/blankperson.png";
+                profileName.textContent = "Profile";
+                authLink.textContent = "Sign Up / Login";
+                authLink.href = "assets/pages/sign-up_login.html";
+            }
+    
+            // Hide loading screen after Firebase loads
+            if (loadingScreen) loadingScreen.style.display = "none";
+        });
+    
+        // Failsafe timeout in case Firebase is slow
+        setTimeout(() => {
+            const loadingScreen = document.getElementById("loading-screen");
+            if (loadingScreen) loadingScreen.style.display = "none";
+        }, 5000);
+    </script>
+    
 </head>
 <body>
+
 <!-- Loading Screen -->
 <div id="loading-screen">
     <span>Loading...</span>
@@ -24,9 +67,18 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="assets/pages/getting_started.html">Getting Started</a></li>
-                <li class="nav-item"><a class="nav-link" href="assets/pages/sign-up_login.html">Sign-Up/Login</a></li>
-                <a class="nav-link" href="assets/pages/explore.html">Explore</a>
-                <li class="nav-item"><a class="nav-link" href="assets/pages/profile.html">Profile</a></li>
+                <li class="nav-item"><a class="nav-link" href="assets/pages/explore.html">Explore</a></li>
+
+                <!-- Profile Dropdown -->
+                <li class="nav-item profile-nav">
+                    <a class="nav-link profile-container" href="assets/pages/profile.html">
+                        <img id="profile-pic" src="assets/images/blankperson.png" alt="Profile" class="profile-img">
+                        <span id="profile-name">Profile</span>
+                    </a>
+                    <div class="profile-dropdown">
+                        <a id="auth-link" href="assets/pages/sign-up_login.html">Sign Up / Login</a>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
@@ -45,20 +97,8 @@
 <footer class="text-center">
     <div class="container">
         <p class="mb-1">&copy; 2025 SlopeScout. All Rights Reserved.</p>
-        <p>
-            <!-- <a href="https://github.com/DellOptiPlex755x/SlopeScout" target="_blank">GitHub</a> -->
-        </p>
     </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const loadingScreen = document.getElementById('loading-screen');
-        setTimeout(() => {
-            loadingScreen.style.display = 'none';
-        }, 300); //delay time in milliseconds
-    });
-</script>
 </body>
 </html>
