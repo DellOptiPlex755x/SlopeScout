@@ -166,6 +166,20 @@
         #signup-form {
             display: block;
         }
+        
+        .error-message {
+            color: #d32f2f;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success-message {
+            color: #388e3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -177,7 +191,7 @@
     <!-- Sign Up Form -->
     <div id="signup-form">
         <h1>Create Account</h1>
-        <form>
+        <form id="signup-form-element">
             <div class="form-group">
                 <label for="signup-email">Email</label>
                 <input type="email" id="signup-email" required>
@@ -189,6 +203,8 @@
             <div class="form-group">
                 <label for="confirm-password">Password Confirmation</label>
                 <input type="password" id="confirm-password" required>
+                <div class="error-message" id="signup-error"></div>
+                <div class="success-message" id="signup-success"></div>
             </div>
             <button type="submit">Sign Up</button>
         </form>
@@ -200,7 +216,7 @@
     <!-- Login Form (Initially Hidden) -->
     <div id="login-form">
         <h1>Log In</h1>
-        <form>
+        <form id="login-form-element">
             <div class="form-group">
                 <label for="login-email">Email</label>
                 <input type="email" id="login-email" required>
@@ -209,8 +225,10 @@
                 <label for="login-password">Password</label>
                 <input type="password" id="login-password" required>
                 <div class="forgot-password">
-                    <a href="#">forgot password?</a>
+                    <a href="#" id="forgot-password-link">forgot password?</a>
                 </div>
+                <div class="error-message" id="login-error"></div>
+                <div class="success-message" id="login-success"></div>
             </div>
             <button type="submit">Login</button>
         </form>
@@ -221,7 +239,142 @@
     </div>
 </div>
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.8/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.8/firebase-auth-compat.js"></script>
+
 <script>
+    // Firebase configuration
+    // Replace with your own Firebase config
+    const firebaseConfig = {
+        apiKey: "AIzaSyDtab2UItTMNgJPk42z7MlbkoR2x-7ovmE",
+        authDomain: "slopescout.org",
+        projectId: "slopescout-f317c",
+        storageBucket: "slopescout-f317c.firebasestorage.app",
+        messagingSenderId: "207517239405",
+        appId: "1:207517239405:web:b83a8b6acef55ff7d29764"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Form references
+    const signupForm = document.getElementById('signup-form-element');
+    const loginForm = document.getElementById('login-form-element');
+    const forgotPasswordLink = document.getElementById('forgot-password-link');
+
+    // Error and success message elements
+    const signupError = document.getElementById('signup-error');
+    const signupSuccess = document.getElementById('signup-success');
+    const loginError = document.getElementById('login-error');
+    const loginSuccess = document.getElementById('login-success');
+
+    // Sign up form submission
+    signupForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+        
+        // Clear previous messages
+        signupError.style.display = 'none';
+        signupSuccess.style.display = 'none';
+        
+        // Validate passwords match
+        if(password !== confirmPassword) {
+            signupError.textContent = 'Passwords do not match';
+            signupError.style.display = 'block';
+            return;
+        }
+        
+        // Create user
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Clear form
+                signupForm.reset();
+                
+                // Show success message
+                signupSuccess.textContent = 'Account created successfully! Redirecting...';
+                signupSuccess.style.display = 'block';
+                
+                // Redirect to home page or dashboard after a short delay
+                setTimeout(() => {
+                    window.location.href = '../../index.html';
+                }, 2000);
+            })
+            .catch((error) => {
+                signupError.textContent = error.message;
+                signupError.style.display = 'block';
+            });
+    });
+
+    // Login form submission
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        
+        // Clear previous messages
+        loginError.style.display = 'none';
+        loginSuccess.style.display = 'none';
+        
+        // Sign in user
+        auth.signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Clear form
+                loginForm.reset();
+                
+                // Show success message
+                loginSuccess.textContent = 'Login successful! Redirecting...';
+                loginSuccess.style.display = 'block';
+                
+                // Redirect to home page or dashboard after a short delay
+                setTimeout(() => {
+                    window.location.href = '../../index.html';
+                }, 2000);
+            })
+            .catch((error) => {
+                loginError.textContent = error.message;
+                loginError.style.display = 'block';
+            });
+    });
+
+    // Password reset
+    forgotPasswordLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('login-email').value;
+        
+        if (!email) {
+            loginError.textContent = 'Please enter your email address';
+            loginError.style.display = 'block';
+            return;
+        }
+        
+        // Send password reset email
+        auth.sendPasswordResetEmail(email)
+            .then(() => {
+                loginSuccess.textContent = 'Password reset email sent. Please check your inbox.';
+                loginSuccess.style.display = 'block';
+            })
+            .catch((error) => {
+                loginError.textContent = error.message;
+                loginError.style.display = 'block';
+            });
+    });
+
+    // Check if user is already signed in
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            // User is signed in, redirect to home page or dashboard
+            window.location.href = '../../index.html';
+        }
+    });
+
+    // Animation logic
     let animationInProgress = false;
 
     document.getElementById('show-login').addEventListener('click', function(e) {
@@ -231,24 +384,24 @@
         if (animationInProgress) return;
         animationInProgress = true;
 
-        const signupForm = document.getElementById('signup-form');
-        const loginForm = document.getElementById('login-form');
+        const signupFormDiv = document.getElementById('signup-form');
+        const loginFormDiv = document.getElementById('login-form');
 
         // Add the fade out animation
-        signupForm.classList.add('form-animate-out');
+        signupFormDiv.classList.add('form-animate-out');
 
         // After animation completes, hide signup and show login
         setTimeout(function() {
-            signupForm.style.display = 'none';
-            signupForm.classList.remove('form-animate-out');
-            loginForm.style.display = 'block';
+            signupFormDiv.style.display = 'none';
+            signupFormDiv.classList.remove('form-animate-out');
+            loginFormDiv.style.display = 'block';
 
             // Add fade in animation
-            loginForm.classList.add('form-animate-in');
+            loginFormDiv.classList.add('form-animate-in');
 
             // Remove animation class after animation completes
             setTimeout(function() {
-                loginForm.classList.remove('form-animate-in');
+                loginFormDiv.classList.remove('form-animate-in');
                 animationInProgress = false;
             }, 500);
         }, 500);
@@ -261,24 +414,24 @@
         if (animationInProgress) return;
         animationInProgress = true;
 
-        const loginForm = document.getElementById('login-form');
-        const signupForm = document.getElementById('signup-form');
+        const loginFormDiv = document.getElementById('login-form');
+        const signupFormDiv = document.getElementById('signup-form');
 
         // Add the fade out animation
-        loginForm.classList.add('form-animate-out');
+        loginFormDiv.classList.add('form-animate-out');
 
         // After animation completes, hide login and show signup
         setTimeout(function() {
-            loginForm.style.display = 'none';
-            loginForm.classList.remove('form-animate-out');
-            signupForm.style.display = 'block';
+            loginFormDiv.style.display = 'none';
+            loginFormDiv.classList.remove('form-animate-out');
+            signupFormDiv.style.display = 'block';
 
             // Add fade in animation
-            signupForm.classList.add('form-animate-in');
+            signupFormDiv.classList.add('form-animate-in');
 
             // Remove animation class after animation completes
             setTimeout(function() {
-                signupForm.classList.remove('form-animate-in');
+                signupFormDiv.classList.remove('form-animate-in');
                 animationInProgress = false;
             }, 500);
         }, 500);
