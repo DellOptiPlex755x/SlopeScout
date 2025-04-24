@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
 
-// Your Firebase configuration
+//Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyDtab2UItTMNgJPk42z7MlbkoR2x-7ovmE",
     authDomain: "slopescout-f317c.firebaseapp.com",

@@ -1,488 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>SlopeScout - Explore</title>
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
-    <!-- Font Awesome for icons -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SlopeScout | Explore</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
     <style>
+        /* Global Styles & Variables */
         :root {
-            --primary-blue: #083C5A;
-            --secondary-blue: #083C5A;
-            --darker-blue: #052940;
-            --text-light: #fff;
-            --search-height: 50px;
-            --status-open: #34c759;
-            --status-closed: #ff3b30;
-            --status-scheduled: #ff9500;
-            --status-hold: #5856d6;
+            --primary-dark: #0a0a0a;
+            --secondary-dark: #111111;
+            --card-bg: #1c1c1e;
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-light: #f0f0f0;
+            --text-secondary: rgba(235, 235, 245, 0.6);
+            --accent-blue: #007aff;
+            --transition-speed: 0.3s;
         }
 
-        body {
-            background-color: var(--primary-blue);
-            color: var(--text-light);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        .search-container {
-            position: absolute; /* Changed from fixed to absolute */
-            top: 20px;
+        /* Original Navigation Bar Styles */
+        nav {
+            position: fixed;
+            top: 0;
             left: 0;
-            right: 0;
-            display: flex;
-            align-items: center;
-            z-index: 100;
-            padding: 0;
-        }
-
-        .search-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             width: 100%;
-            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.8) 0%, rgba(10, 10, 10, 0) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--text-light);
         }
 
-        .content-container::before {
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            color: var(--text-light); /* Ensure color */
+            text-decoration: none; /* Make logo non-underlined if it's a link */
+        }
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex; /* Keep flex for desktop */
+            gap: 40px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .nav-links a::after {
             content: '';
             position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
-            right: 0;
-            height: 50vh;
-            background: linear-gradient(to bottom, rgba(8,60,90,0.4) 0%, rgba(8,60,90,0.8) 100%);
-            z-index: -1;
+            width: 100%;
+            height: 1.5px;
+            background-color: var(--accent-blue);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease-out;
         }
 
-        .back-button {
-            position: relative;
+        .nav-links a:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+        }
+        /* Navigation Bar Styles */
+
+
+        /* --- Page Content Area --- */
+        .page-content {
+            /* Adjust top padding to fit below the restored fixed navbar */
+            padding-top: 80px; /* Might need slight adjustment based on nav height */
+        }
+
+        /* --- Explore Section Styles (Keep as before) --- */
+        .explore-section {
+            padding: 60px 5% 100px;
+            background-color: var(--primary-dark);
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 50px;
             color: var(--text-light);
-            font-size: 24px;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            background: transparent;
-            padding: 0;
-            transition: transform 0.2s ease;
-            z-index: 101;
-            margin-right: 20px;
+            font-weight: 700;
         }
-
-        .back-button:hover {
-            transform: scale(1.1);
+        .explore-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
         }
-
-        .search-bar-container {
+        .explore-card {
             position: relative;
-            flex: 1;
-            display: flex;
-            justify-content: center;
-        }
-
-        .search-bar {
-            width:50%;
-            height: var(--search-height);
-            border-radius: 25px;
-            border: none;
-            padding: 0 20px;
-            font-size: 16px;
-            background-color: #FFFFFF;
-            transition: width 0.5s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .search-bar:focus {
-            width: calc(100%);  /* Expands to full width when focused */
-            outline: none;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .search-bar::placeholder {
-            color: #888;
-        }
-
-        .search-results {
-            position: absolute;
-            top: calc(var(--search-height) + 5px);
-            left: 0;
-            width: 100%;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            max-height: 200px;
-            overflow-y: auto;
-            display: none;
-            z-index: 200;
-        }
-
-        .search-result-item {
-            padding: 12px 20px;
-            border-bottom: 1px solid #eee;
-            color: #333;
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+            transition: transform 0.5s, box-shadow 0.5s;
+            height: 450px;
             cursor: pointer;
-            transition: background-color 0.2s ease;
         }
-
-        .search-result-item:hover {
-            background-color: #f0f0f0;
+        .explore-card:hover {
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
         }
-
-        .search-result-item:last-child {
-            border-bottom: none;
-        }
-
-        .content-container {
-            padding-top: 50vh;
-            padding-bottom: 0;
-            text-align: center;
-            display: none;
+        .explore-card-content {
             position: relative;
-            margin-top: 10px; /* Add margin to prevent overlap with image */
-        }
-
-        .mountain-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 50vh;
-            object-fit: cover;
-            object-position: center;
-            z-index: -2;
-            transition: opacity 1s ease;
-        }
-
-        .location-name-display {
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 25vh; /* Position in the middle of the image */
-            z-index: 10;
-            font-size: 91px; /* Increased by 30% from base size of 70px */
-            width: 100%;
-            text-align: center;
-        }
-
-        .weather-card {
-            background-color: var(--secondary-blue);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 0 auto 20px auto;
-            max-width: 90%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .weather-content {
+            z-index: 1;
+            height: 100%;
             display: flex;
             flex-direction: column;
+            transform-style: preserve-3d;
         }
-
-        .weather-row {
+        .explore-image {
+            flex: 1;
             display: flex;
             align-items: center;
-            margin-bottom: 16px;
-            padding: 8px 0;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        .weather-icon {
-            width: 60px;
-            text-align: center;
-            margin-right: 20px;
-            font-size: 30px;
-        }
-
-        .weather-text {
-            text-align: left;
-            font-size: 20px;
-            font-weight: 500;
-        }
-
-        .add-park-btn {
-            background-color: #000;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 5px;
-            font-size: 18px;
-            font-weight: 500;
-            margin-top: 20px;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
-            width: 100%;
-            max-width: 300px;
-        }
-
-        .add-park-btn:hover {
-            background-color: #222;
-        }
-
-        /* Lift status styles */
-        .lifts-container {
-            margin: 20px auto 40px auto;
-            max-width: 90%;
-        }
-
-        .resort-section {
-            background-color: var(--darker-blue);
-            border-radius: 10px;
-            padding: 20px;
+            justify-content: center;
             margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform-style: preserve-3d;
+            transform: translateZ(40px);
+            transition: transform 0.5s;
+        }
+        .explore-image img {
+            max-width: 75%;
+            max-height: 170px;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.3));
+            transform-style: preserve-3d;
+            transition: transform 0.5s, filter 0.5s;
         }
 
-        .resort-header {
-            text-align: left;
-            margin-bottom: 15px;
-            font-size: 24px;
-            font-weight: 600;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            padding-bottom: 10px;
+        .explore-card:hover .explore-image {
+            transform: translateZ(70px);
         }
-
-        .lifts-table {
-            width: 100%;
-            border-collapse: collapse;
+        .explore-card:hover .explore-image img {
+            transform: rotateY(8deg);
+            filter: drop-shadow(8px 15px 25px rgba(0,0,0,0.4));
+        }
+        .explore-info {
+            transform-style: preserve-3d;
+            transform: translateZ(25px);
+            text-align: center;
+        }
+        .explore-name {
+            font-size: 1.8em;
             margin-bottom: 10px;
-        }
-
-        .lifts-table tr {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: background-color 0.2s ease;
-        }
-
-        .lifts-table tr:last-child {
-            border-bottom: none;
-        }
-
-        .lifts-table tr:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .lifts-table td {
-            padding: 12px 15px;
-            text-align: left;
-        }
-
-        .lifts-table td:last-child {
-            text-align: right;
-        }
-
-        .lift-status-badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 14px;
+            color: var(--text-light);
             font-weight: 600;
         }
-
-        .status-open {
-            background-color: var(--status-open);
-            color: #fff;
+        .explore-description {
+            font-size: 0.95em;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            min-height: 60px;
+            line-height: 1.5;
+        }
+        .explore-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--accent-blue);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+            transform: translateZ(10px);
+            box-shadow: 0 4px 10px rgba(0, 122, 255, 0.2);
+        }
+        .explore-button:hover {
+            background-color: #0056b3;
+            transform: translateZ(15px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3);
+        }
+        .explore-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) translateZ(40px);
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 2;
         }
 
-        .status-closed {
-            background-color: var(--status-closed);
-            color: #fff;
-        }
-
-        .status-scheduled {
-            background-color: var(--status-scheduled);
-            color: #fff;
-        }
-
-        .status-hold {
-            background-color: var(--status-hold);
-            color: #fff;
-        }
-
-        .fade-in {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Responsive Styles */
-        @media (min-width: 992px) {
-            .search-wrapper {
-                padding: 0 40px;
+        /* --- Responsive Adjustments --- */
+        /* Keep grid for desktop, but maybe stack earlier if needed */
+        @media (max-width: 991.98px) {
+            .explore-container {
+                grid-template-columns: 1fr;
+                max-width: 500px;
             }
-
-            .back-button {
-                margin-right: 40px;
+            /* Hide nav links on smaller screens if NOT using hamburger */
+            .nav-links {
+                display: none;
             }
-
-            .weather-content {
-                flex-direction: row;
-                justify-content: space-between;
-            }
-
-            .weather-row {
-                flex: 1;
-                margin-right: 15px;
-                margin-bottom: 0;
-            }
-
-            .weather-row:last-child {
-                margin-right: 0;
-            }
-
-            .weather-card, .lifts-container {
-                max-width: 80%;
-                padding: 25px;
+            .explore-section {
+                padding-top: 40px;
             }
         }
-
+        /* Further adjustments for mobile if needed */
         @media (max-width: 768px) {
-            .search-wrapper {
-                padding: 0 20px;
-            }
-
-            .weather-text {
-                font-size: 18px;
-            }
-
-            .location-name-display {
-                font-size: 65px !important; /* Increased by 30% from 50px */
-                top: 15vh; /* Adjusted for mobile */
-            }
-
-            .resort-header {
-                font-size: 22px;
-            }
-
-            .lifts-table td {
-                padding: 10px;
-            }
+            /* Adjust padding/margins/font-sizes as needed */
+            .page-content { padding-top: 70px; }
+            .section-title { font-size: 2em; margin-bottom: 40px; }
+            .explore-card { height: auto; min-height: 430px; }
         }
-
         @media (max-width: 576px) {
-            .search-wrapper {
-                padding: 0 15px;
-            }
-
-            .back-button {
-                margin-right: 15px;
-            }
-
-            .weather-icon {
-                width: 40px;
-                margin-right: 15px;
-                font-size: 24px;
-            }
-
-            .weather-text {
-                font-size: 16px;
-            }
-
-            .location-name-display {
-                font-size: 47px !important; /* Increased by 30% from 36px */
-                top: 12vh; /* Moved higher on small screens */
-            }
-
-            .add-park-btn {
-                padding: 12px 20px;
-                font-size: 16px;
-            }
-
-            .resort-header {
-                font-size: 20px;
-            }
-
-            .lift-status-badge {
-                padding: 4px 8px;
-                font-size: 12px;
-            }
+            /* Finer mobile adjustments */
+            nav { padding: 15px 20px; } /* Slightly reduce nav padding */
+            .explore-section { padding: 40px 5% 60px; }
+            .explore-container { gap: 30px; }
+            .explore-card { padding: 25px; min-height: 400px; }
+            .explore-name { font-size: 1.6em; }
+            .explore-description { font-size: 0.9em; min-height: 50px;}
+            .explore-button { padding: 11px 22px; font-size: 0.9em;}
+            .explore-badge { font-size: 0.85em; padding: 5px 15px; top: -10px;}
+            .section-title { font-size: 1.8em; margin-bottom: 30px; }
         }
     </style>
 </head>
-
 <body>
-<!-- Search Container -->
-<div class="search-container">
-    <div class="search-wrapper">
-        <button class="back-button">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <div class="search-bar-container">
-            <input type="text" class="search-bar" id="mountainSearch" placeholder="Search" autocomplete="off">
-            <div class="search-results" id="searchResults"></div>
+
+<nav>
+    <a href="../index.html" class="logo">SlopeScout</a>
+    <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="explore.html">Explore</a>
+        <a href="bookmarks.html">Bookmarks</a> <a href="profile.html">Profile</a>   </div>
+</nav>
+<div class="page-content">
+    <section class="explore-section">
+        <h2 class="section-title">Explore Mountain Resorts</h2>
+        <div class="explore-container">
+            <div class="explore-card" id="explore-bigbear">
+                <div class="explore-badge">California</div>
+                <div class="explore-card-content">
+                    <div class="explore-image">
+                        <img src="/SlopeScout/assets/images/bigBearLogo.svg" alt="Big Bear Mountain Logo">
+                    </div>
+                    <div class="explore-info">
+                        <h3 class="explore-name">Big Bear</h3>
+                        <p class="explore-description">Home to Snow Summit and Bear Mountain with Southern California's only halfpipes and the region's largest beginner areas.</p>
+                        <a href="bigbear.html" class="explore-button">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="explore-card" id="explore-mammoth">
+                <div class="explore-badge">California</div>
+                <div class="explore-card-content">
+                    <div class="explore-image">
+                        <img src="/SlopeScout/assets/images/mammothMountainLogo.svg" alt="Mammoth Mountain Logo">
+                    </div>
+                    <div class="explore-info">
+                        <h3 class="explore-name">Mammoth Mountain</h3>
+                        <p class="explore-description">California's highest ski resort with 3,500 acres of terrain and one of North America's longest seasons.</p>
+                        <a href="mammoth.html" class="explore-button">View Details</a>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 </div>
 
-<!-- Content Container (hidden initially) -->
-<div class="content-container" id="contentContainer">
-    <img src="../images/mountainImage.jpg" alt="Mountain View" class="mountain-image">
+<script>
+    // Keep the 3D card effect JS (if you still want it)
+    document.addEventListener('DOMContentLoaded', function() {
+        initExploreCards();
+    });
 
-    <div class="weather-card">
-        <div class="weather-content">
-            <div class="weather-row" id="tempRow">
-                <div class="weather-icon">
-                    <i class="fas fa-thermometer-half"></i>
-                </div>
-                <div class="weather-text">
-                    Temperature: <span id="tempValue">--</span> °F
-                </div>
-            </div>
-
-            <div class="weather-row" id="conditionRow">
-                <div class="weather-icon">
-                    <i class="fas fa-cloud"></i>
-                </div>
-                <div class="weather-text">
-                    Conditions: <span id="conditionValue">--</span>
-                </div>
-            </div>
-
-            <div class="weather-row" id="windRow">
-                <div class="weather-icon">
-                    <i class="fas fa-wind"></i>
-                </div>
-                <div class="weather-text">
-                    Wind Speed: <span id="windValue">--</span> mph <span id="windDirection">--</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="text-center">
-            <button class="add-park-btn" id="addParkBtn">Add Park</button>
-        </div>
-    </div>
-
-    <!-- Lift Status Container (added below the Add Park button) -->
-    <div class="lifts-container" id="liftsContainer"></div>
-</div>
-
-<!-- Bootstrap JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
-<!-- Weather Data & Utilities -->
-<script src="../../assets/js/weather-utils.js"></script>
-
-<!-- Main App Logic -->
-<script src="../../assets/js/explore.js"></script>
-
+    function initExploreCards() {
+        const cards = document.querySelectorAll('.explore-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+                const centerX = rect.width / 2; const centerY = rect.height / 2;
+                const rotateX = (centerY - y) / 18; const rotateY = (x - centerX) / 18;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+                card.style.boxShadow = '0 20px 45px rgba(0, 0, 0, 0.35)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+                card.style.boxShadow = '0 15px 35px rgba(0,0,0,0.25)';
+            });
+        });
+    }
+</script>
 </body>
 </html>
