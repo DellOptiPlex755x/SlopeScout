@@ -2,9 +2,398 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SlopeScout | Your Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        /* --- Global Styles & Variables --- */
+        :root {
+            --primary-dark: #0a0a0a; --secondary-dark: #111111; --card-bg: #1c1c1e;
+            --card-border: rgba(255, 255, 255, 0.08); --text-light: #f0f0f0;
+            --text-secondary: rgba(235, 235, 245, 0.6); --accent-blue: #007aff;
+            --accent-blue-hover: #0056b3; --sidebar-hover-bg: rgba(255, 255, 255, 0.05);
+            --transition-speed: 0.3s; --nav-height: 60px; --error-red: #d32f2f;
+            --success-green: #388e3c; --input-bg: #2c2c2e;
+            --danger-red: #d32f2f; /* Added for delete */
+            --danger-red-hover: #a02727; /* Added for delete */
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--primary-dark); color: var(--text-light); min-height: 100vh; overflow-x: hidden; padding-top: calc(var(--nav-height) + 20px); }
+        a { color: var(--accent-blue); text-decoration: none; transition: color var(--transition-speed) ease; }
+        a:hover { color: var(--accent-blue-hover); }
+
+        /* Navigation, Layout, Sidebar Styles (Keep as before) */
+        nav.main-nav { position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-height); display: flex; justify-content: space-between; align-items: center; padding: 0 40px; z-index: 1000; background-color: rgba(10, 10, 10, 0.8); border-bottom: 1px solid var(--card-border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--text-light); }
+        .main-nav .logo { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; color: var(--text-light); text-decoration: none; transition: transform 0.3s ease; }
+        .main-nav .logo:hover { transform: scale(1.05); }
+        .main-nav .nav-links { display: flex; gap: 40px; height: 100%; }
+        .main-nav .nav-links a { display: flex; align-items: center; height: 100%; color: var(--text-light); text-decoration: none; font-size: 14px; font-weight: 500; transition: opacity 0.3s ease, color 0.3s ease; position: relative; padding: 0 5px; opacity: 0.8; }
+        .main-nav .nav-links a:hover { opacity: 1; color: var(--text-light); }
+        .main-nav .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--accent-blue); transform: scaleX(0); transform-origin: center; transition: transform 0.3s ease-out; }
+        .main-nav .nav-links a:hover::after, .main-nav .nav-links a.active::after { transform: scaleX(1); }
+        .main-nav .nav-links a.active { opacity: 1; font-weight: 600; }
+        .page-content { padding-left: 5%; padding-right: 5%; padding-bottom: 50px; max-width: 1200px; margin: 0 auto; }
+        .profile-container { display: grid; grid-template-columns: 260px 1fr; gap: 40px; margin-top: 20px; }
+        .profile-sidebar { background-color: var(--secondary-dark); padding: 20px; border-radius: 12px; border: 1px solid var(--card-border); height: fit-content; }
+        .sidebar-nav ul { list-style: none; padding: 0; margin: 0; }
+        .sidebar-nav li a { display: flex; align-items: center; padding: 12px 15px; border-radius: 8px; color: var(--text-secondary); font-size: 0.95em; font-weight: 500; margin-bottom: 5px; transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease; cursor: pointer; }
+        .sidebar-nav li a i { margin-right: 15px; width: 20px; text-align: center; color: var(--text-secondary); transition: color var(--transition-speed) ease; }
+        .sidebar-nav li a:hover { background-color: var(--sidebar-hover-bg); color: var(--text-light); text-decoration: none; }
+        .sidebar-nav li a:hover i { color: var(--accent-blue); }
+        .sidebar-nav li a.active { background-color: var(--accent-blue); color: var(--text-light); }
+        .sidebar-nav li a.active i { color: var(--text-light); }
+        #logout-link { color: #ff4d4f; } #logout-link:hover { background-color: rgba(255, 77, 79, 0.1); color: #ff7072; }
+        #logout-link i { color: #ff4d4f; } #logout-link:hover i { color: #ff7072; }
+
+        /* Profile Main Content & Info Cards */
+        .profile-main h2 { font-size: 2em; font-weight: 600; margin-bottom: 30px; color: var(--text-light); border-bottom: 1px solid var(--card-border); padding-bottom: 15px; }
+        .info-card { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; margin-bottom: 25px; overflow: hidden; }
+        .info-card-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 25px; }
+        .info-card-header h3 { font-size: 1.2em; font-weight: 600; margin: 0; color: var(--text-light); }
+        .edit-button { font-size: 0.9em; font-weight: 500; color: var(--accent-blue); display: flex; align-items: center; background: none; border: none; cursor: pointer; padding: 5px; transition: color var(--transition-speed); }
+        .edit-button i { margin-right: 6px; }
+        .edit-button:hover { color: var(--accent-blue-hover); }
+        .info-card-content { padding: 0 25px 25px; }
+        .info-display-group { padding-top: 20px; }
+        .info-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; margin-bottom: 8px; }
+        .info-item:last-child { border-bottom: none; margin-bottom: 0; }
+        .info-item .label { font-size: 0.95em; color: var(--text-secondary); margin-right: 20px; }
+        .info-item .value { font-size: 0.95em; color: var(--text-light); font-weight: 500; text-align: right; word-break: break-word; }
+
+        /* Update Forms Styles */
+        .update-form { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--card-border); }
+        .form-group { margin-bottom: 15px; }
+        .update-form label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 0.9em; color: var(--text-secondary); }
+        .update-form input[type="email"], .update-form input[type="password"] { width: 100%; padding: 10px 12px; border: 1px solid var(--card-border); border-radius: 6px; box-sizing: border-box; background-color: var(--input-bg); color: var(--text-light); font-size: 0.95em; transition: border-color var(--transition-speed), box-shadow var(--transition-speed); }
+        .update-form input[type="email"]:focus, .update-form input[type="password"]:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3); }
+        .update-form-actions { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
+        .update-form button { padding: 8px 18px; border: none; border-radius: 20px; cursor: pointer; font-size: 0.9em; font-weight: 600; transition: background-color var(--transition-speed), transform var(--transition-speed); }
+        .update-form button[type="submit"] { background-color: var(--accent-blue); color: white; }
+        .update-form button[type="submit"]:hover { background-color: var(--accent-blue-hover); transform: scale(1.03); }
+        .update-form button.cancel-button { background-color: var(--secondary-dark); color: var(--text-light); border: 1px solid var(--card-border); }
+        .update-form button.cancel-button:hover { background-color: #444; }
+        .update-message { font-size: 0.85em; margin-top: 10px; text-align: left; display: none; }
+        .update-message.error { color: var(--error-red); }
+        .update-message.success { color: var(--success-green); }
+
+        /* --- Delete Account Section Styles --- */
+        #delete-account-card .info-card-content { padding-top: 20px; }
+        #delete-account-card p { color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; font-size: 0.95em;}
+        #show-delete-form-button, #confirm-delete-button { /* Style both delete buttons */
+            background-color: var(--danger-red); color: white; padding: 10px 20px; border: none; border-radius: 25px;
+            font-weight: 600; cursor: pointer; transition: background-color 0.3s ease; display: inline-flex; align-items: center;
+        }
+         #show-delete-form-button i, #confirm-delete-button i { margin-right: 8px; }
+        #show-delete-form-button:hover, #confirm-delete-button:hover { background-color: var(--danger-red-hover); }
+        #delete-account-form { display: none; /* Hidden initially */ }
+        #delete-account-form .form-group { margin-bottom: 20px;}
+        /* Error messages reuse .update-message.error */
+
+        /* Responsive Adjustments */
+        @media (max-width: 991.98px) { .profile-container { grid-template-columns: 1fr; gap: 30px; } .main-nav .nav-links { display: none; } }
+        @media (max-width: 768px) { .profile-main h2 { font-size: 1.8em; } .info-card-header { padding: 15px 20px; } .info-card-content { padding: 0 20px 20px; } .info-card-header h3 { font-size: 1.1em; } }
+        @media (max-width: 576px) { nav.main-nav { padding: 0 20px; } .profile-main h2 { font-size: 1.6em; margin-bottom: 20px; } .info-item { flex-direction: column; align-items: flex-start; } .info-item .label { margin-bottom: 5px; } .info-item .value { text-align: left; } .edit-button { font-size: 0.85em; } }
+    </style>
 </head>
 <body>
 
+<nav class="main-nav">
+    <a href="../../index.html" rel="noopener noreferrer" class="logo">SlopeScout</a>
+    <div class="nav-links">
+        <a href="../../index.html" rel="noopener noreferrer">Home</a>
+        <a href="explore.html">Explore</a>
+        <a href="bookmarks.html">Bookmarks</a>
+        <a href="profile.html" class="active">Profile</a>
+    </div>
+</nav>
+
+<div class="page-content">
+    <div class="profile-container">
+
+        <aside class="profile-sidebar">
+            <nav class="sidebar-nav">
+                 <ul>
+                    <li><a href="#account-details" class="active"><i class="fas fa-user-circle"></i> Account Details</a></li>
+                    <li><a href="#security"><i class="fas fa-shield-alt"></i> Security</a></li>
+                    <li><a href="#delete-account-card"><i class="fas fa-trash-alt"></i> Delete Account</a></li> <li><a id="logout-link"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="profile-main">
+            <section id="account-details">
+                 <h2>Account Details</h2>
+                 <div class="info-card"> <div class="info-card-header"> <h3>Personal Information</h3> </div> <div class="info-card-content"> <div class="info-display-group"> <div class="info-item"> <span class="label">Member Since</span> <span class="value" id="profile-member-since">Loading...</span> </div> </div> </div> </section>
+                 <section class="info-card" id="contact-info"> <div class="info-card-header"> <h3>Contact Information</h3> <button id="update-email-button" class="edit-button"><i class="fas fa-pencil-alt"></i> Update Email</button> </div> <div class="info-card-content"> <div class="info-display-group"> <div class="info-item"> <span class="label">Email Address</span> <span class="value" id="profile-email">Loading...</span> </div> </div> <form class="update-form" id="update-email-form"> <div class="form-group"> <label for="new-email">New Email Address</label> <input type="email" id="new-email" required autocomplete="email"> </div> <div class="form-group"> <label for="current-password-for-email">Current Password (for verification)</label> <input type="password" id="current-password-for-email" required autocomplete="current-password"> </div> <div class="update-message error" id="email-update-error"></div> <div class="update-message success" id="email-update-success"></div> <div class="update-form-actions"> <button type="button" class="cancel-button" id="cancel-email-update">Cancel</button> <button type="submit">Save Email</button> </div> </form> </div> </section>
+            </section>
+
+             <section class="info-card" id="security">
+                 <div class="info-card-header"> <h3>Security</h3> <button id="update-password-button" class="edit-button"><i class="fas fa-pencil-alt"></i> Update Password</button> </div>
+                 <div class="info-card-content"> <div class="info-display-group"> <div class="info-item"> <span class="label">Password</span> <span class="value">********</span> </div> </div> <form class="update-form" id="update-password-form"> <div class="form-group"> <label for="current-password-for-password">Current Password</label> <input type="password" id="current-password-for-password" required autocomplete="current-password"> </div> <div class="form-group"> <label for="new-password">New Password</label> <input type="password" id="new-password" required autocomplete="new-password"> </div> <div class="form-group"> <label for="confirm-new-password">Confirm New Password</label> <input type="password" id="confirm-new-password" required autocomplete="new-password"> </div> <div class="update-message error" id="password-update-error"></div> <div class="update-message success" id="password-update-success"></div> <div class="update-form-actions"> <button type="button" class="cancel-button" id="cancel-password-update">Cancel</button> <button type="submit">Save Password</button> </div> </form> </div>
+             </section>
+
+             <section class="info-card" id="delete-account-card">
+                 <div class="info-card-header">
+                     <h3 style="color: var(--danger-red);">Delete Account</h3>
+                 </div>
+                 <div class="info-card-content">
+                     <div id="delete-account-prompt">
+                        <p>Deleting your account is permanent and cannot be undone. All your profile information and associated data (like bookmarks) may be lost.</p>
+                        <button id="show-delete-form-button" class="delete-button"><i class="fas fa-exclamation-triangle"></i> Proceed to Delete Account</button>
+                     </div>
+
+                     <form class="update-form" id="delete-account-form"> <p>To confirm deletion, please enter your current password.</p>
+                        <div class="form-group">
+                            <label for="current-password-for-delete">Current Password</label>
+                            <input type="password" id="current-password-for-delete" required autocomplete="current-password">
+                        </div>
+                        <div class="update-message error" id="delete-account-error"></div>
+                         <div class="update-form-actions">
+                            <button type="button" class="cancel-button" id="cancel-delete-button">Cancel</button>
+                            <button type="submit" id="confirm-delete-button" class="delete-button"><i class="fas fa-trash-alt"></i> Confirm Deletion</button>
+                         </div>
+                     </form>
+                 </div>
+             </section>
+
+        </main>
+
+    </div></div><script type="module">
+    // --- Firebase Imports ---
+    import { auth } from '../firebase/config.js'; // Path relative to assets/pages/
+    import {
+        onAuthStateChanged, signOut, updatePassword,
+        EmailAuthProvider, reauthenticateWithCredential,
+        verifyBeforeUpdateEmail,
+        deleteUser // *** ADDED deleteUser ***
+    } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+    // --- Get Element References ---
+    // (Existing Refs)
+    const profileEmailElement = document.getElementById('profile-email');
+    const profileMemberSinceElement = document.getElementById('profile-member-since');
+    const logoutLink = document.getElementById('logout-link');
+    const sidebarLinks = document.querySelectorAll('.sidebar-nav li a');
+    const updateEmailButton = document.getElementById('update-email-button');
+    const updatePasswordButton = document.getElementById('update-password-button');
+    const updateEmailForm = document.getElementById('update-email-form');
+    const updatePasswordForm = document.getElementById('update-password-form');
+    const newEmailInput = document.getElementById('new-email');
+    const currentPasswordForEmailInput = document.getElementById('current-password-for-email');
+    const currentPasswordForPasswordInput = document.getElementById('current-password-for-password');
+    const newPasswordInput = document.getElementById('new-password');
+    const confirmNewPasswordInput = document.getElementById('confirm-new-password');
+    const cancelEmailUpdateButton = document.getElementById('cancel-email-update');
+    const cancelPasswordUpdateButton = document.getElementById('cancel-password-update');
+    const emailUpdateError = document.getElementById('email-update-error');
+    const emailUpdateSuccess = document.getElementById('email-update-success');
+    const passwordUpdateError = document.getElementById('password-update-error');
+    const passwordUpdateSuccess = document.getElementById('password-update-success');
+    const contactInfoDisplayGroup = document.querySelector('#contact-info .info-display-group');
+    const securityInfoDisplayGroup = document.querySelector('#security .info-display-group');
+
+    // ** NEW References for Delete Section **
+    const deleteAccountPrompt = document.getElementById('delete-account-prompt');
+    const showDeleteFormButton = document.getElementById('show-delete-form-button');
+    const deleteAccountForm = document.getElementById('delete-account-form');
+    const currentPasswordForDeleteInput = document.getElementById('current-password-for-delete');
+    const cancelDeleteButton = document.getElementById('cancel-delete-button');
+    // Note: confirmDeleteButton ref is not strictly needed if using form submit listener
+    const deleteAccountError = document.getElementById('delete-account-error');
+
+    // --- Helper Functions (Defined ONCE) ---
+    const showMessage = (element, message, isSuccess = false) => { /* ... (same) ... */
+         if (!element) return;
+         element.textContent = message;
+         element.className = `update-message ${isSuccess ? 'success' : 'error'}`;
+         element.style.display = 'block';
+     };
+    const clearMessages = (formType) => { /* ... (same + delete) ... */
+        if (formType === 'email' || !formType) { if(emailUpdateError) emailUpdateError.style.display = 'none'; if(emailUpdateSuccess) emailUpdateSuccess.style.display = 'none'; }
+        if (formType === 'password' || !formType) { if(passwordUpdateError) passwordUpdateError.style.display = 'none'; if(passwordUpdateSuccess) passwordUpdateSuccess.style.display = 'none'; }
+        if (formType === 'delete' || !formType) { if(deleteAccountError) deleteAccountError.style.display = 'none'; } // Added delete
+     };
+    const toggleUpdateForm = (formElement, displayGroup, showForm) => { /* ... (same) ... */
+         if (!formElement || !displayGroup) { console.error("Missing form or display group for toggle"); return; }
+         const formType = formElement.id.includes('email') ? 'email' : (formElement.id.includes('password') ? 'password' : null);
+         clearMessages(formType);
+         displayGroup.style.display = showForm ? 'none' : 'block';
+         formElement.style.display = showForm ? 'block' : 'none';
+         // Show/hide Update button
+         const buttonId = formElement.id.includes('email') ? 'update-email-button' : 'update-password-button';
+         const buttonElement = document.getElementById(buttonId);
+         if (buttonElement) { buttonElement.style.display = showForm ? 'none' : 'flex'; }
+     };
+    const reauthenticateUser = (currentPassword) => { /* ... (same) ... */
+        const user = auth.currentUser;
+        if (!user) { return Promise.reject(new Error("No user logged in.")); }
+        if (!currentPassword) { return Promise.reject(new Error("Current password required.")); }
+        console.log("Attempting to reauthenticate...");
+        try {
+            const credential = EmailAuthProvider.credential(user.email, currentPassword);
+            return reauthenticateWithCredential(user, credential);
+        } catch (error) { console.error("Credential creation error:", error); return Promise.reject(error); }
+     };
+
+    // --- Initial Auth State Check ---
+    onAuthStateChanged(auth, (user) => { /* ... (same, removed name/loc) ... */
+        if (user) {
+            console.log("Profile Page: User logged in:", user.uid);
+            if(profileEmailElement) profileEmailElement.textContent = user.email || 'N/A';
+            if (profileMemberSinceElement && user.metadata.creationTime) {
+                 const creationDate = new Date(user.metadata.creationTime);
+                 profileMemberSinceElement.textContent = creationDate.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+            } else if (profileMemberSinceElement) { profileMemberSinceElement.textContent = 'N/A'; }
+        } else {
+             console.log("Profile Page: No user logged in. Redirecting...");
+             window.location.href = 'sign-up_login.html';
+        }
+     });
+
+    // --- Event Listeners ---
+    // Logout
+    logoutLink?.addEventListener('click', (event) => { /* ... (same) ... */
+        event.preventDefault();
+        signOut(auth).then(() => { window.location.href = '../../index.html'; })
+        .catch((error) => { console.error("Sign out error:", error); alert("Error signing out."); });
+     });
+
+    // Show/Hide Update Forms & Cancel Buttons
+    updateEmailButton?.addEventListener('click', () => toggleUpdateForm(updateEmailForm, contactInfoDisplayGroup, true));
+    updatePasswordButton?.addEventListener('click', () => toggleUpdateForm(updatePasswordForm, securityInfoDisplayGroup, true));
+    cancelEmailUpdateButton?.addEventListener('click', () => { if(updateEmailForm) updateEmailForm.reset(); toggleUpdateForm(updateEmailForm, contactInfoDisplayGroup, false); });
+    cancelPasswordUpdateButton?.addEventListener('click', () => { if(updatePasswordForm) updatePasswordForm.reset(); toggleUpdateForm(updatePasswordForm, securityInfoDisplayGroup, false); });
+
+    // *** NEW: Show/Hide Delete Confirmation Form ***
+    showDeleteFormButton?.addEventListener('click', () => {
+        if(deleteAccountPrompt) deleteAccountPrompt.style.display = 'none';
+        if(deleteAccountForm) deleteAccountForm.style.display = 'block';
+        clearMessages('delete');
+    });
+    cancelDeleteButton?.addEventListener('click', () => {
+        if(deleteAccountForm) {
+             deleteAccountForm.reset();
+             deleteAccountForm.style.display = 'none';
+        }
+        if(deleteAccountPrompt) deleteAccountPrompt.style.display = 'block';
+        clearMessages('delete');
+    });
+
+
+    // --- Form Submit Handlers ---
+    // Handle Email Update
+    updateEmailForm?.addEventListener('submit', (e) => { /* ... (same) ... */
+        e.preventDefault(); clearMessages('email');
+        const newEmail = newEmailInput.value; const currentPassword = currentPasswordForEmailInput.value; const user = auth.currentUser;
+        if (!newEmail || !currentPassword || !user) { showMessage(emailUpdateError, "Please fill in all fields."); return; }
+        if (newEmail === user.email) { showMessage(emailUpdateError, "Please enter a new email address."); return; }
+        reauthenticateUser(currentPassword)
+            .then(() => { return verifyBeforeUpdateEmail(user, newEmail); })
+            .then(() => { showMessage(emailUpdateSuccess, `Verification email sent to ${newEmail}. Check inbox.`, true); updateEmailForm.reset(); toggleUpdateForm(updateEmailForm, contactInfoDisplayGroup, false); })
+            .catch((error) => {
+                console.error("Email update/verification failed:", error.code, error.message);
+                let message = `Operation failed: ${error.code || error.message}`;
+                if (error.code === 'auth/wrong-password') { message = "Incorrect current password."; }
+                else if (error.code === 'auth/requires-recent-login'){ message = "Session expired. Log in again."; }
+                else if (error.code === 'auth/email-already-in-use') { message = "Email already in use."; }
+                else if (error.code === 'auth/invalid-email') { message = "New email is invalid."; }
+                 else if (error.message?.includes("required")) { message = "Current password required.";}
+                showMessage(emailUpdateError, message);
+            });
+    });
+
+    // Handle Password Update
+     updatePasswordForm?.addEventListener('submit', (e) => { /* ... (same) ... */
+         e.preventDefault(); clearMessages('password');
+         const currentPassword = currentPasswordForPasswordInput.value; const newPassword = newPasswordInput.value; const confirmPassword = confirmNewPasswordInput.value; const user = auth.currentUser;
+         if (!currentPassword || !newPassword || !confirmPassword || !user) { showMessage(passwordUpdateError, "Please fill in all fields."); return; }
+         if (newPassword !== confirmPassword) { showMessage(passwordUpdateError, "New passwords do not match."); return; }
+         if (newPassword.length < 6) { showMessage(passwordUpdateError, "Password must be >= 6 characters."); return; }
+         reauthenticateUser(currentPassword)
+            .then(() => { return updatePassword(user, newPassword); })
+            .then(() => { showMessage(passwordUpdateSuccess, "Password updated successfully!", true); updatePasswordForm.reset(); toggleUpdateForm(updatePasswordForm, securityInfoDisplayGroup, false); })
+            .catch((error) => {
+                console.error("Password update failed:", error.code, error.message);
+                let message = `Password update failed: ${error.code || error.message}`;
+                 if (error.code === 'auth/wrong-password') { message = "Incorrect current password."; }
+                 else if (error.code === 'auth/requires-recent-login'){ message = "Session expired. Log in again."; }
+                 else if (error.code === 'auth/weak-password') { message = "Password is too weak."; }
+                 else if (error.message?.includes("required")) { message = "Current password required.";}
+                 showMessage(passwordUpdateError, message);
+            });
+     });
+
+     // *** NEW: Handle Delete Account Form Submission ***
+     deleteAccountForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        clearMessages('delete');
+        const currentPassword = currentPasswordForDeleteInput.value;
+        const user = auth.currentUser;
+
+        if (!currentPassword || !user) {
+            showMessage(deleteAccountError, "Please enter your current password to confirm deletion.");
+            return;
+        }
+
+        // ** Final browser confirmation **
+        if (!confirm("DANGER! Are you absolutely sure you want to permanently delete your account? This action cannot be undone.")) {
+            console.log("Account deletion cancelled by user confirmation dialog.");
+            return; // Stop if user clicks Cancel
+        }
+
+        console.log("Attempting account deletion...");
+        // Button Loading state (optional)
+        const deleteButton = document.getElementById('confirm-delete-button');
+        if(deleteButton) deleteButton.disabled = true;
+        if(deleteAccountError) deleteAccountError.textContent = 'Deleting...'; deleteAccountError.style.display = 'block';
+
+        reauthenticateUser(currentPassword)
+            .then(() => {
+                console.log("Re-authentication successful for delete. Deleting user account...");
+                // IMPORTANT: You MUST delete associated user data (Firestore, Storage etc.) BEFORE this step,
+                // usually via Cloud Functions triggered by user deletion for reliability.
+                // This client-side code ONLY deletes the Auth record.
+                return deleteUser(user);
+            })
+            .then(() => {
+                console.log("User account deleted successfully from Firebase Auth.");
+                alert("Your account has been permanently deleted. Redirecting...");
+                window.location.href = '../../index.html'; // Redirect after deletion
+            })
+            .catch((error) => {
+                console.error("Account deletion failed:", error.code, error.message);
+                let message = `Deletion failed: ${error.code || error.message}`;
+                 if (error.code === 'auth/wrong-password') { message = "Incorrect current password."; }
+                 else if (error.code === 'auth/requires-recent-login'){ message = "Session expired. Please log out and log back in to delete your account."; }
+                 else if (error.message?.includes("required")) { message = "Current password required.";}
+                 showMessage(deleteAccountError, message);
+                 if(deleteButton) deleteButton.disabled = false; // Re-enable button on error
+            });
+    });
+
+
+    // Sidebar link scrolling
+    if (sidebarLinks.length > 0) { /* ... (same) ... */ }
+    if (sidebarLinks.length > 0) {
+        const extraOffset = 20;
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (link.id === 'logout-link') return;
+                const targetId = link.getAttribute('href')?.substring(1); if (!targetId) return;
+                const targetSection = document.getElementById(targetId); // Use getElementById for sections
+                sidebarLinks.forEach(l => l.classList.remove('active')); link.classList.add('active');
+                if (targetSection) {
+                    const rootStyles = getComputedStyle(document.documentElement);
+                    const navHeightString = rootStyles.getPropertyValue('--nav-height').trim().replace('px', '');
+                    const navHeight = parseInt(navHeightString, 10) || 60;
+                    const scrollToPosition = targetSection.offsetTop - (navHeight + extraOffset);
+                    window.scrollTo({ top: scrollToPosition, behavior: 'smooth' });
+                } else { console.warn(`Target section with ID "${targetId}" not found for scrolling.`); }
+            });
+        });
+    }
+
+</script>
 </body>
 </html>

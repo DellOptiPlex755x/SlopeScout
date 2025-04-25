@@ -3,443 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Forms</title>
-    <!-- Font Awesome for icons -->
+    <title>SlopeScout | Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
+        /* --- Styles (keep identical to previous version) --- */
         :root {
-            --primary-blue: #003D69;
-            --secondary-blue: #083C5A;
-            --text-light: #fff;
+            --primary-dark: #0a0a0a; --secondary-dark: #111111; --card-bg: #1c1c1e;
+            --card-border: rgba(255, 255, 255, 0.08); --text-light: #f0f0f0;
+            --text-secondary: rgba(235, 235, 245, 0.6); --accent-blue: #007aff;
+            --accent-blue-hover: #0056b3; --error-red: #d32f2f; --success-green: #388e3c;
+            --input-bg: #2c2c2e; --transition-speed: 0.3s;
         }
-
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-            background-color: var(--primary-blue);
-            color: var(--text-light);
-        }
-
-        .container {
-            position: relative;
-            background-color: white;
-            border-radius: 8px;
-            padding: 30px;
-            width: 350px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            height: 420px; /* Reduced height by 30px */
-        }
-
-        #login-form, #signup-form {
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            padding: 30px;
-        }
-
-        .back-button {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            color: var(--primary-blue);
-            font-size: 24px;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            background: transparent;
-            padding: 0;
-            cursor: pointer;
-            z-index: 9999; /* Ensuring button is on top of everything */
-        }
-
-        h1 {
-            text-align: center;
-            margin: 10px 0 25px 0; /* Adjusted margins for better centering */
-            color: #333;
-        }
-
-        .form-group {
-            margin-bottom: 16px; /* Slightly reduced space between form groups */
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #333;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--primary-blue);
-            border: none;
-            border-radius: 4px;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .forgot-password {
-            text-align: left;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-
-        .forgot-password a {
-            color: #0095ff;
-            text-decoration: none;
-        }
-
-        .form-toggle {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .form-toggle a {
-            color: #000;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
-        .or-divider {
-            text-align: center;
-            margin: 15px 0;
-            color: #333; /* Changed from white to dark gray */
-        }
-
-        /* Animation styles */
-        @keyframes fadeDownOut {
-            0% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-        }
-
-        @keyframes fadeUpIn {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .form-animate-out {
-            animation: fadeDownOut 0.5s ease forwards;
-            pointer-events: none;
-        }
-
-        .form-animate-in {
-            animation: fadeUpIn 0.5s ease forwards;
-        }
-
-        #login-form {
-            display: none;
-        }
-
-        #signup-form {
-            display: block;
-        }
-        
-        .error-message {
-            color: #d32f2f;
-            font-size: 14px;
-            margin-top: 5px;
-            display: none;
-        }
-        
-        .success-message {
-            color: #388e3c;
-            font-size: 14px;
-            margin-top: 5px;
-            display: none;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; background-color: var(--primary-dark); color: var(--text-light); }
+        .container { position: relative; background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 35px; width: 100%; max-width: 400px; min-height: 450px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); overflow: hidden; }
+        #login-form, #signup-form, #reset-password-form { position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 35px; display: flex; flex-direction: column; justify-content: center; }
+        .back-button { position: absolute; top: 15px; left: 15px; color: var(--text-secondary); font-size: 20px; border: none; background: transparent; padding: 5px; cursor: pointer; z-index: 10; transition: color var(--transition-speed); }
+        .back-button:hover { color: var(--text-light); }
+        h1 { text-align: center; margin: 0 0 30px 0; color: var(--text-light); font-weight: 600; font-size: 1.8em; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9em; color: var(--text-secondary); }
+        input[type="email"], input[type="password"] { width: 100%; padding: 12px 15px; border: 1px solid var(--card-border); border-radius: 8px; box-sizing: border-box; background-color: var(--input-bg); color: var(--text-light); font-size: 1em; transition: border-color var(--transition-speed), box-shadow var(--transition-speed); }
+        input[type="email"]:focus, input[type="password"]:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3); }
+        button[type="submit"] { width: 100%; padding: 12px; background-color: var(--accent-blue); border: none; border-radius: 30px; color: white; font-size: 1em; font-weight: 600; cursor: pointer; margin-top: 15px; transition: background-color var(--transition-speed), transform var(--transition-speed); }
+        button[type="submit"]:hover { background-color: var(--accent-blue-hover); transform: scale(1.02); }
+        .forgot-password { text-align: right; font-size: 0.85em; margin-top: 8px; }
+        .forgot-password a, .form-toggle a { color: var(--accent-blue); text-decoration: none; cursor: pointer; }
+        .forgot-password a:hover, .form-toggle a:hover { color: var(--accent-blue-hover); text-decoration: underline; }
+        .form-toggle { text-align: center; margin-top: 25px; font-size: 0.9em; color: var(--text-secondary); }
+        @keyframes fadeDownOut { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(20px); } }
+        @keyframes fadeUpIn { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+        .form-animate-out { animation: fadeDownOut 0.4s ease forwards; pointer-events: none; }
+        .form-animate-in { animation: fadeUpIn 0.4s ease forwards; }
+        #login-form { display: flex; }
+        #signup-form { display: none; }
+        #reset-password-form { display: none; }
+        .error-message { color: var(--error-red); font-size: 0.85em; margin-top: 8px; display: none; text-align: center; }
+        .success-message { color: var(--success-green); font-size: 0.85em; margin-top: 8px; display: none; text-align: center; }
     </style>
 </head>
 <body>
 <div class="container">
-    <button class="back-button" id="backButton">
-        <i class="fas fa-chevron-left"></i>
-    </button>
+    <button class="back-button" id="backButton" title="Go Back"> <i class="fas fa-chevron-left"></i> </button>
 
-    <!-- Sign Up Form -->
-    <div id="signup-form">
-        <h1>Create Account</h1>
-        <form id="signup-form-element">
-            <div class="form-group">
-                <label for="signup-email">Email</label>
-                <input type="email" id="signup-email" required>
-            </div>
-            <div class="form-group">
-                <label for="signup-password">Password</label>
-                <input type="password" id="signup-password" required>
-            </div>
-            <div class="form-group">
-                <label for="confirm-password">Password Confirmation</label>
-                <input type="password" id="confirm-password" required>
-                <div class="error-message" id="signup-error"></div>
-                <div class="success-message" id="signup-success"></div>
-            </div>
-            <button type="submit">Sign Up</button>
-        </form>
-        <div class="form-toggle">
-            <a href="#" id="show-login">Already have an account?</a>
-        </div>
-    </div>
+    <div id="signup-form"> <div> <h1>Create Account</h1> <form id="signup-form-element"> <div class="form-group"> <label for="signup-email">Email</label> <input type="email" id="signup-email" required autocomplete="email"> </div> <div class="form-group"> <label for="signup-password">Password</label> <input type="password" id="signup-password" required autocomplete="new-password"> </div> <div class="form-group"> <label for="confirm-password">Confirm Password</label> <input type="password" id="confirm-password" required autocomplete="new-password"> </div> <div class="error-message" id="signup-error"></div> <div class="success-message" id="signup-success"></div> <button type="submit">Sign Up</button> </form> <div class="form-toggle"> Already have an account? <a href="#" id="show-login">Log In</a> </div> </div> </div>
 
-    <!-- Login Form (Initially Hidden) -->
-    <div id="login-form">
-        <h1>Log In</h1>
-        <form id="login-form-element">
-            <div class="form-group">
-                <label for="login-email">Email</label>
-                <input type="email" id="login-email" required>
-            </div>
-            <div class="form-group">
-                <label for="login-password">Password</label>
-                <input type="password" id="login-password" required>
-                <div class="forgot-password">
-                    <a href="#" id="forgot-password-link">forgot password?</a>
-                </div>
-                <div class="error-message" id="login-error"></div>
-                <div class="success-message" id="login-success"></div>
-            </div>
-            <button type="submit">Login</button>
-        </form>
-        <div class="or-divider">or</div>
-        <div class="form-toggle">
-            <a href="#" id="show-signup">Create an Account</a>
-        </div>
-    </div>
+    <div id="login-form"> <div> <h1>Log In</h1> <form id="login-form-element"> <div class="form-group"> <label for="login-email">Email</label> <input type="email" id="login-email" required autocomplete="email"> </div> <div class="form-group"> <label for="login-password">Password</label> <input type="password" id="login-password" required autocomplete="current-password"> <div class="forgot-password"> <a href="#" id="forgot-password-link">Forgot password?</a> </div> </div> <div class="error-message" id="login-error"></div> <div class="success-message" id="login-success"></div> <button type="submit">Login</button> </form> <div class="form-toggle"> Need an account? <a href="#" id="show-signup">Create Account</a> </div> </div> </div>
+
+    <div id="reset-password-form"> <div> <h1>Reset Password</h1> <form id="reset-password-form-element"> <div class="form-group"> <label for="reset-email">Enter your account email</label> <input type="email" id="reset-email" required autocomplete="email"> </div> <div class="error-message" id="reset-error"></div> <div class="success-message" id="reset-success"></div> <button type="submit">Send Reset Link</button> </form> <div class="form-toggle"> <a href="#" id="show-login-from-reset">Back to Log In</a> </div> </div> </div>
+
 </div>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.6.8/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.8/firebase-auth-compat.js"></script>
+<script type="module">
+    console.log("Login script starting...");
 
-<script>
-    // Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyDtab2UItTMNgJPk42z7MlbkoR2x-7ovmE",
-        authDomain: "slopescout.org",
-        projectId: "slopescout-f317c",
-        storageBucket: "slopescout-f317c.firebasestorage.app",
-        messagingSenderId: "207517239405",
-        appId: "1:207517239405:web:b83a8b6acef55ff7d29764"
-    };
+    // *** ENSURE this path is correct relative to login.html ***
+    const configPath = '../firebase/config.js';
+    console.log(`Attempting to import auth from: ${configPath}`);
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+    try {
+        // Import Shared Auth instance FIRST
+        const { auth } = await import(configPath);
+        console.log("Firebase auth object imported successfully.");
 
-    // Form references
-    const signupForm = document.getElementById('signup-form-element');
-    const loginForm = document.getElementById('login-form-element');
-    const forgotPasswordLink = document.getElementById('forgot-password-link');
+        // Import Auth functions needed AFTER confirming auth exists
+        const {
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            sendPasswordResetEmail,
+            onAuthStateChanged
+        } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js");
+        console.log("Firebase Auth functions imported.");
 
-    // Error and success message elements
-    const signupError = document.getElementById('signup-error');
-    const signupSuccess = document.getElementById('signup-success');
-    const loginError = document.getElementById('login-error');
-    const loginSuccess = document.getElementById('login-success');
 
-    // Sign up form submission
-    signupForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const email = document.getElementById('signup-email').value;
-        const password = document.getElementById('signup-password').value;
-        const confirmPassword = document.getElementById('confirm-password').value;
-        
-        // Clear previous messages
-        signupError.style.display = 'none';
-        signupSuccess.style.display = 'none';
-        
-        // Validate passwords match
-        if(password !== confirmPassword) {
-            signupError.textContent = 'Passwords do not match';
-            signupError.style.display = 'block';
-            return;
-        }
-        
-        // Create user
-        auth.createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Clear form
-                signupForm.reset();
-                
-                // Show success message
-                signupSuccess.textContent = 'Account created successfully! Redirecting...';
-                signupSuccess.style.display = 'block';
-                
-                // Redirect to home page or dashboard after a short delay
-                setTimeout(() => {
-                    window.location.href = '../../index.html';
-                }, 2000);
-            })
-            .catch((error) => {
-                signupError.textContent = error.message;
-                signupError.style.display = 'block';
-            });
-    });
-
-    // Login form submission
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
-        
-        // Clear previous messages
-        loginError.style.display = 'none';
-        loginSuccess.style.display = 'none';
-        
-        // Sign in user
-        auth.signInWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Clear form
-                loginForm.reset();
-                
-                // Show success message
-                loginSuccess.textContent = 'Login successful! Redirecting...';
-                loginSuccess.style.display = 'block';
-                
-                // Redirect to home page or dashboard after a short delay
-                setTimeout(() => {
-                    window.location.href = '../../index.html';
-                }, 2000);
-            })
-            .catch((error) => {
-                loginError.textContent = error.message;
-                loginError.style.display = 'block';
-            });
-    });
-
-    // Password reset
-    forgotPasswordLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const email = document.getElementById('login-email').value;
-        
-        if (!email) {
-            loginError.textContent = 'Please enter your email address';
-            loginError.style.display = 'block';
-            return;
-        }
-        
-        // Send password reset email
-        auth.sendPasswordResetEmail(email)
-            .then(() => {
-                loginSuccess.textContent = 'Password reset email sent. Please check your inbox.';
-                loginSuccess.style.display = 'block';
-            })
-            .catch((error) => {
-                loginError.textContent = error.message;
-                loginError.style.display = 'block';
-            });
-    });
-
-    // Check if user is already signed in
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            // User is signed in, redirect to home page or dashboard
-            window.location.href = '../../index.html';
-        }
-    });
-
-    // Animation logic
-    let animationInProgress = false;
-
-    document.getElementById('show-login').addEventListener('click', function(e) {
-        e.preventDefault();
-
-        // Prevent multiple animations from running simultaneously
-        if (animationInProgress) return;
-        animationInProgress = true;
-
+        // --- Get Element References ---
         const signupFormDiv = document.getElementById('signup-form');
         const loginFormDiv = document.getElementById('login-form');
+        const resetPasswordFormDiv = document.getElementById('reset-password-form');
+        const signupFormElement = document.getElementById('signup-form-element');
+        const loginFormElement = document.getElementById('login-form-element');
+        const resetPasswordFormElement = document.getElementById('reset-password-form-element');
+        const forgotPasswordLink = document.getElementById('forgot-password-link');
+        const backButton = document.getElementById('backButton');
+        const signupEmailInput = document.getElementById('signup-email');
+        const signupPasswordInput = document.getElementById('signup-password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const loginEmailInput = document.getElementById('login-email');
+        const loginPasswordInput = document.getElementById('login-password');
+        const resetEmailInput = document.getElementById('reset-email');
+        const signupError = document.getElementById('signup-error');
+        const signupSuccess = document.getElementById('signup-success');
+        const loginError = document.getElementById('login-error');
+        const loginSuccess = document.getElementById('login-success');
+        const resetError = document.getElementById('reset-error');
+        const resetSuccess = document.getElementById('reset-success');
+        const showLoginLink = document.getElementById('show-login');
+        const showSignupLink = document.getElementById('show-signup');
+        const showLoginFromResetLink = document.getElementById('show-login-from-reset');
 
-        // Add the fade out animation
-        signupFormDiv.classList.add('form-animate-out');
+        // --- *** CORRECTED HELPER FUNCTION DEFINITIONS *** ---
+        // Define functions ONCE using const before they are used
 
-        // After animation completes, hide signup and show login
-        setTimeout(function() {
-            signupFormDiv.style.display = 'none';
-            signupFormDiv.classList.remove('form-animate-out');
-            loginFormDiv.style.display = 'block';
+        const clearMessages = () => {
+            console.log("Clearing messages..."); // Debug
+            if (signupError) signupError.style.display = 'none';
+            if (signupSuccess) signupSuccess.style.display = 'none';
+            if (loginError) loginError.style.display = 'none';
+            if (loginSuccess) loginSuccess.style.display = 'none';
+            if (resetError) resetError.style.display = 'none';
+            if (resetSuccess) resetSuccess.style.display = 'none';
+        };
 
-            // Add fade in animation
-            loginFormDiv.classList.add('form-animate-in');
+        const showMessage = (element, message, isError = true) => {
+            if (!element) {
+                console.error("Cannot show message, target element not found.");
+                return;
+            }
+            console.log(`Showing message: "${message}" (isError: ${isError})`); // Debug
+            element.textContent = message;
+            element.style.display = 'block';
+            // Optionally clear the *other* message type within the same form section
+            if(element === signupError && signupSuccess) signupSuccess.style.display = 'none';
+            if(element === signupSuccess && signupError) signupError.style.display = 'none';
+            if(element === loginError && loginSuccess) loginSuccess.style.display = 'none';
+            if(element === loginSuccess && loginError) loginError.style.display = 'none';
+            if(element === resetError && resetSuccess) resetSuccess.style.display = 'none';
+            if(element === resetSuccess && resetError) resetError.style.display = 'none';
+        };
 
-            // Remove animation class after animation completes
-            setTimeout(function() {
-                loginFormDiv.classList.remove('form-animate-in');
-                animationInProgress = false;
-            }, 500);
-        }, 500);
-    });
 
-    document.getElementById('show-signup').addEventListener('click', function(e) {
-        e.preventDefault();
+        // --- Firebase Logic ---
+        if (signupFormElement) {
+            signupFormElement.addEventListener('submit', (e) => {
+                console.log("Signup form submitted.");
+                e.preventDefault(); clearMessages();
+                const email = signupEmailInput.value; const password = signupPasswordInput.value; const confirmPassword = confirmPasswordInput.value;
+                if (password !== confirmPassword) { showMessage(signupError, 'Passwords do not match'); return; }
+                createUserWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        signupFormElement.reset(); showMessage(signupSuccess, 'Account created! Redirecting...', false);
+                        setTimeout(() => { window.location.href = '../../index.html'; }, 1500);
+                    })
+                    .catch((error) => { console.error("Signup Error:", error.code, error.message); showMessage(signupError, `Signup failed: ${error.code || error.message}`); });
+            });
+        } else { console.error("Signup form element not found."); }
 
-        // Prevent multiple animations from running simultaneously
-        if (animationInProgress) return;
-        animationInProgress = true;
+        if (loginFormElement) {
+            loginFormElement.addEventListener('submit', (e) => {
+                console.log("Login form submitted.");
+                e.preventDefault(); clearMessages();
+                const email = loginEmailInput.value; const password = loginPasswordInput.value;
+                signInWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        loginFormElement.reset(); showMessage(loginSuccess, 'Login successful! Redirecting...', false);
+                        setTimeout(() => { window.location.href = '../../index.html'; }, 1500);
+                    })
+                    .catch((error) => { console.error("Login Error:", error.code, error.message); showMessage(loginError, `Login failed: ${error.code || error.message}`); });
+            });
+         } else { console.error("Login form element not found."); }
 
-        const loginFormDiv = document.getElementById('login-form');
-        const signupFormDiv = document.getElementById('signup-form');
+        if (resetPasswordFormElement) {
+            resetPasswordFormElement.addEventListener('submit', (e) => {
+                console.log("Reset password form submitted.");
+                e.preventDefault(); clearMessages();
+                const email = resetEmailInput.value;
+                if (!email) { showMessage(resetError, 'Please enter your email address.'); return; }
+                sendPasswordResetEmail(auth, email)
+                    .then(() => { showMessage(resetSuccess, 'Password reset email sent. Check your inbox.', false); resetPasswordFormElement.reset(); })
+                    .catch((error) => { console.error("Password Reset Error:", error.code, error.message); showMessage(resetError, `Password reset failed: ${error.code || error.message}`); });
+            });
+        } else { console.error("Reset Password form element not found."); }
 
-        // Add the fade out animation
-        loginFormDiv.classList.add('form-animate-out');
 
-        // After animation completes, hide login and show signup
-        setTimeout(function() {
-            loginFormDiv.style.display = 'none';
-            loginFormDiv.classList.remove('form-animate-out');
-            signupFormDiv.style.display = 'block';
+        // Auth state change
+        onAuthStateChanged(auth, (user) => {
+            if (user) { console.log("User already signed in (onAuthStateChanged). UID:", user.uid); /* Optionally redirect */ }
+            else { console.log("User not signed in (onAuthStateChanged)."); }
+        });
 
-            // Add fade in animation
-            signupFormDiv.classList.add('form-animate-in');
+        // --- Animation & Toggle Logic ---
+        let currentForm = loginFormDiv; // Start with login form visible
+        let animationInProgress = false;
 
-            // Remove animation class after animation completes
-            setTimeout(function() {
-                signupFormDiv.classList.remove('form-animate-in');
-                animationInProgress = false;
-            }, 500);
-        }, 500);
-    });
+        const switchForms = (formToHide, formToShow) => { // Use const for function definition
+            if (animationInProgress || !formToHide || !formToShow || formToHide === formToShow) return;
+            animationInProgress = true; clearMessages();
+            console.log(`Switching forms: Hiding ${formToHide.id}, Showing ${formToShow.id}`);
 
-    // Back button functionality
-    document.getElementById('backButton').addEventListener('click', () => {
-        window.location.href = '../../index.html';
-    });
+            formToHide.classList.add('form-animate-out');
+            setTimeout(() => {
+                formToHide.style.display = 'none'; formToHide.classList.remove('form-animate-out');
+                formToShow.style.display = 'flex'; formToShow.classList.add('form-animate-in');
+                currentForm = formToShow;
+                setTimeout(() => { formToShow.classList.remove('form-animate-in'); animationInProgress = false; }, 400);
+            }, 400);
+        }
+
+        // Toggle Link Listeners
+        if (showSignupLink) { showSignupLink.addEventListener('click', (e) => { e.preventDefault(); switchForms(currentForm, signupFormDiv); }); }
+        else { console.error("Show Signup link not found."); }
+
+        if (showLoginLink) { showLoginLink.addEventListener('click', (e) => { e.preventDefault(); switchForms(currentForm, loginFormDiv); }); }
+        else { console.error("Show Login link not found."); }
+
+        if (forgotPasswordLink) { forgotPasswordLink.addEventListener('click', (e) => { e.preventDefault(); if(loginEmailInput.value) { resetEmailInput.value = loginEmailInput.value; } switchForms(currentForm, resetPasswordFormDiv); }); }
+        else { console.error("Forgot password link not found."); }
+
+        if (showLoginFromResetLink) { showLoginFromResetLink.addEventListener('click', (e) => { e.preventDefault(); switchForms(currentForm, loginFormDiv); }); }
+        else { console.error("Show Login From Reset link not found."); }
+
+        // Back button
+        if (backButton) { backButton.addEventListener('click', () => { window.location.href = '../../index.html'; }); }
+        else { console.error("Back button not found."); }
+
+        console.log("Login script finished setup."); // DEBUG
+
+    } catch (error) {
+         console.error("Initialization Error:", error);
+         alert("Failed to initialize page. Please check the console for errors.");
+    }
 </script>
 </body>
 </html>
