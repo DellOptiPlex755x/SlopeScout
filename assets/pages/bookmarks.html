@@ -6,6 +6,7 @@
     <title>SlopeScout | My Bookmarks</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
+        /* Global Styles */
         :root {
             --primary-dark: #0a0a0a;
             --secondary-dark: #111111;
@@ -15,22 +16,98 @@
             --text-secondary: rgba(235, 235, 245, 0.6);
             --accent-blue: #007aff;
             --status-closed: #ff3b30; /* Red for delete hover */
+            --status-open: #34c759;
+            --status-scheduled: #ff9500;
+            --status-hold: #5e5ce6;
             --transition-speed: 0.3s;
             --fade-out-duration: 0.4s; /* Define fade-out time */
         }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; background-color: var(--primary-dark); color: var(--text-light); margin: 0; padding: 20px; padding-top: 80px; }
-        /* --- Navbar CSS --- */
-        nav { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; z-index: 100; background: linear-gradient(to bottom, rgba(10, 10, 10, 0.8) 0%, rgba(10, 10, 10, 0) 100%); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--text-light); }
-        .logo { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; cursor: pointer; transition: transform 0.3s ease; color: var(--text-light); text-decoration: none; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { color: var(--text-light); background-color: var(--primary-dark); min-height: 100vh; overflow-x: hidden; }
+
+        /* --- Navigation Bar Styles --- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.8) 0%, rgba(10, 10, 10, 0) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--text-light);
+        }
+        .logo {
+            font-size: 24px; font-weight: 600; letter-spacing: -0.5px; cursor: pointer;
+            transition: transform 0.3s ease; color: var(--text-light); text-decoration: none;
+        }
         .logo:hover { transform: scale(1.05); }
         .nav-links { display: flex; gap: 40px; }
-        .nav-links a { color: var(--text-light); text-decoration: none; font-size: 14px; font-weight: 500; transition: opacity 0.3s ease, transform 0.3s ease; position: relative; padding-bottom: 4px; }
-        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1.5px; background-color: var(--accent-blue); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease-out; }
+        .nav-links a {
+            color: var(--text-light); text-decoration: none; font-size: 14px; font-weight: 500;
+            transition: opacity 0.3s ease, transform 0.3s ease; position: relative; padding-bottom: 4px;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1.5px;
+            background-color: var(--accent-blue); transform: scaleX(0);
+            transform-origin: left; transition: transform 0.3s ease-out;
+        }
         .nav-links a:hover { opacity: 1; transform: translateY(-2px); }
         .nav-links a:hover::after { transform: scaleX(1); }
-        @media (max-width: 991.98px) { .nav-links { display: none; } }
-        @media (max-width: 576px) { nav { padding: 15px 20px; } body { padding-top: 70px;} }
-        /* --- End Navbar CSS --- */
+        /* --- END: Navigation Bar Styles --- */
+
+        /* --- Responsive Styles --- */
+        @media (min-width: 992px) {
+            .weather-content { flex-direction: row; justify-content: space-around; align-items: center; gap: 30px; }
+            .animated-card { max-width: 85%; padding: 40px; }
+            .resorts-tab-section { padding-top: 30px; }
+            .tab-button { padding: 15px 30px; font-size: 19px;}
+        }
+        @media (max-width: 991.98px) {
+            .nav-links { display: none; }
+        }
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 60px; letter-spacing: -1px; }
+            .content-area { padding: 0 25px 40px; margin-top: -50px; }
+            .weather-text { font-size: 17px; }
+            .lifts-grid { grid-template-columns: 1fr; gap: 5px 0; }
+            .lift-item { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+            .lift-item:last-child { border-bottom: none; }
+            .lift-item:nth-last-child(-n+2) { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+            .lift-item:nth-child(odd):last-child, .lift-item:nth-child(even):last-child { border-bottom: none; }
+            .lift-item:hover { transform: translateX(4px); }
+            .animated-card { padding: 30px; max-width: 100%; }
+            .map-container { height: 450px; }
+            .tab-button { padding: 10px 20px; font-size: 16px; }
+            .map-header { font-size: 22px; }
+        }
+        @media (max-width: 576px) {
+            nav { padding: 15px 20px; }
+            .hero { margin-top: 60px; }
+            .hero-content h1 { font-size: 48px; letter-spacing: -0.5px; }
+            .content-area { padding: 0 15px 30px; margin-top: -40px; }
+            .weather-icon { width: 35px; font-size: 24px; }
+            .weather-text { font-size: 15px; }
+            .weather-row { gap: 15px; }
+            .add-park-btn { padding: 12px 24px; font-size: 15px; max-width: 250px; }
+            .lift-item { font-size: 14px; padding: 10px 0; }
+            .lift-item:hover { transform: translateX(3px); }
+            .lift-status-badge { padding: 4px 10px; font-size: 11px; }
+            .animated-card { padding: 20px; border-radius: 20px; }
+            .map-container { height: 350px; border-radius: 12px; }
+            .map-container iframe { border-radius: 12px; }
+            .tab-button { padding: 10px 15px; font-size: 15px; }
+            .map-header { font-size: 20px; }
+        }
+
+        /* --- Bookmarks Page Specific Styles --- */
+        body { padding: 20px; padding-top: 80px; }
 
         .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
         h1 { margin-bottom: 30px; color: var(--text-light); font-weight: 600; border-bottom: 1px solid var(--card-border); padding-bottom: 15px; }
@@ -79,17 +156,23 @@
         #loading-message, #empty-message, #login-prompt { text-align: center; color: var(--text-secondary); font-size: 1.1em; margin-top: 40px; }
         #login-prompt a { color: var(--accent-blue); text-decoration: underline; }
         .error-message { color: var(--status-closed); }
+
+        @media (max-width: 576px) {
+            body { padding-top: 70px; }
+        }
     </style>
 </head>
 <body>
 
 <nav>
-    <a href="../index.html" rel="noopener noreferrer" class="logo">SlopeScout</a> <div class="nav-links">
-    <a href="../index.html" rel="noopener noreferrer">Home</a> <a href="explore.html">Explore</a>
-    <a href="bookmarks.html" style="font-weight: bold; color: var(--accent-blue);">Bookmarks</a> <a href="profile.html">Profile</a>
-</div>
+    <a href="https://slopescout.org" rel="noopener noreferrer" class="logo">SlopeScout</a>
+    <div class="nav-links">
+        <a href="https://slopescout.org" rel="noopener noreferrer">Home</a>
+        <a href="explore.html">Explore</a>
+        <a href="bookmarks.html">Bookmarks</a>
+        <a href="profile.html">Profile</a>
+    </div>
 </nav>
-
 <div class="container">
     <h1>My Bookmarks</h1>
     <div id="bookmarks-list" class="bookmarks-list">
@@ -216,6 +299,15 @@
             console.log("User logged out");
             bookmarksListDiv.innerHTML = ''; loadingMessage.style.display = 'none'; emptyMessage.style.display = 'none'; loginPrompt.style.display = 'block';
         }
+    });
+
+    // Run this code after the document loads to reset any active nav styling
+    document.addEventListener('DOMContentLoaded', function() {
+        // Make sure no link has special blue styling
+        const navLinks = document.querySelectorAll('.nav-links a');
+        navLinks.forEach(link => {
+            link.style.color = 'var(--text-light)';
+        });
     });
 </script>
 

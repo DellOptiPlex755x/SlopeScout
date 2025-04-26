@@ -32,7 +32,7 @@
             overflow-x: hidden;
         }
 
-        /* Original Navigation Bar Styles */
+        /* --- Navigation Bar Styles --- */
         nav {
             position: fixed;
             top: 0;
@@ -48,58 +48,24 @@
             -webkit-backdrop-filter: blur(10px);
             color: var(--text-light);
         }
-
         .logo {
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            color: var(--text-light); /* Ensure color */
-            text-decoration: none; /* Make logo non-underlined if it's a link */
+            font-size: 24px; font-weight: 600; letter-spacing: -0.5px; cursor: pointer;
+            transition: transform 0.3s ease; color: var(--text-light); text-decoration: none;
         }
-        .logo:hover {
-            transform: scale(1.05);
-        }
-
-        .nav-links {
-            display: flex; /* Keep flex for desktop */
-            gap: 40px;
-        }
-
+        .logo:hover { transform: scale(1.05); }
+        .nav-links { display: flex; gap: 40px; }
         .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            position: relative;
-            padding-bottom: 4px;
+            color: var(--text-light); text-decoration: none; font-size: 14px; font-weight: 500;
+            transition: opacity 0.3s ease, transform 0.3s ease; position: relative; padding-bottom: 4px;
         }
-
         .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 1.5px;
-            background-color: var(--accent-blue);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease-out;
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1.5px;
+            background-color: var(--accent-blue); transform: scaleX(0);
+            transform-origin: left; transition: transform 0.3s ease-out;
         }
-
-        .nav-links a:hover {
-            opacity: 1;
-            transform: translateY(-2px);
-        }
-
-        .nav-links a:hover::after {
-            transform: scaleX(1);
-        }
-        /* Navigation Bar Styles */
-
+        .nav-links a:hover { opacity: 1; transform: translateY(-2px); }
+        .nav-links a:hover::after { transform: scaleX(1); }
+        /* --- END: Navigation Bar Styles --- */
 
         /* --- Page Content Area --- */
         .page-content {
@@ -226,31 +192,40 @@
             z-index: 2;
         }
 
-        /* --- Responsive Adjustments --- */
-        /* Keep grid for desktop, but maybe stack earlier if needed */
+        /* --- Responsive Styles --- */
+        @media (min-width: 992px) {
+            .weather-content { flex-direction: row; justify-content: space-around; align-items: center; gap: 30px; }
+            .animated-card { max-width: 85%; padding: 40px; }
+            .resorts-tab-section { padding-top: 30px; }
+            .tab-button { padding: 15px 30px; font-size: 19px;}
+        }
         @media (max-width: 991.98px) {
+            .nav-links { display: none; }
             .explore-container {
                 grid-template-columns: 1fr;
                 max-width: 500px;
-            }
-            /* Hide nav links on smaller screens if NOT using hamburger */
-            .nav-links {
-                display: none;
             }
             .explore-section {
                 padding-top: 40px;
             }
         }
-        /* Further adjustments for mobile if needed */
         @media (max-width: 768px) {
-            /* Adjust padding/margins/font-sizes as needed */
+            .hero-content h1 { font-size: 60px; letter-spacing: -1px; }
+            .content-area { padding: 0 25px 40px; margin-top: -50px; }
+            .weather-text { font-size: 17px; }
             .page-content { padding-top: 70px; }
             .section-title { font-size: 2em; margin-bottom: 40px; }
             .explore-card { height: auto; min-height: 430px; }
         }
         @media (max-width: 576px) {
-            /* Finer mobile adjustments */
-            nav { padding: 15px 20px; } /* Slightly reduce nav padding */
+            nav { padding: 15px 20px; }
+            .hero { margin-top: 60px; }
+            .hero-content h1 { font-size: 48px; letter-spacing: -0.5px; }
+            .content-area { padding: 0 15px 30px; margin-top: -40px; }
+            .weather-icon { width: 35px; font-size: 24px; }
+            .weather-text { font-size: 15px; }
+            .weather-row { gap: 15px; }
+            .add-park-btn { padding: 12px 24px; font-size: 15px; max-width: 250px; }
             .explore-section { padding: 40px 5% 60px; }
             .explore-container { gap: 30px; }
             .explore-card { padding: 25px; min-height: 400px; }
@@ -265,9 +240,9 @@
 <body>
 
 <nav>
-    <a href="../../index.html" rel="noopener noreferrer" class="logo">SlopeScout</a>
+    <a href="https://slopescout.org" rel="noopener noreferrer" class="logo">SlopeScout</a>
     <div class="nav-links">
-        <a href="../../index.html" rel="noopener noreferrer">Home</a>
+        <a href="https://slopescout.org" rel="noopener noreferrer">Home</a>
         <a href="explore.html">Explore</a>
         <a href="bookmarks.html">Bookmarks</a>
         <a href="profile.html">Profile</a>
@@ -313,6 +288,12 @@
     // Keep the 3D card effect JS (if you still want it)
     document.addEventListener('DOMContentLoaded', function() {
         initExploreCards();
+
+        // Run this code after the document loads to reset any active nav styling
+        const navLinks = document.querySelectorAll('.nav-links a');
+        navLinks.forEach(link => {
+            link.style.color = 'var(--text-light)';
+        });
     });
 
     function initExploreCards() {
