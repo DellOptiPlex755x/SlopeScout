@@ -184,9 +184,9 @@
 <body>
 
 <nav>
-    <a href="../../index.html" rel="noopener noreferrer" class="logo">SlopeScout</a>
+    <a href="https://slopescout.org" rel="noopener noreferrer" class="logo">SlopeScout</a>
     <div class="nav-links">
-        <a href="../../index.html" rel="noopener noreferrer">Home</a>
+        <a href="https://slopescout.org" rel="noopener noreferrer">Home</a>
         <a href="explore.html">Explore</a>
         <a href="bookmarks.html">Bookmarks</a>
         <a href="profile.html">Profile</a>
@@ -278,6 +278,14 @@
         addParkBtn.addEventListener('click', function() { this.textContent = 'Added!'; setTimeout(() => { this.textContent = 'Add to Favorites'; }, 1500); });
     }
 
+    // Run this code after the document loads to reset any active nav styling
+    document.addEventListener('DOMContentLoaded', function() {
+        // Make sure no link has special blue styling
+        const navLinks = document.querySelectorAll('.nav-links a');
+        navLinks.forEach(link => {
+            link.style.color = 'var(--text-light)';
+        });
+    });
 </script>
 </body>
 </html>
