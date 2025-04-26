@@ -16,7 +16,7 @@
             --text-secondary: rgba(235, 235, 245, 0.6);
             --accent-blue: #007aff;
             --status-open: #34c759;
-            --status-closed: #ff3b30;
+            --status-closed: #ff3b30; /* Used for Closed and Closed For Season */
             --status-scheduled: #ff9500;
             --status-hold: #5e5ce6;
             --transition-speed: 0.3s;
@@ -100,7 +100,7 @@
         /* --- Removed Parallax Text Styles --- */
 
 
-        /* --- Styles for Content Area, Cards, Tabs, Map etc. (Keep existing) --- */
+        /* --- Styles for Content Area, Cards, Tabs, Map etc. --- */
         .content-area { position: relative; margin-top: -60px; padding: 0 40px 60px; z-index: 5; }
         .animated-card { background-color: var(--card-bg); border-radius: 24px; padding: 35px; margin: 0 auto 40px; max-width: 90%; box-shadow: 0 15px 35px rgba(0,0,0,0.25); border: 1px solid var(--card-border); opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; will-change: opacity, transform; }
         .animated-card.is-visible { opacity: 1; transform: translateY(0); }
@@ -134,7 +134,8 @@
         .status-hold { background-color: var(--status-hold); color: #fff; }
         .map-section { margin-top: 40px; }
         .map-header { text-align: left; margin-bottom: 25px; font-size: 24px; font-weight: 600; letter-spacing: -0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 15px; }
-        .map-container { height: 600px; width: 100%; border-radius: 16px; overflow: hidden; position: relative; }
+        /* --- MODIFIED: Increased map height by 25% --- */
+        .map-container { height: 750px; width: 100%; border-radius: 16px; overflow: hidden; position: relative; }
         .map-container iframe { border-radius: 16px; }
 
         /* --- Responsive Styles --- */
@@ -148,6 +149,8 @@
             .nav-links { display: none; }
             /* Adjust H1 size for smaller screens */
             .hero-content h1 { font-size: 80px; letter-spacing: -1.5px; }
+            /* --- MODIFIED: Increased map height by 25% --- */
+            .map-container { height: 563px; } /* 450 * 1.25 */
         }
         @media (max-width: 768px) {
             .hero-content h1 { font-size: 60px; letter-spacing: -1px; } /* Further reduce H1 */
@@ -160,7 +163,6 @@
             .lift-item:nth-child(odd):last-child, .lift-item:nth-child(even):last-child { border-bottom: none; }
             .lift-item:hover { transform: translateX(4px); }
             .animated-card { padding: 30px; max-width: 100%; }
-            .map-container { height: 450px; }
             .tab-button { padding: 10px 20px; font-size: 16px; }
             .map-header { font-size: 22px; }
         }
@@ -177,7 +179,8 @@
             .lift-item:hover { transform: translateX(3px); }
             .lift-status-badge { padding: 4px 10px; font-size: 11px; }
             .animated-card { padding: 20px; border-radius: 20px; }
-            .map-container { height: 350px; border-radius: 12px; }
+            /* --- MODIFIED: Increased map height by 25% --- */
+            .map-container { height: 438px; border-radius: 12px; } /* 350 * 1.25 */
             .map-container iframe { border-radius: 12px; }
             .tab-button { padding: 10px 15px; font-size: 15px; }
             .map-header { font-size: 20px; }
@@ -214,58 +217,73 @@
 
     <div class="resorts-tab-section animated-card" id="resorts">
         <div class="tabs-container">
-            <button class="tab-button active" data-tab-target="#sv-lifts">SNOW VALLEY</button>
-            <button class="tab-button" data-tab-target="#ss-lifts">SNOW SUMMIT</button>
-            <button class="tab-button" data-tab-target="#bm-lifts">BEAR MOUNTAIN</button>
+            <button class="tab-button active"
+                    data-tab-target="#sv-lifts"
+                    data-resort-name="Snow Valley"
+                    data-map-url="https://vicomap-cdn.resorts-interactive.com/map/1825?menu=3.0,3.1,3.2,3.4,3.5,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftHighlightOpacity=0.2&backgroundOpacity=1.0">
+                SNOW VALLEY
+            </button>
+            <button class="tab-button"
+                    data-tab-target="#ss-lifts"
+                    data-resort-name="Snow Summit"
+                    data-map-url="https://vicomap-cdn.resorts-interactive.com/map/1818?menu=3.0,3.1,3.2,3.4,3.5,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftHighlightOpacity=0.2&backgroundOpacity=1.0">
+                SNOW SUMMIT
+            </button>
+            <button class="tab-button"
+                    data-tab-target="#bm-lifts"
+                    data-resort-name="Bear Mountain"
+                    data-map-url="https://vicomap-cdn.resorts-interactive.com/map/1808?menu=3.0,3.1,3.2,3.4,3.5,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftHighlightOpacity=0.2&backgroundOpacity=1.0">
+                BEAR MOUNTAIN
+            </button>
         </div>
         <div class="tab-content-container">
             <div class="tab-content active" id="sv-lifts">
                 <div class="lifts-grid">
                     <div class="lift-item"><span>Chair 1 (6 Chair)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 2 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 3 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 6 (Double)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 8 (Double)</span><span class="lift-status-badge status-closed">Closed</span></div>
-                    <div class="lift-item"><span>Chair 9 (Double)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 11 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 12 (Double)</span><span class="lift-status-badge status-closed">Closed</span></div>
-                    <div class="lift-item"><span>Chair 13 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>MC 16 (Magic Carpet)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 2 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 3 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 6 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 8 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 9 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 11 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 12 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 13 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>MC 16 (Magic Carpet)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
                 </div>
             </div>
             <div class="tab-content" id="ss-lifts">
                 <div class="lifts-grid">
                     <div class="lift-item"><span>Chair 1 (High-Speed Quad)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 2 (High-Speed Quad)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 3 (Double)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 4 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 5 (Double)</span><span class="lift-status-badge status-closed">Closed</span></div>
-                    <div class="lift-item"><span>Chair 6 (Double)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 7 (Double)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 8 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 9 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 10 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed</span></div>
-                    <div class="lift-item"><span>MC 1 (Magic Carpet)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 2 (High-Speed Quad)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 3 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 4 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 5 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 6 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 7 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 8 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 9 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 10 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>MC 1 (Magic Carpet)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
                 </div>
             </div>
             <div class="tab-content" id="bm-lifts">
                 <div class="lifts-grid">
-                    <div class="lift-item"><span>Chair 3 (Double)</span><span class="lift-status-badge status-closed">Closed</span></div>
-                    <div class="lift-item"><span>Chair 4 (Double)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 5 (6 Chair)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 6 (High-Speed Quad)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 7 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 8 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 9 (High-Speed Quad)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 3 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 4 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 5 (6 Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 6 (High-Speed Quad)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 7 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 8 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 9 (High-Speed Quad)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="map-section animated-card" id="trail-map">
-        <h2 class="map-header">Trail Map</h2>
+        <h2 class="map-header" id="mapHeaderText">Trail Map</h2>
         <div class="map-container">
-            <iframe src="https://vicomap-cdn.resorts-interactive.com/map/1818?menu=3.0,3.1,3.2,3.4,3.5,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftHighlightOpacity=0.2&backgroundOpacity=1.0" width="100%" height="100%" frameborder="0" loading="lazy"></iframe>
+            <iframe id="mapIframe" src="" width="100%" height="100%" frameborder="0" loading="lazy"></iframe>
         </div>
     </div>
 </div>
@@ -280,24 +298,72 @@
 
     // --- Tab Switching Logic ---
     const tabsContainer = document.querySelector('.tabs-container');
-    if(tabsContainer){
+    // --- MODIFIED: Get references to map elements ---
+    const mapIframe = document.getElementById('mapIframe');
+    const mapHeaderText = document.getElementById('mapHeaderText');
+
+    if(tabsContainer && mapIframe && mapHeaderText){ // Check if all elements exist
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabContents = document.querySelectorAll('.tab-content');
-        tabsContainer.addEventListener('click', (e) => {
-            if (!e.target.matches('.tab-button')) return;
-            const targetContentId = e.target.dataset.tabTarget;
+
+        // --- MODIFIED: Function to update map and header ---
+        const updateMap = (button) => {
+            const mapUrl = button.dataset.mapUrl;
+            const resortName = button.dataset.resortName;
+            const targetContentId = button.dataset.tabTarget;
             const targetContent = document.querySelector(targetContentId);
-            tabButtons.forEach(button => button.classList.remove('active'));
-            e.target.classList.add('active');
+
+            // Update iframe source
+            if(mapUrl) {
+                mapIframe.src = mapUrl;
+            } else {
+                console.warn("Map URL not found for button:", button);
+                mapIframe.src = ""; // Clear src if no URL
+            }
+
+            // Update map header text
+            if(resortName) {
+                mapHeaderText.textContent = `${resortName} Trail Map`;
+            } else {
+                mapHeaderText.textContent = 'Trail Map'; // Default text
+            }
+
+            // Update active tab content
             tabContents.forEach(content => content.classList.remove('active'));
             if (targetContent) { targetContent.classList.add('active'); }
+
+            // Update active tab button style
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        };
+
+        // --- MODIFIED: Add click listener and call updateMap ---
+        tabsContainer.addEventListener('click', (e) => {
+            if (!e.target.matches('.tab-button')) return;
+            updateMap(e.target); // Call the update function with the clicked button
         });
+
+        // --- MODIFIED: Set initial map based on the default active tab ---
+        const initialActiveTab = document.querySelector('.tab-button.active');
+        if (initialActiveTab) {
+            updateMap(initialActiveTab);
+        } else if (tabButtons.length > 0) {
+            // Fallback: if no tab is active by default, activate the first one
+            tabButtons[0].classList.add('active');
+            updateMap(tabButtons[0]);
+        }
+
+    } else {
+        console.error("Required elements for tab/map switching not found.");
     }
 
     // --- Button Click ---
     const addParkBtn = document.getElementById('addParkBtn');
     if(addParkBtn){
-        addParkBtn.addEventListener('click', function() { this.textContent = 'Added!'; setTimeout(() => { this.textContent = 'Add to Favorites'; }, 1500); });
+        // Note: This simple text change might conflict with the Firebase logic below.
+        // The Firebase logic will likely override this. Consider removing this simple listener
+        // if using Firebase, or integrate the 'Added!' feedback into the Firebase handler.
+        // addParkBtn.addEventListener('click', function() { this.textContent = 'Added!'; setTimeout(() => { this.textContent = 'Add to Favorites'; }, 1500); });
     }
 
 </script>
@@ -426,7 +492,7 @@
         addParkBtn.addEventListener('click', async () => {
             if (!currentUserId) {
                 alert('Please log in or create an account to save bookmarks.');
-                window.location.href = 'sign-up_login.html';
+                window.location.href = 'sign-up_login.html'; // Adjust path if needed
                 return;
             }
             if (isProcessing) return; // Prevent double clicks
