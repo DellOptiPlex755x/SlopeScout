@@ -15,55 +15,99 @@
             --text-light: #f0f0f0;
             --text-secondary: rgba(235, 235, 245, 0.6);
             --accent-blue: #007aff;
-            --accent-blue-hover: #0056b3;
+            --accent-blue-hover: #0056b3; /* Kept from original index.html for non-nav links */
             --transition-speed: 0.3s;
-            --nav-height: 60px;
+            /* Removed --nav-height as bigbear.html uses padding */
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
         html { scroll-behavior: smooth; }
-        body { background-color: var(--primary-dark); color: var(--text-light); min-height: 100vh; overflow-x: hidden; padding-top: calc(var(--nav-height) + 20px); }
+        /* Removed body padding-top */
+        body { background-color: var(--primary-dark); color: var(--text-light); min-height: 100vh; overflow-x: hidden; }
         a { color: var(--accent-blue); text-decoration: none; transition: color var(--transition-speed); }
         a:hover { color: var(--accent-blue-hover); }
         section { padding: 60px 5%; }
         .container { max-width: 1100px; margin: 0 auto; padding-left: 15px; padding-right: 15px; }
         .section-title { text-align: center; font-size: 2.5em; margin-bottom: 50px; color: var(--text-light); font-weight: 700; }
 
-        /* --- Navigation Bar Styles --- */
-        nav.main-nav {
-            position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-height);
-            display: flex; justify-content: space-between; align-items: center; padding: 0 40px;
-            z-index: 1000; background-color: rgba(10, 10, 10, 0.8);
-            border-bottom: 1px solid var(--card-border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        /* --- START: Navigation Bar Styles (Copied from bigbear.html) --- */
+        nav { /* Changed from nav.main-nav */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px; /* Adjusted padding */
+            z-index: 1000; /* Increased z-index slightly */
+            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.8) 0%, rgba(10, 10, 10, 0) 100%); /* Gradient background */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             color: var(--text-light);
+            /* Removed border-bottom */
         }
-        .main-nav .logo { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; color: var(--text-light); text-decoration: none; transition: transform 0.3s ease; }
-        .main-nav .logo:hover { transform: scale(1.05); }
-        .main-nav .nav-links { display: flex; gap: 40px; height: 100%; }
-        .main-nav .nav-links a {
-            display: flex; align-items: center; height: 100%; color: var(--text-light); text-decoration: none;
-            font-size: 14px; font-weight: 500; transition: opacity 0.3s ease, color 0.3s ease;
-            position: relative; padding: 0 5px; opacity: 0.8; cursor: pointer; /* Ensure cursor indicates clickable */
+        .logo { /* Changed from .main-nav .logo */
+            font-size: 24px; font-weight: 600; letter-spacing: -0.5px; cursor: pointer;
+            transition: transform 0.3s ease; color: var(--text-light); text-decoration: none;
         }
-        .main-nav .nav-links a:hover { opacity: 1; color: var(--text-light); }
-        .main-nav .nav-links a::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--accent-blue);
-            transform: scaleX(0); transform-origin: center; transition: transform 0.3s ease-out;
+        /* Keep logo color same on hover, only apply transform */
+        .logo:hover {
+            transform: scale(1.05);
+            color: var(--text-light); /* Explicitly set color to override general a:hover */
         }
-        .main-nav .nav-links a:hover::after, .main-nav .nav-links a.active::after { transform: scaleX(1); }
-        .main-nav .nav-links a.active { opacity: 1; font-weight: 600; }
+        .nav-links { display: flex; gap: 40px; } /* Changed from .main-nav .nav-links */
+        .nav-links a { /* Changed from .main-nav .nav-links a */
+            color: var(--text-light); text-decoration: none; font-size: 14px; font-weight: 500;
+            transition: opacity 0.3s ease, transform 0.3s ease; position: relative; padding-bottom: 4px;
+            /* Removed display:flex, align-items, height, opacity */
+        }
+        /* Style for the underline effect (initially hidden) */
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1.5px; /* Adjusted height */
+            background-color: var(--accent-blue); transform: scaleX(0); /* Initially hidden */
+            transform-origin: left; transition: transform 0.3s ease-out; /* Adjusted transform-origin */
+        }
+        /* Show underline on hover */
+        .nav-links a:hover { opacity: 1; transform: translateY(-2px); } /* Changed from .main-nav .nav-links a:hover */
+        .nav-links a:hover::after {
+            transform: scaleX(1); /* Show underline on hover */
+        }
+
+        /* --- Active Link Style (Adapted from index.html) --- */
+        /* Style for the active link (e.g., Home page) */
+        .nav-links a.active {
+            opacity: 1; /* Keep opacity from original active style */
+            font-weight: 600; /* Keep font-weight from original active style */
+        }
+        /* Removed the rule below to prevent the active link from always having an underline */
+        /* .nav-links a.active::after {
+             transform: scaleX(1);
+         } */
+        /* --- END: Navigation Bar Styles --- */
+
 
         /* --- Hero Section Styles --- */
         .hero-section {
-            height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 5%;
+            /* Added padding-top to account for fixed nav height */
+            padding-top: 80px; /* Adjust value as needed based on nav height */
+            min-height: 100vh; /* Use min-height instead of height */
+            display: flex; align-items: center; justify-content: center; text-align: center; padding-left: 5%; padding-right: 5%; /* Keep horizontal padding */
             /* Ensure path is correct relative to root index.html */
             background: linear-gradient(rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.9)), url('assets/images/slopelift.png') center/cover no-repeat;
             background-attachment: fixed; color: var(--text-light);
-             margin-top: calc(-1 * (var(--nav-height) + 20px));
+            /* Removed negative margin-top */
         }
         .hero-content h1 { font-size: 3.5em; font-weight: 700; margin-bottom: 20px; line-height: 1.2; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
         .hero-content p { font-size: 1.2em; color: var(--text-secondary); max-width: 600px; margin: 0 auto 30px; line-height: 1.6; }
-        .hero-button { display: inline-block; padding: 14px 35px; background-color: var(--accent-blue); color: white; text-decoration: none; border-radius: 30px; font-weight: 600; transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s; box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3); font-size: 1.1em; }
-        .hero-button:hover { background-color: var(--accent-blue-hover); transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 25px rgba(0, 122, 255, 0.4); text-decoration: none; }
+        .hero-button { display: inline-block; padding: 14px 35px; background-color: var(--accent-blue); color: white; text-decoration: none; border-radius: 30px; font-weight: 600; transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s, color 0.3s; /* Added color transition */ box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3); font-size: 1.1em; }
+        /* Ensure button text remains white on hover */
+        .hero-button:hover {
+            background-color: var(--accent-blue-hover);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.4);
+            text-decoration: none;
+            color: white; /* Explicitly keep text color white */
+        }
         .hero-button i { margin-left: 8px; font-size: 0.9em; }
 
         /* --- Features Section Styles --- */
@@ -81,27 +125,51 @@
         footer a:hover { color: var(--accent-blue-hover); }
 
         /* --- Responsive Adjustments --- */
-        @media (max-width: 991.98px) { .main-nav .nav-links { display: none; } .hero-content h1 { font-size: 3em; } .hero-content p { font-size: 1.1em; } .section-title { font-size: 2.2em; } }
-        @media (max-width: 768px) { nav.main-nav { padding: 0 25px; } .hero-content h1 { font-size: 2.5em; } .hero-content p { font-size: 1em; } .hero-button { padding: 12px 30px; font-size: 1em; } section { padding: 60px 5%; } .section-title { font-size: 2em; margin-bottom: 40px; } }
-        @media (max-width: 576px) { nav.main-nav { padding: 0 15px; } .main-nav .logo { font-size: 20px;} .hero-content h1 { font-size: 2em; } .hero-content p { font-size: 0.95em; } .section-title { font-size: 1.8em; } .feature-card { padding: 25px; } .feature-card h3 { font-size: 1.3em; } .feature-card p { font-size: 0.9em; } }
+        /* Adjusted breakpoint for hiding nav links to match bigbear.html */
+        @media (max-width: 991.98px) {
+            .nav-links { display: none; } /* Hide links on smaller screens */
+            .hero-content h1 { font-size: 3em; }
+            .hero-content p { font-size: 1.1em; }
+            .section-title { font-size: 2.2em; }
+        }
+        @media (max-width: 768px) {
+            nav { padding: 15px 25px; } /* Adjusted padding */
+            .hero-section { padding-top: 70px; } /* Adjust hero padding */
+            .hero-content h1 { font-size: 2.5em; }
+            .hero-content p { font-size: 1em; }
+            .hero-button { padding: 12px 30px; font-size: 1em; }
+            section { padding: 60px 5%; }
+            .section-title { font-size: 2em; margin-bottom: 40px; }
+        }
+        @media (max-width: 576px) {
+            nav { padding: 15px 20px; } /* Adjusted padding */
+            .logo { font-size: 20px;} /* Adjusted logo size */
+            .hero-section { padding-top: 65px; } /* Adjust hero padding */
+            .hero-content h1 { font-size: 2em; }
+            .hero-content p { font-size: 0.95em; }
+            .section-title { font-size: 1.8em; }
+            .feature-card { padding: 25px; }
+            .feature-card h3 { font-size: 1.3em; }
+            .feature-card p { font-size: 0.9em; }
+        }
     </style>
 </head>
 <body>
 
-<nav class="main-nav" id="navbar">
+<nav id="navbar">
     <a href="index.html" rel="noopener noreferrer" class="logo">SlopeScout</a>
     <div class="nav-links">
         <a href="index.html" rel="noopener noreferrer" class="active">Home</a>
         <a href="assets/pages/explore.html">Explore</a>
         <a href="assets/pages/bookmarks.html">Bookmarks</a>
         <a href="assets/pages/profile.html" id="profile-link">Profile</a>
-        </div>
+    </div>
 </nav>
 
 <section class="hero-section">
     <div class="hero-content">
         <h1>Find Your Perfect Peak</h1>
-        <p>Discover real-time snow conditions, lift status, trail maps, and reviews for mountain resorts worldwide. Plan your next adventure with SlopeScout.</p>
+        <p>Discover real-time snow conditions, lift status, and trail maps. Plan your next adventure with SlopeScout.</p>
         <a href="assets/pages/explore.html" class="hero-button">Explore Resorts <i class="fas fa-arrow-right"></i></a>
     </div>
 </section>
@@ -110,9 +178,19 @@
     <div class="container">
         <h2 class="section-title">Why Choose SlopeScout?</h2>
         <div class="features-container">
-            <div class="feature-card"> <i class="fas fa-snowflake feature-icon"></i> <h3>Real-Time Data</h3> <p>Get up-to-the-minute snow reports, weather forecasts, and lift statuses directly from the resorts.</p> </div>
-            <div class="feature-card"> <i class="fas fa-map-marked-alt feature-icon"></i> <h3>Interactive Maps</h3> <p>Explore detailed trail maps, find amenities, and track your location on the mountain (feature coming soon!).</p> </div>
-            <div class="feature-card"> <i class="fas fa-bookmark feature-icon"></i> <h3>Personalized Experience</h3> <p>Save your favorite resorts, track visited mountains, and get recommendations tailored to you.</p> </div>
+            <div class="feature-card">
+                <i class="fas fa-snowflake feature-icon"></i>
+                <h3>Real-Time Data</h3>
+                <p>Get up-to-the-minute snow reports, weather forecasts, and lift statuses directly from the resorts.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-map-marked-alt feature-icon"></i>
+                <h3>Interactive Maps</h3>
+                <p>View detailed resort maps showing current conditions, open trails, and points of interest like lodges and restaurants.</p> </div>
+            <div class="feature-card">
+                <i class="fas fa-bookmark feature-icon"></i>
+                <h3>Personalized Experience</h3>
+                <p>Create your user account to save your favorite mountain resorts and access your bookmarks easily across devices.</p> </div>
         </div>
     </div>
 </section>
@@ -148,6 +226,7 @@
         // but it ensures auth status is known.
     });
 
+    // Handle profile link click based on authentication status
     if (profileLink) {
         profileLink.addEventListener('click', (event) => {
             // Prevent the link from navigating immediately
