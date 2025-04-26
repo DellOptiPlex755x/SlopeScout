@@ -15,11 +15,10 @@
             --text-light: #f0f0f0;
             --text-secondary: rgba(235, 235, 245, 0.6);
             --accent-blue: #007aff;
-            --status-open: #34c759; /* Green for Open */
-            --status-closed: #ff3b30; /* Red for Closed */
-            --status-scheduled: #ff9500; /* Orange for Scheduled */
-            --status-hold: #5e5ce6; /* Purple for Hold */
-            /* --status-closed-season: #8e8e93; /* Grey for Closed For Season - REMOVED */
+            --status-open: #34c759;
+            --status-closed: #ff3b30;
+            --status-scheduled: #ff9500;
+            --status-hold: #5e5ce6;
             --transition-speed: 0.3s;
         }
 
@@ -101,7 +100,7 @@
         /* --- Removed Parallax Text Styles --- */
 
 
-        /* --- Styles for Content Area, Cards, Tabs, Map etc. --- */
+        /* --- Styles for Content Area, Cards, Tabs, Map etc. (Keep existing) --- */
         .content-area { position: relative; margin-top: -60px; padding: 0 40px 60px; z-index: 5; }
         .animated-card { background-color: var(--card-bg); border-radius: 24px; padding: 35px; margin: 0 auto 40px; max-width: 90%; box-shadow: 0 15px 35px rgba(0,0,0,0.25); border: 1px solid var(--card-border); opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; will-change: opacity, transform; }
         .animated-card.is-visible { opacity: 1; transform: translateY(0); }
@@ -133,12 +132,9 @@
         .status-closed { background-color: var(--status-closed); color: #fff; }
         .status-scheduled { background-color: var(--status-scheduled); color: #fff; }
         .status-hold { background-color: var(--status-hold); color: #fff; }
-        /* Changed status color back to red */
-        .status-closed-season { background-color: var(--status-closed); color: #fff; }
         .map-section { margin-top: 40px; }
         .map-header { text-align: left; margin-bottom: 25px; font-size: 24px; font-weight: 600; letter-spacing: -0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 15px; }
-        /* Increased map height by 25% (600px * 1.25 = 750px) */
-        .map-container { height: 750px; width: 100%; border-radius: 16px; overflow: hidden; position: relative; }
+        .map-container { height: 600px; width: 100%; border-radius: 16px; overflow: hidden; position: relative; }
         .map-container iframe { border-radius: 16px; }
 
         /* --- Responsive Styles --- */
@@ -164,8 +160,7 @@
             .lift-item:nth-child(odd):last-child, .lift-item:nth-child(even):last-child { border-bottom: none; }
             .lift-item:hover { transform: translateX(4px); }
             .animated-card { padding: 30px; max-width: 100%; }
-            /* Increased map height by 25% (450px * 1.25 = 562.5px, rounded) */
-            .map-container { height: 563px; }
+            .map-container { height: 450px; }
             .tab-button { padding: 10px 20px; font-size: 16px; }
             .map-header { font-size: 22px; }
         }
@@ -182,8 +177,7 @@
             .lift-item:hover { transform: translateX(3px); }
             .lift-status-badge { padding: 4px 10px; font-size: 11px; }
             .animated-card { padding: 20px; border-radius: 20px; }
-            /* Increased map height by 25% (350px * 1.25 = 437.5px, rounded) */
-            .map-container { height: 438px; border-radius: 12px; }
+            .map-container { height: 350px; border-radius: 12px; }
             .map-container iframe { border-radius: 12px; }
             .tab-button { padding: 10px 15px; font-size: 15px; }
             .map-header { font-size: 20px; }
@@ -193,7 +187,7 @@
 <body>
 
 <nav>
-    <a href="https://slopescout.org" rel="noopener noreferrer" class="logo">SlopeScout</a>
+    <a href="../../index.html" rel="noopener noreferrer" class="logo">SlopeScout</a>
     <div class="nav-links">
         <a href="https://slopescout.org" rel="noopener noreferrer">Home</a>
         <a href="explore.html">Explore</a>
@@ -220,58 +214,58 @@
 
     <div class="resorts-tab-section animated-card" id="resorts">
         <div class="tabs-container">
-            <button class="tab-button active" data-tab-target="#sv-lifts" data-map-url="https://vicomap-cdn.resorts-interactive.com/map/1825?menu=3.0,3.1,3.2,3.4,3.5,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftHighlightOpacity=0.2&backgroundOpacity=1.0" data-resort-name="Snow Valley">SNOW VALLEY</button>
-            <button class="tab-button" data-tab-target="#ss-lifts" data-map-url="https://vicomap-cdn.resorts-interactive.com/map/1818?menu=3.0,3.1,3.2,3.4,3.5,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftHighlightOpacity=0.2&backgroundOpacity=1.0" data-resort-name="Snow Summit">SNOW SUMMIT</button>
-            <button class="tab-button" data-tab-target="#bm-lifts" data-map-url="https://vicomap-cdn.resorts-interactive.com/map/1808?menu=3.0,3.1,3.2,3.4,3.5,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftHighlightOpacity=0.2&backgroundOpacity=1.0" data-resort-name="Bear Mountain">BEAR MOUNTAIN</button>
+            <button class="tab-button active" data-tab-target="#sv-lifts">SNOW VALLEY</button>
+            <button class="tab-button" data-tab-target="#ss-lifts">SNOW SUMMIT</button>
+            <button class="tab-button" data-tab-target="#bm-lifts">BEAR MOUNTAIN</button>
         </div>
         <div class="tab-content-container">
             <div class="tab-content active" id="sv-lifts">
                 <div class="lifts-grid">
                     <div class="lift-item"><span>Chair 1 (6 Chair)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 2 (Triple Chair)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 3 (Triple Chair)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 6 (Double)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 8 (Double)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 9 (Double)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 11 (Triple Chair)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 12 (Double)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 13 (Triple Chair)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>MC 16 (Magic Carpet)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 2 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 3 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 6 (Double)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 8 (Double)</span><span class="lift-status-badge status-closed">Closed</span></div>
+                    <div class="lift-item"><span>Chair 9 (Double)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 11 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 12 (Double)</span><span class="lift-status-badge status-closed">Closed</span></div>
+                    <div class="lift-item"><span>Chair 13 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>MC 16 (Magic Carpet)</span><span class="lift-status-badge status-open">Open</span></div>
                 </div>
             </div>
             <div class="tab-content" id="ss-lifts">
                 <div class="lifts-grid">
                     <div class="lift-item"><span>Chair 1 (High-Speed Quad)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 2 (High-Speed Quad)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 3 (Double)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 4 (Triple Chair)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 5 (Double)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 6 (Double)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 7 (Double)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 8 (Triple Chair)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 9 (Triple Chair)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 10 (Triple Chair)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>MC 1 (Magic Carpet)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 2 (High-Speed Quad)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 3 (Double)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 4 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 5 (Double)</span><span class="lift-status-badge status-closed">Closed</span></div>
+                    <div class="lift-item"><span>Chair 6 (Double)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 7 (Double)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 8 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 9 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 10 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed</span></div>
+                    <div class="lift-item"><span>MC 1 (Magic Carpet)</span><span class="lift-status-badge status-open">Open</span></div>
                 </div>
             </div>
             <div class="tab-content" id="bm-lifts">
                 <div class="lifts-grid">
+                    <div class="lift-item"><span>Chair 3 (Double)</span><span class="lift-status-badge status-closed">Closed</span></div>
                     <div class="lift-item"><span>Chair 4 (Double)</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Chair 3 (Double)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 5 (6 Chair)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 6 (High-Speed Quad)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 7 (Triple Chair)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 8 (Triple Chair)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 9 (High-Speed Quad)</span><span class="lift-status-badge status-closed-season">Closed For Season</span></div>
+                    <div class="lift-item"><span>Chair 5 (6 Chair)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 6 (High-Speed Quad)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 7 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 8 (Triple Chair)</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Chair 9 (High-Speed Quad)</span><span class="lift-status-badge status-open">Open</span></div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="map-section animated-card" id="trail-map">
-        <h2 class="map-header" id="mapHeader">Snow Valley Trail Map</h2>
+        <h2 class="map-header">Trail Map</h2>
         <div class="map-container">
-            <iframe id="mapIframe" src="https://vicomap-cdn.resorts-interactive.com/map/1825?menu=3.0,3.1,3.2,3.4,3.5,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftHighlightOpacity=0.2&backgroundOpacity=1.0" width="100%" height="100%" frameborder="0" loading="lazy"></iframe>
+            <iframe src="https://vicomap-cdn.resorts-interactive.com/map/1818?menu=3.0,3.1,3.2,3.4,3.5,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftHighlightOpacity=0.2&backgroundOpacity=1.0" width="100%" height="100%" frameborder="0" loading="lazy"></iframe>
         </div>
     </div>
 </div>
@@ -286,71 +280,31 @@
 
     // --- Tab Switching Logic ---
     const tabsContainer = document.querySelector('.tabs-container');
-    const mapIframe = document.getElementById('mapIframe'); // Get the iframe element
-    const mapHeader = document.getElementById('mapHeader'); // Get the map header element
-
-    if(tabsContainer && mapIframe && mapHeader){ // Check if all elements exist
+    if(tabsContainer){
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabContents = document.querySelectorAll('.tab-content');
-
-        // Function to update map and header
-        function updateMapAndHeader(activeButton) {
-            const mapUrl = activeButton.dataset.mapUrl;
-            const resortName = activeButton.dataset.resortName;
-
-            if (mapUrl) {
-                mapIframe.src = mapUrl; // Update iframe source
-            }
-            if (resortName) {
-                mapHeader.textContent = `${resortName} Trail Map`; // Update header text
-            }
-        }
-
-        // Initial setup for the default active tab
-        const initialActiveButton = tabsContainer.querySelector('.tab-button.active');
-        if (initialActiveButton) {
-            updateMapAndHeader(initialActiveButton);
-        }
-
-
         tabsContainer.addEventListener('click', (e) => {
             if (!e.target.matches('.tab-button')) return;
-
-            const targetButton = e.target;
-            const targetContentId = targetButton.dataset.tabTarget;
+            const targetContentId = e.target.dataset.tabTarget;
             const targetContent = document.querySelector(targetContentId);
-
-            // Update active classes for buttons and content
             tabButtons.forEach(button => button.classList.remove('active'));
-            targetButton.classList.add('active');
+            e.target.classList.add('active');
             tabContents.forEach(content => content.classList.remove('active'));
             if (targetContent) { targetContent.classList.add('active'); }
-
-            // Update the map and header based on the clicked tab
-            updateMapAndHeader(targetButton);
         });
-    } else {
-        console.error("Error: Tabs container, map iframe, or map header not found.");
     }
-
 
     // --- Button Click ---
     const addParkBtn = document.getElementById('addParkBtn');
     if(addParkBtn){
-        // Changed the button text to "Add to Bookmarks" to match Firebase logic below
-        addParkBtn.textContent = 'Add to Bookmarks';
-        // Removed the simple text change logic as it's handled by Firebase now
-        // addParkBtn.addEventListener('click', function() { this.textContent = 'Added!'; setTimeout(() => { this.textContent = 'Add to Favorites'; }, 1500); });
+        addParkBtn.addEventListener('click', function() { this.textContent = 'Added!'; setTimeout(() => { this.textContent = 'Add to Favorites'; }, 1500); });
     }
 
 </script>
 
 <script type="module">
     // Import necessary functions from Firebase SDK and your config
-    // IMPORTANT: Ensure '../firebase/config.js' path is correct relative to this HTML file
-    // If bigbear.html is in the root, and firebase folder is also in the root, path should be './firebase/config.js'
-    // If bigbear.html is in a subfolder (e.g., 'pages'), path might be '../firebase/config.js'
-    import { auth, db } from './firebase/config.js'; // ADJUST PATH AS NEEDED
+    import { auth, db } from '../firebase/config.js'; // Ensure path is correct
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
     import { doc, setDoc, getDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
@@ -363,12 +317,12 @@
     let isBookmarked = false;
     let isProcessing = false; // Flag to track if an operation is in progress
 
-    // --- Define colors for clarity ---
+    // --- NEW: Define colors for clarity ---
     const defaultButtonColor = 'var(--accent-blue)';
     const hoverRemoveColor = 'var(--status-closed)'; // Using your existing red color variable
     const disabledLoginColor = '#444'; // Grey for login prompt
 
-    // --- Function to update button appearance ---
+    // --- UPDATED: Function to update button appearance ---
     function updateButtonState() {
         if (!addParkBtn) return;
         if (isProcessing) return; // Don't change appearance during processing
@@ -399,7 +353,7 @@
         }
     }
 
-    // --- Functions to handle hover effects ---
+    // --- NEW: Functions to handle hover effects ---
     const handleMouseOver = () => {
         if (isBookmarked && !isProcessing) { // Only apply if bookmarked and not processing
             addParkBtn.style.backgroundColor = hoverRemoveColor;
@@ -471,9 +425,8 @@
     if (addParkBtn) {
         addParkBtn.addEventListener('click', async () => {
             if (!currentUserId) {
-                // Redirect to login/signup page if not logged in
-                // Ensure 'sign-up_login.html' path is correct
-                window.location.href = 'sign-up_login.html'; // ADJUST PATH AS NEEDED
+                alert('Please log in or create an account to save bookmarks.');
+                window.location.href = 'sign-up_login.html';
                 return;
             }
             if (isProcessing) return; // Prevent double clicks
@@ -509,9 +462,7 @@
                 }
             } catch (error) {
                 console.error("Error updating bookmark: ", error);
-                // Use a less intrusive way to notify the user, e.g., console log or a temporary message area
-                // alert('Failed to update bookmark. Please try again.');
-                console.error('Failed to update bookmark. Please try again.');
+                alert('Failed to update bookmark. Please try again.');
                 // On error, reset processing and update button to previous state
                 isProcessing = false;
                 updateButtonState(); // Update based on 'isBookmarked' status before the failed attempt
