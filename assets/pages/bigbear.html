@@ -124,8 +124,10 @@
         .lifts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 30px; }
         .lift-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 5px 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.07); font-size: 16px; transition: transform 0.3s ease, background-color 0.3s ease; border-radius: 6px; }
         .lift-item:hover { transform: translateX(6px); background-color: rgba(255, 255, 255, 0.04); border-bottom-color: transparent; }
-        .lift-item:nth-last-child(-n+2) { border-bottom: none; }
-        .lift-item:nth-child(odd):last-child { border-bottom: none; }
+        /* Adjust border for last items in 2-column grid */
+        .lifts-grid .lift-item:nth-last-child(-n+2) { border-bottom: none; }
+        /* Ensure the very last odd item also has no border if it's the only one in the last row */
+        .lifts-grid .lift-item:nth-child(odd):last-child { border-bottom: none; }
         .lift-status-badge { display: inline-block; padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: 600; letter-spacing: 0.3px; flex-shrink: 0; margin-left: 15px; }
         @keyframes pulseStatus { 0% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.5); } 70% { box-shadow: 0 0 0 7px rgba(52, 199, 89, 0); } 100% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); } }
         .status-open { background-color: var(--status-open); color: #fff; animation: pulseStatus 2.5s infinite cubic-bezier(0.66, 0, 0, 1); }
@@ -157,10 +159,12 @@
             .content-area { padding: 0 25px 40px; margin-top: -50px; }
             .weather-text { font-size: 17px; }
             .lifts-grid { grid-template-columns: 1fr; gap: 5px 0; }
-            .lift-item { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
-            .lift-item:last-child { border-bottom: none; }
-            .lift-item:nth-last-child(-n+2) { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
-            .lift-item:nth-child(odd):last-child, .lift-item:nth-child(even):last-child { border-bottom: none; }
+            /* Adjust border for last items in 1-column grid */
+            .lifts-grid .lift-item { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+            .lifts-grid .lift-item:last-child { border-bottom: none; }
+            /* Reset the 2-column border logic for 1-column */
+            .lifts-grid .lift-item:nth-last-child(-n+2) { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+            .lifts-grid .lift-item:nth-child(odd):last-child, .lifts-grid .lift-item:nth-child(even):last-child { border-bottom: none; }
             .lift-item:hover { transform: translateX(4px); }
             .animated-card { padding: 30px; max-width: 100%; }
             .tab-button { padding: 10px 20px; font-size: 16px; }
@@ -248,7 +252,6 @@
                     <div class="lift-item"><span>Chair 11 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
                     <div class="lift-item"><span>Chair 12 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
                     <div class="lift-item"><span>Chair 13 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>MC 16 (Magic Carpet)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
                 </div>
             </div>
             <div class="tab-content" id="ss-lifts">
@@ -263,7 +266,6 @@
                     <div class="lift-item"><span>Chair 8 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
                     <div class="lift-item"><span>Chair 9 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
                     <div class="lift-item"><span>Chair 10 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>MC 1 (Magic Carpet)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
                 </div>
             </div>
             <div class="tab-content" id="bm-lifts">
