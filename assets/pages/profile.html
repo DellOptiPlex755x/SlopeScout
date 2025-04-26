@@ -23,16 +23,60 @@
         a { color: var(--accent-blue); text-decoration: none; transition: color var(--transition-speed) ease; }
         a:hover { color: var(--accent-blue-hover); }
 
-        /* Navigation, Layout, Sidebar Styles (Keep as before) */
+        /* Navigation Styles */
         nav.main-nav { position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-height); display: flex; justify-content: space-between; align-items: center; padding: 0 40px; z-index: 1000; background-color: rgba(10, 10, 10, 0.8); border-bottom: 1px solid var(--card-border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--text-light); }
         .main-nav .logo { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; color: var(--text-light); text-decoration: none; transition: transform 0.3s ease; }
         .main-nav .logo:hover { transform: scale(1.05); }
         .main-nav .nav-links { display: flex; gap: 40px; height: 100%; }
-        .main-nav .nav-links a { display: flex; align-items: center; height: 100%; color: var(--text-light); text-decoration: none; font-size: 14px; font-weight: 500; transition: opacity 0.3s ease, color 0.3s ease; position: relative; padding: 0 5px; opacity: 0.8; }
-        .main-nav .nav-links a:hover { opacity: 1; color: var(--text-light); }
-        .main-nav .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--accent-blue); transform: scaleX(0); transform-origin: center; transition: transform 0.3s ease-out; }
-        .main-nav .nav-links a:hover::after, .main-nav .nav-links a.active::after { transform: scaleX(1); }
-        .main-nav .nav-links a.active { opacity: 1; font-weight: 600; }
+
+        /* Nav Link Styles (Hover effect matches explore.html) */
+        .main-nav .nav-links a {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: opacity 0.3s ease, color 0.3s ease, transform 0.3s ease;
+            position: relative;
+            padding: 0 5px;
+            padding-bottom: 4px;
+            opacity: 0.8;
+        }
+
+        .main-nav .nav-links a:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+
+        /* Underline base style */
+        .main-nav .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1.5px;
+            background-color: var(--accent-blue);
+            transform: scaleX(0); /* Hidden by default */
+            transform-origin: left;
+            transition: transform 0.3s ease-out;
+        }
+
+        /* --- MODIFIED: Underline ONLY appears on hover --- */
+        .main-nav .nav-links a:hover::after {
+            transform: scaleX(1); /* Show underline on hover */
+        }
+        /* --- END MODIFICATION --- */
+
+        /* Active link text style (no underline change here) */
+        .main-nav .nav-links a.active {
+            opacity: 1;
+            font-weight: 600;
+        }
+
+        /* Layout, Sidebar Styles */
         .page-content { padding-left: 5%; padding-right: 5%; padding-bottom: 50px; max-width: 1200px; margin: 0 auto; }
         .profile-container { display: grid; grid-template-columns: 260px 1fr; gap: 40px; margin-top: 20px; }
         .profile-sidebar { background-color: var(--secondary-dark); padding: 20px; border-radius: 12px; border: 1px solid var(--card-border); height: fit-content; }
@@ -84,7 +128,7 @@
             background-color: var(--danger-red); color: white; padding: 10px 20px; border: none; border-radius: 25px;
             font-weight: 600; cursor: pointer; transition: background-color 0.3s ease; display: inline-flex; align-items: center;
         }
-         #show-delete-form-button i, #confirm-delete-button i { margin-right: 8px; }
+        #show-delete-form-button i, #confirm-delete-button i { margin-right: 8px; }
         #show-delete-form-button:hover, #confirm-delete-button:hover { background-color: var(--danger-red-hover); }
         #delete-account-form { display: none; /* Hidden initially */ }
         #delete-account-form .form-group { margin-bottom: 20px;}
@@ -113,7 +157,7 @@
 
         <aside class="profile-sidebar">
             <nav class="sidebar-nav">
-                 <ul>
+                <ul>
                     <li><a href="#account-details" class="active"><i class="fas fa-user-circle"></i> Account Details</a></li>
                     <li><a href="#security"><i class="fas fa-shield-alt"></i> Security</a></li>
                     <li><a href="#delete-account-card"><i class="fas fa-trash-alt"></i> Delete Account</a></li> <li><a id="logout-link"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
@@ -123,43 +167,45 @@
 
         <main class="profile-main">
             <section id="account-details">
-                 <h2>Account Details</h2>
-                 <div class="info-card"> <div class="info-card-header"> <h3>Personal Information</h3> </div> <div class="info-card-content"> <div class="info-display-group"> <div class="info-item"> <span class="label">Member Since</span> <span class="value" id="profile-member-since">Loading...</span> </div> </div> </div> </section>
-                 <section class="info-card" id="contact-info"> <div class="info-card-header"> <h3>Contact Information</h3> <button id="update-email-button" class="edit-button"><i class="fas fa-pencil-alt"></i> Update Email</button> </div> <div class="info-card-content"> <div class="info-display-group"> <div class="info-item"> <span class="label">Email Address</span> <span class="value" id="profile-email">Loading...</span> </div> </div> <form class="update-form" id="update-email-form"> <div class="form-group"> <label for="new-email">New Email Address</label> <input type="email" id="new-email" required autocomplete="email"> </div> <div class="form-group"> <label for="current-password-for-email">Current Password (for verification)</label> <input type="password" id="current-password-for-email" required autocomplete="current-password"> </div> <div class="update-message error" id="email-update-error"></div> <div class="update-message success" id="email-update-success"></div> <div class="update-form-actions"> <button type="button" class="cancel-button" id="cancel-email-update">Cancel</button> <button type="submit">Save Email</button> </div> </form> </div> </section>
+                <h2>Account Details</h2>
+                <div class="info-card"> <div class="info-card-header"> <h3>Personal Information</h3> </div> <div class="info-card-content"> <div class="info-display-group"> <div class="info-item"> <span class="label">Member Since</span> <span class="value" id="profile-member-since">Loading...</span> </div> </div> </div> </section>
+            <section class="info-card" id="contact-info"> <div class="info-card-header"> <h3>Contact Information</h3> <button id="update-email-button" class="edit-button"><i class="fas fa-pencil-alt"></i> Update Email</button> </div> <div class="info-card-content"> <div class="info-display-group"> <div class="info-item"> <span class="label">Email Address</span> <span class="value" id="profile-email">Loading...</span> </div> </div> <form class="update-form" id="update-email-form"> <div class="form-group"> <label for="new-email">New Email Address</label> <input type="email" id="new-email" required autocomplete="email"> </div> <div class="form-group"> <label for="current-password-for-email">Current Password (for verification)</label> <input type="password" id="current-password-for-email" required autocomplete="current-password"> </div> <div class="update-message error" id="email-update-error"></div> <div class="update-message success" id="email-update-success"></div> <div class="update-form-actions"> <button type="button" class="cancel-button" id="cancel-email-update">Cancel</button> <button type="submit">Save Email</button> </div> </form> </div> </section>
             </section>
 
-             <section class="info-card" id="security">
-                 <div class="info-card-header"> <h3>Security</h3> <button id="update-password-button" class="edit-button"><i class="fas fa-pencil-alt"></i> Update Password</button> </div>
-                 <div class="info-card-content"> <div class="info-display-group"> <div class="info-item"> <span class="label">Password</span> <span class="value">********</span> </div> </div> <form class="update-form" id="update-password-form"> <div class="form-group"> <label for="current-password-for-password">Current Password</label> <input type="password" id="current-password-for-password" required autocomplete="current-password"> </div> <div class="form-group"> <label for="new-password">New Password</label> <input type="password" id="new-password" required autocomplete="new-password"> </div> <div class="form-group"> <label for="confirm-new-password">Confirm New Password</label> <input type="password" id="confirm-new-password" required autocomplete="new-password"> </div> <div class="update-message error" id="password-update-error"></div> <div class="update-message success" id="password-update-success"></div> <div class="update-form-actions"> <button type="button" class="cancel-button" id="cancel-password-update">Cancel</button> <button type="submit">Save Password</button> </div> </form> </div>
-             </section>
+            <section class="info-card" id="security">
+                <div class="info-card-header"> <h3>Security</h3> <button id="update-password-button" class="edit-button"><i class="fas fa-pencil-alt"></i> Update Password</button> </div>
+                <div class="info-card-content"> <div class="info-display-group"> <div class="info-item"> <span class="label">Password</span> <span class="value">********</span> </div> </div> <form class="update-form" id="update-password-form"> <div class="form-group"> <label for="current-password-for-password">Current Password</label> <input type="password" id="current-password-for-password" required autocomplete="current-password"> </div> <div class="form-group"> <label for="new-password">New Password</label> <input type="password" id="new-password" required autocomplete="new-password"> </div> <div class="form-group"> <label for="confirm-new-password">Confirm New Password</label> <input type="password" id="confirm-new-password" required autocomplete="new-password"> </div> <div class="update-message error" id="password-update-error"></div> <div class="update-message success" id="password-update-success"></div> <div class="update-form-actions"> <button type="button" class="cancel-button" id="cancel-password-update">Cancel</button> <button type="submit">Save Password</button> </div> </form> </div>
+            </section>
 
-             <section class="info-card" id="delete-account-card">
-                 <div class="info-card-header">
-                     <h3 style="color: var(--danger-red);">Delete Account</h3>
-                 </div>
-                 <div class="info-card-content">
-                     <div id="delete-account-prompt">
+            <section class="info-card" id="delete-account-card">
+                <div class="info-card-header">
+                    <h3 style="color: var(--danger-red);">Delete Account</h3>
+                </div>
+                <div class="info-card-content">
+                    <div id="delete-account-prompt">
                         <p>Deleting your account is permanent and cannot be undone. All your profile information and associated data (like bookmarks) may be lost.</p>
                         <button id="show-delete-form-button" class="delete-button"><i class="fas fa-exclamation-triangle"></i> Proceed to Delete Account</button>
-                     </div>
+                    </div>
 
-                     <form class="update-form" id="delete-account-form"> <p>To confirm deletion, please enter your current password.</p>
+                    <form class="update-form" id="delete-account-form"> <p>To confirm deletion, please enter your current password.</p>
                         <div class="form-group">
                             <label for="current-password-for-delete">Current Password</label>
                             <input type="password" id="current-password-for-delete" required autocomplete="current-password">
                         </div>
                         <div class="update-message error" id="delete-account-error"></div>
-                         <div class="update-form-actions">
+                        <div class="update-form-actions">
                             <button type="button" class="cancel-button" id="cancel-delete-button">Cancel</button>
                             <button type="submit" id="confirm-delete-button" class="delete-button"><i class="fas fa-trash-alt"></i> Confirm Deletion</button>
-                         </div>
-                     </form>
-                 </div>
-             </section>
+                        </div>
+                    </form>
+                </div>
+            </section>
 
         </main>
 
-    </div></div><script type="module">
+    </div>
+</div>
+<script type="module">
     // --- Firebase Imports ---
     import { auth } from '../firebase/config.js'; // Path relative to assets/pages/
     import {
@@ -203,29 +249,29 @@
     const deleteAccountError = document.getElementById('delete-account-error');
 
     // --- Helper Functions (Defined ONCE) ---
-    const showMessage = (element, message, isSuccess = false) => { /* ... (same) ... */
-         if (!element) return;
-         element.textContent = message;
-         element.className = `update-message ${isSuccess ? 'success' : 'error'}`;
-         element.style.display = 'block';
-     };
-    const clearMessages = (formType) => { /* ... (same + delete) ... */
+    const showMessage = (element, message, isSuccess = false) => {
+        if (!element) return;
+        element.textContent = message;
+        element.className = `update-message ${isSuccess ? 'success' : 'error'}`;
+        element.style.display = 'block';
+    };
+    const clearMessages = (formType) => {
         if (formType === 'email' || !formType) { if(emailUpdateError) emailUpdateError.style.display = 'none'; if(emailUpdateSuccess) emailUpdateSuccess.style.display = 'none'; }
         if (formType === 'password' || !formType) { if(passwordUpdateError) passwordUpdateError.style.display = 'none'; if(passwordUpdateSuccess) passwordUpdateSuccess.style.display = 'none'; }
         if (formType === 'delete' || !formType) { if(deleteAccountError) deleteAccountError.style.display = 'none'; } // Added delete
-     };
-    const toggleUpdateForm = (formElement, displayGroup, showForm) => { /* ... (same) ... */
-         if (!formElement || !displayGroup) { console.error("Missing form or display group for toggle"); return; }
-         const formType = formElement.id.includes('email') ? 'email' : (formElement.id.includes('password') ? 'password' : null);
-         clearMessages(formType);
-         displayGroup.style.display = showForm ? 'none' : 'block';
-         formElement.style.display = showForm ? 'block' : 'none';
-         // Show/hide Update button
-         const buttonId = formElement.id.includes('email') ? 'update-email-button' : 'update-password-button';
-         const buttonElement = document.getElementById(buttonId);
-         if (buttonElement) { buttonElement.style.display = showForm ? 'none' : 'flex'; }
-     };
-    const reauthenticateUser = (currentPassword) => { /* ... (same) ... */
+    };
+    const toggleUpdateForm = (formElement, displayGroup, showForm) => {
+        if (!formElement || !displayGroup) { console.error("Missing form or display group for toggle"); return; }
+        const formType = formElement.id.includes('email') ? 'email' : (formElement.id.includes('password') ? 'password' : null);
+        clearMessages(formType);
+        displayGroup.style.display = showForm ? 'none' : 'block';
+        formElement.style.display = showForm ? 'block' : 'none';
+        // Show/hide Update button
+        const buttonId = formElement.id.includes('email') ? 'update-email-button' : 'update-password-button';
+        const buttonElement = document.getElementById(buttonId);
+        if (buttonElement) { buttonElement.style.display = showForm ? 'none' : 'flex'; }
+    };
+    const reauthenticateUser = (currentPassword) => {
         const user = auth.currentUser;
         if (!user) { return Promise.reject(new Error("No user logged in.")); }
         if (!currentPassword) { return Promise.reject(new Error("Current password required.")); }
@@ -234,30 +280,30 @@
             const credential = EmailAuthProvider.credential(user.email, currentPassword);
             return reauthenticateWithCredential(user, credential);
         } catch (error) { console.error("Credential creation error:", error); return Promise.reject(error); }
-     };
+    };
 
     // --- Initial Auth State Check ---
-    onAuthStateChanged(auth, (user) => { /* ... (same, removed name/loc) ... */
+    onAuthStateChanged(auth, (user) => {
         if (user) {
             console.log("Profile Page: User logged in:", user.uid);
             if(profileEmailElement) profileEmailElement.textContent = user.email || 'N/A';
             if (profileMemberSinceElement && user.metadata.creationTime) {
-                 const creationDate = new Date(user.metadata.creationTime);
-                 profileMemberSinceElement.textContent = creationDate.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+                const creationDate = new Date(user.metadata.creationTime);
+                profileMemberSinceElement.textContent = creationDate.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
             } else if (profileMemberSinceElement) { profileMemberSinceElement.textContent = 'N/A'; }
         } else {
-             console.log("Profile Page: No user logged in. Redirecting...");
-             window.location.href = 'sign-up_login.html';
+            console.log("Profile Page: No user logged in. Redirecting...");
+            window.location.href = 'sign-up_login.html';
         }
-     });
+    });
 
     // --- Event Listeners ---
     // Logout
-    logoutLink?.addEventListener('click', (event) => { /* ... (same) ... */
+    logoutLink?.addEventListener('click', (event) => {
         event.preventDefault();
         signOut(auth).then(() => { window.location.href = '../../index.html'; })
-        .catch((error) => { console.error("Sign out error:", error); alert("Error signing out."); });
-     });
+            .catch((error) => { console.error("Sign out error:", error); alert("Error signing out."); });
+    });
 
     // Show/Hide Update Forms & Cancel Buttons
     updateEmailButton?.addEventListener('click', () => toggleUpdateForm(updateEmailForm, contactInfoDisplayGroup, true));
@@ -273,8 +319,8 @@
     });
     cancelDeleteButton?.addEventListener('click', () => {
         if(deleteAccountForm) {
-             deleteAccountForm.reset();
-             deleteAccountForm.style.display = 'none';
+            deleteAccountForm.reset();
+            deleteAccountForm.style.display = 'none';
         }
         if(deleteAccountPrompt) deleteAccountPrompt.style.display = 'block';
         clearMessages('delete');
@@ -283,7 +329,7 @@
 
     // --- Form Submit Handlers ---
     // Handle Email Update
-    updateEmailForm?.addEventListener('submit', (e) => { /* ... (same) ... */
+    updateEmailForm?.addEventListener('submit', (e) => {
         e.preventDefault(); clearMessages('email');
         const newEmail = newEmailInput.value; const currentPassword = currentPasswordForEmailInput.value; const user = auth.currentUser;
         if (!newEmail || !currentPassword || !user) { showMessage(emailUpdateError, "Please fill in all fields."); return; }
@@ -298,34 +344,34 @@
                 else if (error.code === 'auth/requires-recent-login'){ message = "Session expired. Log in again."; }
                 else if (error.code === 'auth/email-already-in-use') { message = "Email already in use."; }
                 else if (error.code === 'auth/invalid-email') { message = "New email is invalid."; }
-                 else if (error.message?.includes("required")) { message = "Current password required.";}
+                else if (error.message?.includes("required")) { message = "Current password required.";}
                 showMessage(emailUpdateError, message);
             });
     });
 
     // Handle Password Update
-     updatePasswordForm?.addEventListener('submit', (e) => { /* ... (same) ... */
-         e.preventDefault(); clearMessages('password');
-         const currentPassword = currentPasswordForPasswordInput.value; const newPassword = newPasswordInput.value; const confirmPassword = confirmNewPasswordInput.value; const user = auth.currentUser;
-         if (!currentPassword || !newPassword || !confirmPassword || !user) { showMessage(passwordUpdateError, "Please fill in all fields."); return; }
-         if (newPassword !== confirmPassword) { showMessage(passwordUpdateError, "New passwords do not match."); return; }
-         if (newPassword.length < 6) { showMessage(passwordUpdateError, "Password must be >= 6 characters."); return; }
-         reauthenticateUser(currentPassword)
+    updatePasswordForm?.addEventListener('submit', (e) => {
+        e.preventDefault(); clearMessages('password');
+        const currentPassword = currentPasswordForPasswordInput.value; const newPassword = newPasswordInput.value; const confirmPassword = confirmNewPasswordInput.value; const user = auth.currentUser;
+        if (!currentPassword || !newPassword || !confirmPassword || !user) { showMessage(passwordUpdateError, "Please fill in all fields."); return; }
+        if (newPassword !== confirmPassword) { showMessage(passwordUpdateError, "New passwords do not match."); return; }
+        if (newPassword.length < 6) { showMessage(passwordUpdateError, "Password must be >= 6 characters."); return; }
+        reauthenticateUser(currentPassword)
             .then(() => { return updatePassword(user, newPassword); })
             .then(() => { showMessage(passwordUpdateSuccess, "Password updated successfully!", true); updatePasswordForm.reset(); toggleUpdateForm(updatePasswordForm, securityInfoDisplayGroup, false); })
             .catch((error) => {
                 console.error("Password update failed:", error.code, error.message);
                 let message = `Password update failed: ${error.code || error.message}`;
-                 if (error.code === 'auth/wrong-password') { message = "Incorrect current password."; }
-                 else if (error.code === 'auth/requires-recent-login'){ message = "Session expired. Log in again."; }
-                 else if (error.code === 'auth/weak-password') { message = "Password is too weak."; }
-                 else if (error.message?.includes("required")) { message = "Current password required.";}
-                 showMessage(passwordUpdateError, message);
+                if (error.code === 'auth/wrong-password') { message = "Incorrect current password."; }
+                else if (error.code === 'auth/requires-recent-login'){ message = "Session expired. Log in again."; }
+                else if (error.code === 'auth/weak-password') { message = "Password is too weak."; }
+                else if (error.message?.includes("required")) { message = "Current password required.";}
+                showMessage(passwordUpdateError, message);
             });
-     });
+    });
 
-     // *** NEW: Handle Delete Account Form Submission ***
-     deleteAccountForm?.addEventListener('submit', (e) => {
+    // *** NEW: Handle Delete Account Form Submission ***
+    deleteAccountForm?.addEventListener('submit', (e) => {
         e.preventDefault();
         clearMessages('delete');
         const currentPassword = currentPasswordForDeleteInput.value;
@@ -364,17 +410,16 @@
             .catch((error) => {
                 console.error("Account deletion failed:", error.code, error.message);
                 let message = `Deletion failed: ${error.code || error.message}`;
-                 if (error.code === 'auth/wrong-password') { message = "Incorrect current password."; }
-                 else if (error.code === 'auth/requires-recent-login'){ message = "Session expired. Please log out and log back in to delete your account."; }
-                 else if (error.message?.includes("required")) { message = "Current password required.";}
-                 showMessage(deleteAccountError, message);
-                 if(deleteButton) deleteButton.disabled = false; // Re-enable button on error
+                if (error.code === 'auth/wrong-password') { message = "Incorrect current password."; }
+                else if (error.code === 'auth/requires-recent-login'){ message = "Session expired. Please log out and log back in to delete your account."; }
+                else if (error.message?.includes("required")) { message = "Current password required.";}
+                showMessage(deleteAccountError, message);
+                if(deleteButton) deleteButton.disabled = false; // Re-enable button on error
             });
     });
 
 
     // Sidebar link scrolling
-    if (sidebarLinks.length > 0) { /* ... (same) ... */ }
     if (sidebarLinks.length > 0) {
         const extraOffset = 20;
         sidebarLinks.forEach(link => {
