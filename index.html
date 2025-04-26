@@ -56,7 +56,7 @@
         .hero-section {
             height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 5%;
             /* Ensure path is correct relative to root index.html */
-            background: linear-gradient(rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.9)), url('../images/slopelift.png') center/cover no-repeat;
+            background: linear-gradient(rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.9)), url('assets/images/slopelift.png') center/cover no-repeat;
             background-attachment: fixed; color: var(--text-light);
              margin-top: calc(-1 * (var(--nav-height) + 20px));
         }
@@ -92,9 +92,9 @@
     <a href="index.html" rel="noopener noreferrer" class="logo">SlopeScout</a>
     <div class="nav-links">
         <a href="index.html" rel="noopener noreferrer" class="active">Home</a>
-        <a href="explore.html">Explore</a>
-        <a href="bookmarks.html">Bookmarks</a>
-        <a href="profile.html" id="profile-link">Profile</a>
+        <a href="assets/pages/explore.html">Explore</a>
+        <a href="assets/pages/bookmarks.html">Bookmarks</a>
+        <a href="assets/pages/profile.html" id="profile-link">Profile</a>
         </div>
 </nav>
 
@@ -102,7 +102,7 @@
     <div class="hero-content">
         <h1>Find Your Perfect Peak</h1>
         <p>Discover real-time snow conditions, lift status, trail maps, and reviews for mountain resorts worldwide. Plan your next adventure with SlopeScout.</p>
-        <a href="explore.html" class="hero-button">Explore Resorts <i class="fas fa-arrow-right"></i></a>
+        <a href="assets/pages/explore.html" class="hero-button">Explore Resorts <i class="fas fa-arrow-right"></i></a>
     </div>
 </section>
 
@@ -130,7 +130,7 @@
 <script type="module">
     // Import auth instance and function
     // Path is relative to root index.html
-    import { auth } from '../firebase/config.js';
+    import { auth } from './assets/firebase/config.js';
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
 
     const profileLink = document.getElementById('profile-link');
