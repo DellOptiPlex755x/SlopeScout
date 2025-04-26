@@ -2,9 +2,222 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SlopeScout | My Bookmarks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        :root {
+            --primary-dark: #0a0a0a;
+            --secondary-dark: #111111;
+            --card-bg: #1c1c1e;
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-light: #f0f0f0;
+            --text-secondary: rgba(235, 235, 245, 0.6);
+            --accent-blue: #007aff;
+            --status-closed: #ff3b30; /* Red for delete hover */
+            --transition-speed: 0.3s;
+            --fade-out-duration: 0.4s; /* Define fade-out time */
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; background-color: var(--primary-dark); color: var(--text-light); margin: 0; padding: 20px; padding-top: 80px; }
+        /* --- Navbar CSS --- */
+        nav { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; z-index: 100; background: linear-gradient(to bottom, rgba(10, 10, 10, 0.8) 0%, rgba(10, 10, 10, 0) 100%); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--text-light); }
+        .logo { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; cursor: pointer; transition: transform 0.3s ease; color: var(--text-light); text-decoration: none; }
+        .logo:hover { transform: scale(1.05); }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: var(--text-light); text-decoration: none; font-size: 14px; font-weight: 500; transition: opacity 0.3s ease, transform 0.3s ease; position: relative; padding-bottom: 4px; }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1.5px; background-color: var(--accent-blue); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease-out; }
+        .nav-links a:hover { opacity: 1; transform: translateY(-2px); }
+        .nav-links a:hover::after { transform: scaleX(1); }
+        @media (max-width: 991.98px) { .nav-links { display: none; } }
+        @media (max-width: 576px) { nav { padding: 15px 20px; } body { padding-top: 70px;} }
+        /* --- End Navbar CSS --- */
+
+        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+        h1 { margin-bottom: 30px; color: var(--text-light); font-weight: 600; border-bottom: 1px solid var(--card-border); padding-bottom: 15px; }
+        .bookmarks-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+
+        /* --- Bookmark Card Styles with Fade-Out --- */
+        .bookmark-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            min-height: 150px;
+            padding-bottom: 60px;
+            opacity: 1; /* Start visible */
+            transform: scale(1); /* Start normal size */
+            transition: transform var(--transition-speed) ease,
+            box-shadow var(--transition-speed) ease,
+            opacity var(--fade-out-duration) ease, /* Transition opacity */
+            transform var(--fade-out-duration) ease; /* Transition transform */
+        }
+        .bookmark-card:hover {
+            /* Only apply hover effect if not fading out */
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        /* NEW: Style for the fading out state */
+        .bookmark-card.fading-out {
+            opacity: 0;
+            transform: scale(0.95); /* Optional: slightly shrink */
+            pointer-events: none; /* Prevent interaction while fading */
+        }
+
+        .bookmark-card h3 { margin-top: 0; margin-bottom: 10px; color: var(--text-light); font-size: 1.2em; }
+        .bookmark-card p { margin-bottom: 15px; font-size: 0.9em; color: var(--text-secondary); }
+        /* Position the link/visit button */
+        .bookmark-card a.visit-link { display: inline-block; background-color: var(--accent-blue); color: white; padding: 8px 15px; border-radius: 20px; text-decoration: none; font-size: 0.9em; font-weight: 500; transition: background-color var(--transition-speed); position: absolute; bottom: 20px; left: 20px; }
+        .bookmark-card a.visit-link:hover { background-color: #0056b3; }
+
+        /* Styles for the delete button */
+        .delete-bookmark-btn { position: absolute; bottom: 15px; right: 15px; background: none; border: none; color: var(--text-secondary); font-size: 1.1em; cursor: pointer; padding: 5px; transition: color var(--transition-speed), transform var(--transition-speed); z-index: 2; }
+        .delete-bookmark-btn:hover { color: var(--status-closed); transform: scale(1.1); }
+        .delete-bookmark-btn .fa-trash { pointer-events: none; }
+
+        /* Loading / Empty / Login Messages */
+        #loading-message, #empty-message, #login-prompt { text-align: center; color: var(--text-secondary); font-size: 1.1em; margin-top: 40px; }
+        #login-prompt a { color: var(--accent-blue); text-decoration: underline; }
+        .error-message { color: var(--status-closed); }
+    </style>
 </head>
 <body>
+
+<nav>
+    <a href="../index.html" rel="noopener noreferrer" class="logo">SlopeScout</a> <div class="nav-links">
+    <a href="../index.html" rel="noopener noreferrer">Home</a> <a href="explore.html">Explore</a>
+    <a href="bookmarks.html" style="font-weight: bold; color: var(--accent-blue);">Bookmarks</a> <a href="profile.html">Profile</a>
+</div>
+</nav>
+
+<div class="container">
+    <h1>My Bookmarks</h1>
+    <div id="bookmarks-list" class="bookmarks-list">
+    </div>
+    <div id="loading-message" style="display: none;">Loading your bookmarks...</div>
+    <div id="empty-message" style="display: none;">You haven't bookmarked any resorts yet. Go <a href="explore.html" style="color: var(--accent-blue); text-decoration: underline;">explore</a>!</div>
+    <div id="login-prompt" style="display: none;">Please <a href="sign-up_login.html">log in</a> to view your bookmarks.</div>
+</div>
+
+<script type="module">
+    // Import necessary functions from Firebase SDK and your config
+    import { auth, db } from '../firebase/config.js'; // Ensure path is correct
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+    import { collection, query, getDocs, orderBy, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"; // Added doc, deleteDoc
+
+    const bookmarksListDiv = document.getElementById('bookmarks-list');
+    const loadingMessage = document.getElementById('loading-message');
+    const emptyMessage = document.getElementById('empty-message');
+    const loginPrompt = document.getElementById('login-prompt');
+    let currentUserId = null;
+
+    const FADE_OUT_DURATION_MS = 400; // Match CSS --fade-out-duration (0.4s)
+
+    // Function to display bookmarks (Adds delete button) - No change here
+    function displayBookmarks(bookmarks) {
+        bookmarksListDiv.innerHTML = '';
+        loadingMessage.style.display = 'none';
+        if (bookmarks.length === 0) { emptyMessage.style.display = 'block'; loginPrompt.style.display = 'none'; return; }
+        emptyMessage.style.display = 'none'; loginPrompt.style.display = 'none';
+        bookmarks.forEach(bookmark => {
+            const card = document.createElement('div');
+            card.classList.add('bookmark-card');
+            card.setAttribute('data-bookmark-id', bookmark.id);
+            const title = document.createElement('h3');
+            title.textContent = bookmark.resortName || 'Unnamed Resort';
+            const details = document.createElement('p');
+            if (bookmark.bookmarkedAt && bookmark.bookmarkedAt.toDate) { details.textContent = `Bookmarked on: ${bookmark.bookmarkedAt.toDate().toLocaleDateString()}`; } else { details.textContent = `ID: ${bookmark.id}`; }
+            const link = document.createElement('a');
+            link.textContent = 'Visit Page'; link.classList.add('visit-link'); link.href = bookmark.pageUrl || '#'; if (!bookmark.pageUrl) link.style.display = 'none';
+            const deleteBtn = document.createElement('button');
+            deleteBtn.classList.add('delete-bookmark-btn'); deleteBtn.setAttribute('aria-label', `Delete bookmark for ${title.textContent}`); deleteBtn.innerHTML = '<i class="fas fa-trash"></i>'; deleteBtn.setAttribute('data-bookmark-id', bookmark.id);
+            card.appendChild(title); card.appendChild(details); card.appendChild(link); card.appendChild(deleteBtn);
+            bookmarksListDiv.appendChild(card);
+        });
+    }
+
+    // --- UPDATED: Function to handle bookmark deletion (No confirmation, with fade-out) ---
+    async function deleteBookmark(bookmarkId) {
+        if (!currentUserId) { console.error("User not logged in, cannot delete."); alert("You must be logged in to delete bookmarks."); return; }
+        if (!bookmarkId) { console.error("Bookmark ID is missing."); return; }
+
+        // --- Confirmation removed ---
+        // const confirmDelete = confirm("Are you sure you want to remove this bookmark?");
+        // if (!confirmDelete) { return; }
+
+        console.log(`Attempting to delete bookmark: ${bookmarkId} for user: ${currentUserId}`);
+        const bookmarkRef = doc(db, 'users', currentUserId, 'bookmarks', bookmarkId);
+        const cardToRemove = bookmarksListDiv.querySelector(`.bookmark-card[data-bookmark-id="${bookmarkId}"]`);
+
+        if (!cardToRemove) {
+            console.error("Card to remove not found in DOM for ID:", bookmarkId);
+            // Still try to delete from DB just in case DOM is out of sync
+            try { await deleteDoc(bookmarkRef); } catch (e) { console.error("Error deleting orphan bookmark:", e); }
+            return;
+        }
+
+        // 1. Start the fade-out animation visually
+        cardToRemove.classList.add('fading-out');
+
+        try {
+            // 2. Delete from Firestore (can happen while fading)
+            await deleteDoc(bookmarkRef);
+            console.log("Bookmark deleted successfully from Firestore!");
+
+            // 3. Wait for animation to finish, then remove from DOM
+            setTimeout(() => {
+                cardToRemove.remove();
+                console.log("Bookmark card removed from page after fade.");
+                // Check if the list is now empty
+                if (bookmarksListDiv.children.length === 0) {
+                    emptyMessage.style.display = 'block';
+                }
+            }, FADE_OUT_DURATION_MS); // Use the defined duration
+
+        } catch (error) {
+            console.error("Error deleting bookmark: ", error);
+            alert("Failed to delete bookmark. Please try again.");
+            // If deletion failed, remove the fading class to make it reappear
+            cardToRemove.classList.remove('fading-out');
+        }
+    }
+
+    // Event Listener for Delete Buttons (using Event Delegation) - No change here
+    bookmarksListDiv.addEventListener('click', (event) => {
+        const deleteButton = event.target.closest('.delete-bookmark-btn');
+        if (deleteButton) {
+            const bookmarkId = deleteButton.dataset.bookmarkId;
+            if (bookmarkId) { deleteBookmark(bookmarkId); }
+            else { console.error("Could not find bookmark ID on clicked delete button."); }
+        }
+    });
+
+    // Firebase Auth State Listener - Fetches bookmarks on login - No change here
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            currentUserId = user.uid;
+            console.log("User logged in:", currentUserId);
+            loadingMessage.style.display = 'block'; emptyMessage.style.display = 'none'; loginPrompt.style.display = 'none'; bookmarksListDiv.innerHTML = '';
+            try {
+                const bookmarksColRef = collection(db, 'users', currentUserId, 'bookmarks');
+                const q = query(bookmarksColRef, orderBy('bookmarkedAt', 'desc'));
+                const querySnapshot = await getDocs(q);
+                const bookmarks = [];
+                querySnapshot.forEach((doc) => { bookmarks.push({ id: doc.id, ...doc.data() }); });
+                console.log("Fetched bookmarks:", bookmarks);
+                displayBookmarks(bookmarks);
+            } catch (error) {
+                console.error("Error fetching bookmarks: ", error);
+                loadingMessage.style.display = 'none';
+                bookmarksListDiv.innerHTML = `<p class="error-message">Could not load bookmarks. Please try again later.</p>`;
+            }
+        } else {
+            currentUserId = null;
+            console.log("User logged out");
+            bookmarksListDiv.innerHTML = ''; loadingMessage.style.display = 'none'; emptyMessage.style.display = 'none'; loginPrompt.style.display = 'block';
+        }
+    });
+</script>
 
 </body>
 </html>

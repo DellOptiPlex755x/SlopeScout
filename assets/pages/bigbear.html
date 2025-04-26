@@ -187,9 +187,9 @@
 <body>
 
 <nav>
-    <a href="index.html" rel="noopener noreferrer" class="logo">SlopeScout</a>
+    <a href="../../index.html" rel="noopener noreferrer" class="logo">SlopeScout</a>
     <div class="nav-links">
-        <a href="index.html" rel="noopener noreferrer">Home</a>
+        <a href="https://slopescout.org" rel="noopener noreferrer">Home</a>
         <a href="explore.html">Explore</a>
         <a href="bookmarks.html">Bookmarks</a>
         <a href="profile.html">Profile</a>
@@ -298,6 +298,184 @@
     const addParkBtn = document.getElementById('addParkBtn');
     if(addParkBtn){
         addParkBtn.addEventListener('click', function() { this.textContent = 'Added!'; setTimeout(() => { this.textContent = 'Add to Favorites'; }, 1500); });
+    }
+
+</script>
+
+<script type="module">
+    // Import necessary functions from Firebase SDK and your config
+    import { auth, db } from '../firebase/config.js'; // Ensure path is correct
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+    import { doc, setDoc, getDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+    const addParkBtn = document.getElementById('addParkBtn');
+    const resortId = 'bigbear'; // Unique ID for this resort page
+    const resortName = 'Big Bear Mountain Resort'; // Display name for bookmarks
+    const resortPageUrl = 'bigbear.html'; // URL for linking back
+
+    let currentUserId = null;
+    let isBookmarked = false;
+    let isProcessing = false; // Flag to track if an operation is in progress
+
+    // --- NEW: Define colors for clarity ---
+    const defaultButtonColor = 'var(--accent-blue)';
+    const hoverRemoveColor = 'var(--status-closed)'; // Using your existing red color variable
+    const disabledLoginColor = '#444'; // Grey for login prompt
+
+    // --- UPDATED: Function to update button appearance ---
+    function updateButtonState() {
+        if (!addParkBtn) return;
+        if (isProcessing) return; // Don't change appearance during processing
+
+        // Reset hover text/color explicitly on state update
+        addParkBtn.style.backgroundColor = defaultButtonColor; // Default blue
+
+        if (isBookmarked) {
+            addParkBtn.textContent = 'Bookmarked';
+            addParkBtn.style.backgroundColor = defaultButtonColor; // Keep blue
+            addParkBtn.disabled = false;
+            // Add hover listeners if not already added
+            addHoverEffect();
+        } else {
+            addParkBtn.textContent = 'Add to Bookmarks';
+            addParkBtn.style.backgroundColor = defaultButtonColor; // Keep blue
+            addParkBtn.disabled = false;
+            // Remove hover listeners if they exist
+            removeHoverEffect();
+        }
+
+        // Override if user is not logged in
+        if (!currentUserId) {
+            addParkBtn.textContent = 'Login to Bookmark';
+            addParkBtn.style.backgroundColor = disabledLoginColor; // Use specific disabled color
+            addParkBtn.disabled = true;
+            removeHoverEffect(); // No hover effect if logged out
+        }
+    }
+
+    // --- NEW: Functions to handle hover effects ---
+    const handleMouseOver = () => {
+        if (isBookmarked && !isProcessing) { // Only apply if bookmarked and not processing
+            addParkBtn.style.backgroundColor = hoverRemoveColor;
+            addParkBtn.textContent = 'Remove bookmark';
+        }
+    };
+
+    const handleMouseOut = () => {
+        if (isBookmarked && !isProcessing) { // Only revert if bookmarked and not processing
+            addParkBtn.style.backgroundColor = defaultButtonColor;
+            addParkBtn.textContent = 'Bookmarked';
+        }
+    };
+
+    function addHoverEffect() {
+        if (addParkBtn) {
+            addParkBtn.addEventListener('mouseover', handleMouseOver);
+            addParkBtn.addEventListener('mouseout', handleMouseOut);
+            // Add focus/blur for accessibility/touch fallback (optional but good)
+            addParkBtn.addEventListener('focus', handleMouseOver);
+            addParkBtn.addEventListener('blur', handleMouseOut);
+        }
+    }
+
+    function removeHoverEffect() {
+        if (addParkBtn) {
+            addParkBtn.removeEventListener('mouseover', handleMouseOver);
+            addParkBtn.removeEventListener('mouseout', handleMouseOut);
+            addParkBtn.removeEventListener('focus', handleMouseOver);
+            addParkBtn.removeEventListener('blur', handleMouseOut);
+        }
+    }
+
+
+    // Function to check if the resort is already bookmarked
+    async function checkIfBookmarked() {
+        if (!currentUserId) {
+            isBookmarked = false;
+            updateButtonState();
+            return;
+        }
+        const bookmarkRef = doc(db, 'users', currentUserId, 'bookmarks', resortId);
+        try {
+            const docSnap = await getDoc(bookmarkRef);
+            isBookmarked = docSnap.exists();
+        } catch (error) {
+            console.error("Error checking bookmark status:", error);
+            isBookmarked = false;
+        }
+        updateButtonState();
+    }
+
+    // Firebase Auth State Listener
+    onAuthStateChanged(auth, async (user) => {
+        isProcessing = false; // Reset processing state on auth change
+        if (user) {
+            console.log("User logged in:", user.uid);
+            currentUserId = user.uid;
+            await checkIfBookmarked();
+        } else {
+            console.log("User logged out");
+            currentUserId = null;
+            isBookmarked = false;
+            updateButtonState();
+        }
+    });
+
+    // Button Click Handler
+    if (addParkBtn) {
+        addParkBtn.addEventListener('click', async () => {
+            if (!currentUserId) {
+                alert('Please log in or create an account to save bookmarks.');
+                window.location.href = 'sign-up_login.html';
+                return;
+            }
+            if (isProcessing) return; // Prevent double clicks
+
+            isProcessing = true; // Set processing flag
+            addParkBtn.disabled = true;
+            // Keep original color during processing, just change text
+            addParkBtn.textContent = 'Processing...';
+            // Temporarily remove hover effect during processing
+            removeHoverEffect();
+            // Ensure background stays default blue during processing
+            addParkBtn.style.backgroundColor = defaultButtonColor;
+
+            const bookmarkRef = doc(db, 'users', currentUserId, 'bookmarks', resortId);
+
+            try {
+                if (isBookmarked) {
+                    // Remove Bookmark
+                    await deleteDoc(bookmarkRef);
+                    console.log("Bookmark removed successfully!");
+                    isBookmarked = false;
+                } else {
+                    // Add Bookmark
+                    const bookmarkData = {
+                        resortName: resortName,
+                        resortId: resortId,
+                        pageUrl: resortPageUrl,
+                        bookmarkedAt: serverTimestamp()
+                    };
+                    await setDoc(bookmarkRef, bookmarkData);
+                    console.log("Bookmark added successfully!");
+                    isBookmarked = true;
+                }
+            } catch (error) {
+                console.error("Error updating bookmark: ", error);
+                alert('Failed to update bookmark. Please try again.');
+                // On error, reset processing and update button to previous state
+                isProcessing = false;
+                updateButtonState(); // Update based on 'isBookmarked' status before the failed attempt
+                return;
+            }
+
+            isProcessing = false; // Reset processing flag
+            // Call updateButtonState to set the final correct state ('Bookmarked' or 'Add to Bookmarks')
+            // This will also re-apply hover listeners if needed.
+            updateButtonState();
+        });
+    } else {
+        console.error("Bookmark button (#addParkBtn) not found.");
     }
 
 </script>
