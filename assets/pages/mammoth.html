@@ -16,9 +16,9 @@
             --text-secondary: rgba(235, 235, 245, 0.6);
             --accent-blue: #007aff;
             --status-open: #34c759;
-            --status-closed: #ff3b30;
+            --status-closed: #ff3b30; /* Used for Closed and Closed For Season */
             --status-scheduled: #ff9500;
-            --status-hold: #5e5ce6;
+            --status-hold: #5e5ce6; /* For Hold, Standby, Mechanical etc. */
             --transition-speed: 0.3s;
         }
 
@@ -68,7 +68,6 @@
             height: 55vh;
             width: 100%;
             margin-top: 74px; /* Adjust if needed */
-            /* Using the same background image for now */
             background-image: url('/assets/images/mountainImage.jpg');
             background-size: cover;
             background-position: center center;
@@ -89,12 +88,12 @@
         }
         /* --- H1 Style --- */
         .hero-content h1 {
-            font-size: 117px; /* Keeping enlarged size */
+            font-size: 117px;
             font-weight: 700;
             letter-spacing: -2px;
             line-height: 1.05;
             text-shadow: 0px 5px 15px rgba(0, 0, 0, 0.6);
-            text-transform: uppercase; /* Make text uppercase */
+            text-transform: uppercase;
             color: var(--text-light);
         }
 
@@ -120,10 +119,12 @@
         .tab-content.active { display: block; }
         @keyframes fadeInContent { from { opacity: 0; } to { opacity: 1; } }
         .lifts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 30px; }
-        .lift-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 5px 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.07); font-size: 16px; transition: transform 0.3s ease, background-color 0.3s ease; border-radius: 6px; }
-        .lift-item:hover { transform: translateX(6px); background-color: rgba(255, 255, 255, 0.04); border-bottom-color: transparent; }
-        .lift-item:nth-last-child(-n+2) { border-bottom: none; }
-        .lift-item:nth-child(odd):last-child { border-bottom: none; }
+        .lift-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 5px 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.07); font-size: 16px; transition: transform 0.3s ease, background-color 0.3s ease, padding-left 0.3s ease; border-radius: 6px; }
+        .lift-item:hover { transform: translateX(6px); background-color: rgba(255, 255, 255, 0.04); border-bottom-color: transparent; padding-left: 10px; }
+        .lifts-grid .lift-item:nth-last-child(-n+2) { border-bottom: none; }
+        .lifts-grid .lift-item:nth-child(odd):last-child { border-bottom: none; }
+        .lift-name { flex-grow: 1; }
+        .lift-details { display: flex; align-items: center; }
         .lift-status-badge { display: inline-block; padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: 600; letter-spacing: 0.3px; flex-shrink: 0; margin-left: 15px; }
         @keyframes pulseStatus { 0% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.5); } 70% { box-shadow: 0 0 0 7px rgba(52, 199, 89, 0); } 100% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); } }
         .status-open { background-color: var(--status-open); color: #fff; animation: pulseStatus 2.5s infinite cubic-bezier(0.66, 0, 0, 1); }
@@ -145,17 +146,18 @@
         @media (max-width: 991.98px) {
             .nav-links { display: none; }
             .hero-content h1 { font-size: 80px; letter-spacing: -1.5px; }
+            .map-container { height: 500px; }
         }
         @media (max-width: 768px) {
             .hero-content h1 { font-size: 60px; letter-spacing: -1px; }
             .content-area { padding: 0 25px 40px; margin-top: -50px; }
             .weather-text { font-size: 17px; }
             .lifts-grid { grid-template-columns: 1fr; gap: 5px 0; }
-            .lift-item { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
-            .lift-item:last-child { border-bottom: none; }
-            .lift-item:nth-last-child(-n+2) { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
-            .lift-item:nth-child(odd):last-child, .lift-item:nth-child(even):last-child { border-bottom: none; }
-            .lift-item:hover { transform: translateX(4px); }
+            .lifts-grid .lift-item { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+            .lifts-grid .lift-item:last-child { border-bottom: none; }
+            .lifts-grid .lift-item:nth-last-child(-n+2) { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+            .lifts-grid .lift-item:nth-child(odd):last-child, .lifts-grid .lift-item:nth-child(even):last-child { border-bottom: none; }
+            .lift-item:hover { transform: translateX(4px); padding-left: 8px; }
             .animated-card { padding: 30px; max-width: 100%; }
             .map-container { height: 450px; }
             .tab-button { padding: 10px 20px; font-size: 16px; }
@@ -163,7 +165,7 @@
         }
         @media (max-width: 576px) {
             nav { padding: 15px 20px; }
-            .hero { margin-top: 60px; /* Adjust if needed */ }
+            .hero { margin-top: 60px; }
             .hero-content h1 { font-size: 48px; letter-spacing: -0.5px; }
             .content-area { padding: 0 15px 30px; margin-top: -40px; }
             .weather-icon { width: 35px; font-size: 24px; }
@@ -171,7 +173,7 @@
             .weather-row { gap: 15px; }
             .add-park-btn { padding: 12px 24px; font-size: 15px; max-width: 250px; }
             .lift-item { font-size: 14px; padding: 10px 0; }
-            .lift-item:hover { transform: translateX(3px); }
+            .lift-item:hover { transform: translateX(3px); padding-left: 6px; }
             .lift-status-badge { padding: 4px 10px; font-size: 11px; }
             .animated-card { padding: 20px; border-radius: 20px; }
             .map-container { height: 350px; border-radius: 12px; }
@@ -206,44 +208,57 @@
             <div class="weather-row"><div class="weather-icon"><i class="fas fa-cloud-sun"></i></div><div class="weather-text">Conditions: <span id="conditionValue">--</span></div></div>
             <div class="weather-row"><div class="weather-icon"><i class="fas fa-wind"></i></div><div class="weather-text">Wind: <span id="windValue">--</span> mph <span id="windDirection">--</span></div></div>
         </div>
-        <button class="add-park-btn" id="addParkBtn">Add to Favorites</button>
+        <button class="add-park-btn" id="addParkBtn">Add to Bookmarks</button>
     </div>
 
     <div class="resorts-tab-section animated-card" id="resorts">
         <div class="tabs-container">
-            <button class="tab-button active" data-tab-target="#main-lodge-lifts">MAIN LODGE</button>
-            <button class="tab-button" data-tab-target="#canyon-lodge-lifts">CANYON LODGE</button>
-            <button class="tab-button" data-tab-target="#eagle-lodge-lifts">EAGLE LODGE</button>
+            <button class="tab-button active"
+                    data-tab-target="#main-lodge-lifts"
+                    data-lodge-name="Main Lodge"
+                    data-firestore-id="main-lodge"
+                    data-map-url="https://vicomap-cdn.resorts-interactive.com/map/1819?menu=3.8,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftStatusColorHold=%23FFCC00&liftStatusColorPatrolHold=%23FFCC00&liftStatusColorMechanicalHold=%23FFCC00&liftStatusColorWindHold=%23FFCC00&liftStatusColorLightingHold=%23FFCC00&liftStatusColorScheduled=cyan&liftStatusColorAnticipatedWeatherImpact=cyan&liftStatusColorExpected=cyan&backgroundOpacity=0.7">
+                MAIN LODGE
+            </button>
+            <button class="tab-button"
+                    data-tab-target="#canyon-lodge-lifts"
+                    data-lodge-name="Canyon Lodge"
+                    data-firestore-id="canyon-lodge"
+                    data-map-url="https://vicomap-cdn.resorts-interactive.com/map/1812?menu=3.8,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftStatusColorHold=%23FFCC00&liftStatusColorPatrolHold=%23FFCC00&liftStatusColorMechanicalHold=%23FFCC00&liftStatusColorWindHold=%23FFCC00&liftStatusColorLightingHold=%23FFCC00&liftStatusColorScheduled=cyan&liftStatusColorAnticipatedWeatherImpact=cyan&liftStatusColorExpected=cyan&backgroundOpacity=0.7">
+                CANYON LODGE
+            </button>
+            <button class="tab-button"
+                    data-tab-target="#eagle-lodge-lifts"
+                    data-lodge-name="Eagle Lodge"
+                    data-firestore-id="eagle-lodge"
+                    data-map-url="https://vicomap-cdn.resorts-interactive.com/map/1812?menu=3.8,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftStatusColorHold=%23FFCC00&liftStatusColorPatrolHold=%23FFCC00&liftStatusColorMechanicalHold=%23FFCC00&liftStatusColorWindHold=%23FFCC00&liftStatusColorLightingHold=%23FFCC00&liftStatusColorScheduled=cyan&liftStatusColorAnticipatedWeatherImpact=cyan&liftStatusColorExpected=cyan&backgroundOpacity=0.7">
+                EAGLE LODGE
+            </button>
         </div>
         <div class="tab-content-container">
             <div class="tab-content active" id="main-lodge-lifts">
-                <h3 style="color: var(--text-secondary); margin-bottom: 15px;">Main Lodge Area Lifts (Placeholder)</h3>
                 <div class="lifts-grid">
-                    <div class="lift-item"><span>Placeholder Lift 1</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Placeholder Lift 2</span><span class="lift-status-badge status-closed">Closed</span></div>
+                    <div class="lift-item"><span>Loading Main Lodge lifts...</span><span class="lift-status-badge"></span></div>
                 </div>
             </div>
             <div class="tab-content" id="canyon-lodge-lifts">
-                <h3 style="color: var(--text-secondary); margin-bottom: 15px;">Canyon Lodge Area Lifts (Placeholder)</h3>
                 <div class="lifts-grid">
-                    <div class="lift-item"><span>Placeholder Lift 3</span><span class="lift-status-badge status-open">Open</span></div>
-                    <div class="lift-item"><span>Placeholder Lift 4</span><span class="lift-status-badge status-open">Open</span></div>
+                    <div class="lift-item"><span>Loading Canyon Lodge lifts...</span><span class="lift-status-badge"></span></div>
                 </div>
             </div>
             <div class="tab-content" id="eagle-lodge-lifts">
-                <h3 style="color: var(--text-secondary); margin-bottom: 15px;">Eagle Lodge Area Lifts (Placeholder)</h3>
                 <div class="lifts-grid">
-                    <div class="lift-item"><span>Placeholder Lift 5</span><span class="lift-status-badge status-scheduled">Scheduled</span></div>
-                    <div class="lift-item"><span>Placeholder Lift 6</span><span class="lift-status-badge status-hold">On Hold</span></div>
+                    <div class="lift-item"><span>Loading Eagle Lodge lifts...</span><span class="lift-status-badge"></span></div>
                 </div>
             </div>
         </div>
+        <p id="liftStatusLastUpdated" style="text-align: center; font-size: 0.9em; color: var(--text-secondary); margin-top: 20px;">Fetching latest update time...</p>
     </div>
 
-    <div class="map-section animated-card" id="trail-map">
-        <h2 class="map-header">Trail Map</h2>
+    <div class="map-section animated-card" id="trail-map-section">
+        <h2 class="map-header" id="mapHeaderText">Main Lodge Trail Map</h2>
         <div class="map-container">
-            <iframe src="https://vicomap-cdn.resorts-interactive.com/map/1812?menu=3.8,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftStatusColorHold=%23FFCC00&liftStatusColorPatrolHold=%23FFCC00&liftStatusColorMechanicalHold=%23FFCC00&liftStatusColorWindHold=%23FFCC00&liftStatusColorLightingHold=%23FFCC00&liftStatusColorScheduled=cyan&liftStatusColorAnticipatedWeatherImpact=cyan&liftStatusColorExpected=cyan&backgroundOpacity=0.7" width="100%" height="100%" frameborder="0" loading="lazy"></iframe>
+            <iframe id="mapIframe" src="https://vicomap-cdn.resorts-interactive.com/map/1819?menu=3.8,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftStatusColorHold=%23FFCC00&liftStatusColorPatrolHold=%23FFCC00&liftStatusColorMechanicalHold=%23FFCC00&liftStatusColorWindHold=%23FFCC00&liftStatusColorLightingHold=%23FFCC00&liftStatusColorScheduled=cyan&liftStatusColorAnticipatedWeatherImpact=cyan&liftStatusColorExpected=cyan&backgroundOpacity=0.7" width="100%" height="100%" frameborder="0" loading="lazy"></iframe>
         </div>
     </div>
 </div>
@@ -256,26 +271,434 @@
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     animatedElements.forEach(el => observer.observe(el));
 
-    // --- Tab Switching Logic ---
+    // --- Tab Switching Logic (also handles map updates) ---
     const tabsContainer = document.querySelector('.tabs-container');
-    if(tabsContainer){
+    const mapIframe = document.getElementById('mapIframe');
+    const mapHeaderText = document.getElementById('mapHeaderText');
+
+    if(tabsContainer && mapIframe && mapHeaderText){
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabContents = document.querySelectorAll('.tab-content');
-        tabsContainer.addEventListener('click', (e) => {
-            if (!e.target.matches('.tab-button')) return;
-            const targetContentId = e.target.dataset.tabTarget;
+
+        const updateActiveTabAndMap = (button) => {
+            const mapUrl = button.dataset.mapUrl;
+            const lodgeName = button.dataset.lodgeName;
+            const targetContentId = button.dataset.tabTarget;
             const targetContent = document.querySelector(targetContentId);
-            tabButtons.forEach(button => button.classList.remove('active'));
-            e.target.classList.add('active');
+
+            if(mapUrl) {
+                mapIframe.src = mapUrl;
+            } else {
+                console.warn("Map URL not found for button:", button);
+                mapIframe.src = "";
+            }
+
+            if(lodgeName) {
+                mapHeaderText.textContent = `${lodgeName} Trail Map`;
+            } else {
+                mapHeaderText.textContent = 'Trail Map';
+            }
+
             tabContents.forEach(content => content.classList.remove('active'));
             if (targetContent) { targetContent.classList.add('active'); }
+
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        };
+
+        tabsContainer.addEventListener('click', (e) => {
+            if (!e.target.matches('.tab-button')) return;
+            updateActiveTabAndMap(e.target);
+        });
+
+        const initialActiveTab = document.querySelector('.tab-button.active');
+        if (initialActiveTab) {
+            updateActiveTabAndMap(initialActiveTab);
+        } else if (tabButtons.length > 0) {
+            tabButtons[0].classList.add('active');
+            updateActiveTabAndMap(tabButtons[0]);
+        }
+
+    } else {
+        console.error("Required elements for tab/map switching not found (tabsContainer, mapIframe, or mapHeaderText).");
+    }
+</script>
+
+<script type="module">
+    // Import necessary functions from Firebase SDK and your config
+    import { auth, db } from '../firebase/config.js';
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+    import { doc, getDoc, setDoc, deleteDoc, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+    // --- Weather API Configuration (Open-Meteo) ---
+    const MAMMOTH_LATITUDE = 37.6389; // Mammoth Mountain specific
+    const MAMMOTH_LONGITUDE = -119.0262; // Mammoth Mountain specific (West is negative)
+    const weatherApiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${MAMMOTH_LATITUDE}&longitude=${MAMMOTH_LONGITUDE}&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FLos_Angeles`;
+
+    const tempValueEl = document.getElementById('tempValue');
+    const conditionValueEl = document.getElementById('conditionValue');
+    const windValueEl = document.getElementById('windValue');
+    const windDirectionEl = document.getElementById('windDirection');
+
+    // WMO Weather code descriptions (simplified)
+    // Full list: https://www.nodc.noaa.gov/archive/arc0021/0002199/1.1/data/0-data/HTML/WMO-CODE/WMO4677.HTM
+    function getWeatherDescription(code) {
+        const descriptions = {
+            0: 'Clear sky',
+            1: 'Mainly clear',
+            2: 'Partly cloudy',
+            3: 'Overcast',
+            45: 'Fog',
+            48: 'Depositing rime fog',
+            51: 'Light drizzle',
+            53: 'Drizzle',
+            55: 'Dense drizzle',
+            56: 'Light freezing drizzle',
+            57: 'Freezing drizzle',
+            61: 'Slight rain',
+            63: 'Rain',
+            65: 'Heavy rain',
+            66: 'Light freezing rain',
+            67: 'Freezing rain',
+            71: 'Slight snow fall',
+            73: 'Snow fall',
+            75: 'Heavy snow fall',
+            77: 'Snow grains',
+            80: 'Slight rain showers',
+            81: 'Rain showers',
+            82: 'Violent rain showers',
+            85: 'Slight snow showers',
+            86: 'Snow showers',
+            95: 'Thunderstorm',
+            96: 'Thunderstorm with slight hail',
+            99: 'Thunderstorm with heavy hail',
+        };
+        return descriptions[code] || 'N/A';
+    }
+
+
+    async function fetchWeatherData() {
+        try {
+            const response = await fetch(weatherApiUrl);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+
+            if (data.current) {
+                if (tempValueEl) tempValueEl.textContent = Math.round(data.current.temperature_2m);
+                if (conditionValueEl) conditionValueEl.textContent = getWeatherDescription(data.current.weather_code);
+                if (windValueEl) windValueEl.textContent = Math.round(data.current.wind_speed_10m);
+                if (windDirectionEl) windDirectionEl.textContent = degToCompass(data.current.wind_direction_10m);
+            } else {
+                console.warn("Current weather data not found in Open-Meteo response.");
+                if(tempValueEl) tempValueEl.textContent = "N/A";
+                if(conditionValueEl) conditionValueEl.textContent = "N/A";
+                if(windValueEl) windValueEl.textContent = "N/A";
+                if(windDirectionEl) windDirectionEl.textContent = "";
+            }
+
+        } catch (error) {
+            console.error("Error fetching weather data from Open-Meteo:", error);
+            if(tempValueEl) tempValueEl.textContent = "Error";
+            if(conditionValueEl) conditionValueEl.textContent = "Error";
+            if(windValueEl) windValueEl.textContent = "Error";
+            if(windDirectionEl) windDirectionEl.textContent = "";
+        }
+    }
+
+    function degToCompass(num) {
+        const val = Math.floor((num / 22.5) + 0.5);
+        const arr = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+        return arr[(val % 16)];
+    }
+
+    fetchWeatherData(); // Fetch weather on page load
+
+
+    // --- Bookmark Feature (remains the same as previous version) ---
+    const addParkBtnBookmark = document.getElementById('addParkBtn');
+    const resortIdBookmark = 'mammoth-mountain';
+    const resortNameBookmark = 'Mammoth Mountain';
+    const resortPageUrlBookmark = 'mammoth.html';
+
+    let currentUserIdBookmark = null;
+    let isBookmarkedState = false;
+    let isProcessingBookmarkState = false;
+
+    const bookmarkDefaultButtonColor = 'var(--accent-blue)';
+    const bookmarkHoverRemoveColor = 'var(--status-closed)';
+    const bookmarkDisabledLoginColor = '#444';
+
+    function updateBookmarkButtonUI() {
+        if (!addParkBtnBookmark) return;
+        removeBookmarkHoverEffect();
+        addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor;
+
+        if (!currentUserIdBookmark) {
+            addParkBtnBookmark.textContent = 'Login to Bookmark';
+            addParkBtnBookmark.style.backgroundColor = bookmarkDisabledLoginColor;
+            addParkBtnBookmark.disabled = true;
+        } else if (isBookmarkedState) {
+            addParkBtnBookmark.textContent = 'Bookmarked';
+            addParkBtnBookmark.disabled = false;
+            addBookmarkHoverEffect();
+        } else {
+            addParkBtnBookmark.textContent = 'Add to Bookmarks';
+            addParkBtnBookmark.disabled = false;
+        }
+    }
+
+    const handleBookmarkMouseOver = () => {
+        if (isBookmarkedState && !isProcessingBookmarkState && addParkBtnBookmark) {
+            addParkBtnBookmark.style.backgroundColor = bookmarkHoverRemoveColor;
+            addParkBtnBookmark.textContent = 'Remove Bookmark';
+        }
+    };
+
+    const handleBookmarkMouseOut = () => {
+        if (isBookmarkedState && !isProcessingBookmarkState && addParkBtnBookmark) {
+            addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor;
+            addParkBtnBookmark.textContent = 'Bookmarked';
+        }
+    };
+
+    function addBookmarkHoverEffect() {
+        if (addParkBtnBookmark) {
+            addParkBtnBookmark.addEventListener('mouseover', handleBookmarkMouseOver);
+            addParkBtnBookmark.addEventListener('mouseout', handleBookmarkMouseOut);
+            addParkBtnBookmark.addEventListener('focus', handleBookmarkMouseOver);
+            addParkBtnBookmark.addEventListener('blur', handleBookmarkMouseOut);
+        }
+    }
+
+    function removeBookmarkHoverEffect() {
+        if (addParkBtnBookmark) {
+            addParkBtnBookmark.removeEventListener('mouseover', handleBookmarkMouseOver);
+            addParkBtnBookmark.removeEventListener('mouseout', handleBookmarkMouseOut);
+            addParkBtnBookmark.removeEventListener('focus', handleBookmarkMouseOver);
+            addParkBtnBookmark.removeEventListener('blur', handleBookmarkMouseOut);
+        }
+    }
+    async function checkIfResortIsBookmarked() {
+        if (!currentUserIdBookmark || !db) {
+            isBookmarkedState = false;
+            updateBookmarkButtonUI();
+            return;
+        }
+        const bookmarkDocRef = doc(db, 'users', currentUserIdBookmark, 'bookmarks', resortIdBookmark);
+        try {
+            const docSnap = await getDoc(bookmarkDocRef);
+            isBookmarkedState = docSnap.exists();
+        } catch (error) {
+            console.error("Error checking bookmark status:", error);
+            isBookmarkedState = false;
+        }
+        updateBookmarkButtonUI();
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+        isProcessingBookmarkState = false;
+        if (user) {
+            currentUserIdBookmark = user.uid;
+            await checkIfResortIsBookmarked();
+        } else {
+            currentUserIdBookmark = null;
+            isBookmarkedState = false;
+            updateBookmarkButtonUI();
+        }
+    });
+
+    if (addParkBtnBookmark) {
+        addParkBtnBookmark.addEventListener('click', async () => {
+            if (!currentUserIdBookmark) {
+                alert('Please log in or create an account to save bookmarks.');
+                return;
+            }
+            if (isProcessingBookmarkState) return;
+
+            isProcessingBookmarkState = true;
+            addParkBtnBookmark.disabled = true;
+            const originalText = addParkBtnBookmark.textContent;
+            addParkBtnBookmark.textContent = 'Processing...';
+            removeBookmarkHoverEffect();
+            addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor;
+
+            const bookmarkDocRef = doc(db, 'users', currentUserIdBookmark, 'bookmarks', resortIdBookmark);
+
+            try {
+                if (isBookmarkedState) {
+                    await deleteDoc(bookmarkDocRef);
+                    isBookmarkedState = false;
+                } else {
+                    const bookmarkData = {
+                        resortName: resortNameBookmark,
+                        resortId: resortIdBookmark,
+                        pageUrl: resortPageUrlBookmark,
+                        bookmarkedAt: serverTimestamp()
+                    };
+                    await setDoc(bookmarkDocRef, bookmarkData);
+                    isBookmarkedState = true;
+                }
+            } catch (error) {
+                console.error("Error updating bookmark: ", error);
+                alert('Failed to update bookmark. Please try again.');
+                addParkBtnBookmark.textContent = originalText;
+            } finally {
+                isProcessingBookmarkState = false;
+                updateBookmarkButtonUI();
+            }
+        });
+    } else {
+        console.error("Bookmark button (#addParkBtn) not found in mammoth.html.");
+    }
+
+    // --- SCRIPT FOR LIFT STATUSES FROM FIRESTORE ---
+    const mammothLodgeDataMap = {
+        'main-lodge': { tabId: 'main-lodge-lifts', firestoreId: 'main-lodge', name: 'Main Lodge' },
+        'canyon-lodge': { tabId: 'canyon-lodge-lifts', firestoreId: 'canyon-lodge', name: 'Canyon Lodge' },
+        'eagle-lodge': { tabId: 'eagle-lodge-lifts', firestoreId: 'eagle-lodge', name: 'Eagle Lodge' }
+    };
+
+    function getStatusClass(status) {
+        if (!status) return 'status-closed';
+        const lowerStatus = status.toLowerCase();
+
+        if (lowerStatus === 'open') return 'status-open';
+        if (lowerStatus === 'scheduled' || lowerStatus === 'expected') return 'status-scheduled';
+        if (lowerStatus.includes('hold') || lowerStatus.includes('standby') || lowerStatus.includes('mechanical') || lowerStatus.includes('wind') || lowerStatus.includes('electrical') || lowerStatus.includes('patrol')) return 'status-hold';
+        if (lowerStatus.includes('closed')) return 'status-closed';
+
+        return 'status-closed';
+    }
+
+    function formatLiftType(typeString) {
+        if (!typeString) return '';
+        const lowerType = typeString.toLowerCase();
+        if (lowerType === "high-speed 6 chair") return "High-Speed Six Chair";
+        if (lowerType === "6 chair") return "Six Chair";
+        if (lowerType === "high-speed quad") return "High-Speed Quad";
+        if (lowerType === "quad chair") return "Quad Chair";
+        if (lowerType === "triple chair") return "Triple Chair";
+        if (lowerType === "double") return "Double Chair";
+        if (lowerType === "gondola") return "Gondola";
+        return typeString.split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join(' ');
+    }
+
+
+    function updateLiftsGrid(tabContentId, liftsData, lodgeName) {
+        const tabContentElement = document.getElementById(tabContentId);
+        if (!tabContentElement) {
+            console.error(`Element with ID '${tabContentId}' not found for ${lodgeName}.`);
+            return;
+        }
+        const grid = tabContentElement.querySelector('.lifts-grid');
+        if (!grid) {
+            console.error(`Lifts grid not found in '${tabContentId}' for ${lodgeName}.`);
+            return;
+        }
+
+        grid.innerHTML = '';
+
+        if (!liftsData || liftsData.length === 0) {
+            grid.innerHTML = `<div class="lift-item"><span>No lift data available for ${lodgeName}.</span><span class="lift-status-badge"></span></div>`;
+            return;
+        }
+
+        let visibleLiftsCount = 0;
+        liftsData.forEach(lift => {
+            const liftNameLower = lift.name ? lift.name.toLowerCase() : '';
+            const liftTypeLower = lift.type ? lift.type.toLowerCase() : '';
+
+            if (liftNameLower.includes('magic carpet') || liftTypeLower.includes('magic carpet') || liftNameLower.startsWith('mc ')) {
+                return;
+            }
+            visibleLiftsCount++;
+
+            const liftItemDiv = document.createElement('div');
+            liftItemDiv.className = 'lift-item';
+
+            const liftNameSpan = document.createElement('span');
+            liftNameSpan.className = 'lift-name';
+
+            let liftDisplayName = lift.name || 'Unknown Lift';
+            const formattedType = formatLiftType(lift.type);
+            if (formattedType) {
+                liftDisplayName += ` (${formattedType})`;
+            }
+            liftNameSpan.textContent = liftDisplayName;
+
+            const liftDetailsDiv = document.createElement('div');
+            liftDetailsDiv.className = 'lift-details';
+
+            const liftStatusSpan = document.createElement('span');
+            const statusClass = getStatusClass(lift.status);
+            liftStatusSpan.className = `lift-status-badge ${statusClass}`;
+            liftStatusSpan.textContent = lift.status || 'Unknown';
+
+            liftItemDiv.appendChild(liftNameSpan);
+            liftDetailsDiv.appendChild(liftStatusSpan);
+            liftItemDiv.appendChild(liftDetailsDiv);
+            grid.appendChild(liftItemDiv);
+        });
+
+        if (visibleLiftsCount === 0) {
+            grid.innerHTML = `<div class="lift-item"><span>No applicable lift data available for ${lodgeName}.</span><span class="lift-status-badge"></span></div>`;
+        }
+    }
+
+    const liftStatusLastUpdatedElem = document.getElementById('liftStatusLastUpdated');
+
+    function displayLodgeData(lodgeFirestoreId, lodgeInfo) {
+        const unsub = onSnapshot(doc(db, "resort_conditions", lodgeFirestoreId), (docSnap) => {
+            if (docSnap.exists()) {
+                const lodgeData = docSnap.data();
+                if (lodgeData.lifts) {
+                    updateLiftsGrid(lodgeInfo.tabId, lodgeData.lifts, lodgeInfo.name);
+                } else {
+                    console.warn(`No 'lifts' array found for ${lodgeFirestoreId}`);
+                    updateLiftsGrid(lodgeInfo.tabId, [], lodgeInfo.name);
+                }
+
+                if (lodgeFirestoreId === 'main-lodge' && lodgeData.last_updated && liftStatusLastUpdatedElem) {
+                    try {
+                        let timestampToParse = lodgeData.last_updated;
+                        const isoWithoutZoneRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?$/;
+                        if (isoWithoutZoneRegex.test(lodgeData.last_updated)) {
+                            timestampToParse = lodgeData.last_updated + 'Z';
+                        }
+                        const dateObj = new Date(timestampToParse);
+                        const timeFormatOptions = { timeZone: 'America/Los_Angeles', hour: 'numeric', minute: '2-digit', hour12: true, timeZoneName: 'short' };
+                        const dateFormatOptions = { timeZone: 'America/Los_Angeles', month: 'numeric', day: 'numeric', year: '2-digit' };
+                        const formattedTime = dateObj.toLocaleTimeString('en-US', timeFormatOptions);
+                        const formattedDate = dateObj.toLocaleDateString('en-US', dateFormatOptions);
+                        liftStatusLastUpdatedElem.textContent = `Lift Status Last Updated: ${formattedTime} at ${formattedDate}`;
+                    } catch (e) {
+                        console.error("Error formatting timestamp for Mammoth:", e, "Original:", lodgeData.last_updated);
+                        liftStatusLastUpdatedElem.textContent = "Lift status update time unavailable.";
+                    }
+                }
+            } else {
+                console.error(`No document found for ${lodgeFirestoreId}`);
+                updateLiftsGrid(lodgeInfo.tabId, [], lodgeInfo.name);
+                if (lodgeFirestoreId === 'main-lodge' && liftStatusLastUpdatedElem) {
+                    liftStatusLastUpdatedElem.textContent = "Lift status update time unavailable.";
+                }
+            }
+        }, (error) => {
+            console.error(`Error fetching data for ${lodgeFirestoreId}:`, error);
+            updateLiftsGrid(lodgeInfo.tabId, [], lodgeInfo.name);
+            if (lodgeFirestoreId === 'main-lodge' && liftStatusLastUpdatedElem) {
+                liftStatusLastUpdatedElem.textContent = "Error fetching update time.";
+            }
         });
     }
 
-    // --- Button Click ---
-    const addParkBtn = document.getElementById('addParkBtn');
-    if(addParkBtn){
-        addParkBtn.addEventListener('click', function() { this.textContent = 'Added!'; setTimeout(() => { this.textContent = 'Add to Favorites'; }, 1500); });
+    for (const key in mammothLodgeDataMap) {
+        const lodgeInfo = mammothLodgeDataMap[key];
+        displayLodgeData(lodgeInfo.firestoreId, lodgeInfo);
     }
 
 </script>

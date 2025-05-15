@@ -119,15 +119,17 @@
         .tab-content.active { display: block; }
         @keyframes fadeInContent { from { opacity: 0; } to { opacity: 1; } }
         .lifts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 30px; }
-        .lift-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 5px 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.07); font-size: 16px; transition: transform 0.3s ease, background-color 0.3s ease, padding-left 0.3s ease; border-radius: 6px; } /* Added padding-left to transition */
+        .lift-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 5px 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.07); font-size: 16px; transition: transform 0.3s ease, background-color 0.3s ease, padding-left 0.3s ease; border-radius: 6px; }
         .lift-item:hover {
             transform: translateX(6px);
             background-color: rgba(255, 255, 255, 0.04);
             border-bottom-color: transparent;
-            padding-left: 10px; /* MODIFIED: Added left padding on hover */
+            padding-left: 10px;
         }
         .lifts-grid .lift-item:nth-last-child(-n+2) { border-bottom: none; }
         .lifts-grid .lift-item:nth-child(odd):last-child { border-bottom: none; }
+        .lift-name { flex-grow: 1; }
+        .lift-details { display: flex; align-items: center; }
         .lift-status-badge { display: inline-block; padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: 600; letter-spacing: 0.3px; flex-shrink: 0; margin-left: 15px; }
         @keyframes pulseStatus { 0% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.5); } 70% { box-shadow: 0 0 0 7px rgba(52, 199, 89, 0); } 100% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); } }
         .status-open { background-color: var(--status-open); color: #fff; animation: pulseStatus 2.5s infinite cubic-bezier(0.66, 0, 0, 1); }
@@ -162,7 +164,7 @@
             .lifts-grid .lift-item:nth-child(odd):last-child, .lifts-grid .lift-item:nth-child(even):last-child { border-bottom: none; }
             .lift-item:hover {
                 transform: translateX(4px);
-                padding-left: 8px; /* MODIFIED: Adjusted hover padding for smaller screens */
+                padding-left: 8px;
             }
             .animated-card { padding: 30px; max-width: 100%; }
             .tab-button { padding: 10px 20px; font-size: 16px; }
@@ -180,7 +182,7 @@
             .lift-item { font-size: 14px; padding: 10px 0; }
             .lift-item:hover {
                 transform: translateX(3px);
-                padding-left: 6px; /* MODIFIED: Adjusted hover padding for smallest screens */
+                padding-left: 6px;
             }
             .lift-status-badge { padding: 4px 10px; font-size: 11px; }
             .animated-card { padding: 20px; border-radius: 20px; }
@@ -196,8 +198,7 @@
 <nav>
     <a href="../../index.html" rel="noopener noreferrer" class="logo">SlopeScout</a>
     <div class="nav-links">
-        <a href="https://slopescout.org" rel="noopener noreferrer">Home</a>
-        <a href="explore.html">Explore</a>
+        <a href="../../index.html" rel="noopener noreferrer">Home</a> <a href="explore.html">Explore</a>
         <a href="bookmarks.html">Bookmarks</a>
         <a href="profile.html">Profile</a>
     </div>
@@ -212,9 +213,9 @@
 <div class="content-area">
     <div class="weather-card animated-card" id="weather">
         <div class="weather-content">
-            <div class="weather-row"><div class="weather-icon"><i class="fas fa-thermometer-half"></i></div><div class="weather-text">Temp: <span id="tempValue">28</span>°F</div></div>
-            <div class="weather-row"><div class="weather-icon"><i class="fas fa-cloud-sun"></i></div><div class="weather-text">Conditions: <span id="conditionValue">Partly Cloudy</span></div></div>
-            <div class="weather-row"><div class="weather-icon"><i class="fas fa-wind"></i></div><div class="weather-text">Wind: <span id="windValue">12</span> mph <span id="windDirection">NW</span></div></div>
+            <div class="weather-row"><div class="weather-icon"><i class="fas fa-thermometer-half"></i></div><div class="weather-text">Temp: <span id="tempValue">--</span>°F</div></div>
+            <div class="weather-row"><div class="weather-icon"><i class="fas fa-cloud-sun"></i></div><div class="weather-text">Conditions: <span id="conditionValue">--</span></div></div>
+            <div class="weather-row"><div class="weather-icon"><i class="fas fa-wind"></i></div><div class="weather-text">Wind: <span id="windValue">--</span> mph <span id="windDirection">--</span></div></div>
         </div>
         <button class="add-park-btn" id="addParkBtn">Add to Favorites</button>
     </div>
@@ -261,10 +262,9 @@
     </div>
 
     <div class="map-section animated-card" id="trail-map">
-        <h2 class="map-header" id="mapHeaderText">Trail Map</h2>
-        <div class="map-container">
-            <iframe id="mapIframe" src="" width="100%" height="100%" frameborder="0" loading="lazy"></iframe>
-        </div>
+        <h2 class="map-header" id="mapHeaderText">Trail Map</h2> <div class="map-container">
+        <iframe id="mapIframe" src="" width="100%" height="100%" frameborder="0" loading="lazy"></iframe>
+    </div>
     </div>
 </div>
 
@@ -285,7 +285,7 @@
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabContents = document.querySelectorAll('.tab-content');
 
-        const updateMap = (button) => {
+        const updateMapAndTabs = (button) => { // Renamed for clarity
             const mapUrl = button.dataset.mapUrl;
             const resortName = button.dataset.resortName;
             const targetContentId = button.dataset.tabTarget;
@@ -313,52 +313,107 @@
 
         tabsContainer.addEventListener('click', (e) => {
             if (!e.target.matches('.tab-button')) return;
-            updateMap(e.target);
+            updateMapAndTabs(e.target);
         });
 
         const initialActiveTab = document.querySelector('.tab-button.active');
         if (initialActiveTab) {
-            updateMap(initialActiveTab);
+            updateMapAndTabs(initialActiveTab);
         } else if (tabButtons.length > 0) {
             tabButtons[0].classList.add('active');
-            updateMap(tabButtons[0]);
+            updateMapAndTabs(tabButtons[0]);
         }
-
     } else {
         console.error("Required elements for tab/map switching not found.");
     }
-
-    // This refers to the "Add to Favorites" button in the weather card.
-    // Its Firebase logic is handled in the module script below.
-    const addParkBtnElement = document.getElementById('addParkBtn');
-    if(addParkBtnElement){
-        // No non-Firebase interaction needed here if Firebase logic is primary.
-    }
-
 </script>
 
 <script type="module">
     // Import necessary functions from Firebase SDK and your config
     import { auth, db } from '../firebase/config.js'; // Ensure path is correct
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-    import { doc, getDoc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+    import { doc, getDoc, setDoc, deleteDoc, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
-    // Variables for the bookmarking feature
+    // --- Weather API Configuration (Open-Meteo for Big Bear) ---
+    const BIGBEAR_LATITUDE = 34.2364;
+    const BIGBEAR_LONGITUDE = -116.8893; // West is negative
+    const weatherApiUrl_BigBear = `https://api.open-meteo.com/v1/forecast?latitude=${BIGBEAR_LATITUDE}&longitude=${BIGBEAR_LONGITUDE}&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FLos_Angeles`;
+
+    const tempValueEl_BigBear = document.getElementById('tempValue');
+    const conditionValueEl_BigBear = document.getElementById('conditionValue');
+    const windValueEl_BigBear = document.getElementById('windValue');
+    const windDirectionEl_BigBear = document.getElementById('windDirection');
+
+    // WMO Weather code descriptions (simplified)
+    function getWeatherDescription_BigBear(code) {
+        const descriptions = {
+            0: 'Clear', 1: 'Mainly Clear', 2: 'Partly Cloudy', 3: 'Overcast',
+            45: 'Fog', 48: 'Rime Fog',
+            51: 'Light Drizzle', 53: 'Drizzle', 55: 'Dense Drizzle',
+            56: 'Light Freezing Drizzle', 57: 'Freezing Drizzle',
+            61: 'Slight Rain', 63: 'Rain', 65: 'Heavy Rain',
+            66: 'Light Freezing Rain', 67: 'Freezing Rain',
+            71: 'Slight Snow', 73: 'Snow', 75: 'Heavy Snow',
+            77: 'Snow Grains',
+            80: 'Slight Showers', 81: 'Showers', 82: 'Heavy Showers',
+            85: 'Slight Snow Showers', 86: 'Snow Showers',
+            95: 'Thunderstorm', 96: 'Thunderstorm, Hail', 99: 'Thunderstorm, Heavy Hail',
+        };
+        return descriptions[code] || 'N/A';
+    }
+
+    async function fetchWeatherData_BigBear() {
+        try {
+            const response = await fetch(weatherApiUrl_BigBear);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const data = await response.json();
+
+            if (data.current) {
+                if (tempValueEl_BigBear) tempValueEl_BigBear.textContent = Math.round(data.current.temperature_2m);
+                if (conditionValueEl_BigBear) conditionValueEl_BigBear.textContent = getWeatherDescription_BigBear(data.current.weather_code);
+                if (windValueEl_BigBear) windValueEl_BigBear.textContent = Math.round(data.current.wind_speed_10m);
+                if (windDirectionEl_BigBear) windDirectionEl_BigBear.textContent = degToCompass_BigBear(data.current.wind_direction_10m);
+            } else {
+                console.warn("Current weather data not found in Open-Meteo response for Big Bear.");
+                if(tempValueEl_BigBear) tempValueEl_BigBear.textContent = "N/A";
+                if(conditionValueEl_BigBear) conditionValueEl_BigBear.textContent = "N/A";
+                if(windValueEl_BigBear) windValueEl_BigBear.textContent = "N/A";
+                if(windDirectionEl_BigBear) windDirectionEl_BigBear.textContent = "";
+            }
+        } catch (error) {
+            console.error("Error fetching Big Bear weather data:", error);
+            if(tempValueEl_BigBear) tempValueEl_BigBear.textContent = "Error";
+            if(conditionValueEl_BigBear) conditionValueEl_BigBear.textContent = "Error";
+            if(windValueEl_BigBear) windValueEl_BigBear.textContent = "Error";
+            if(windDirectionEl_BigBear) windDirectionEl_BigBear.textContent = "";
+        }
+    }
+
+    function degToCompass_BigBear(num) {
+        const val = Math.floor((num / 22.5) + 0.5);
+        const arr = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+        return arr[(val % 16)];
+    }
+
+    fetchWeatherData_BigBear(); // Fetch weather on page load
+
+
+    // --- Bookmark Feature (remains the same) ---
     const addParkBtnBookmark = document.getElementById('addParkBtn');
-    const resortIdBookmark = 'bigbear';
-    const resortNameBookmark = 'Big Bear Mountain Resort';
-    const resortPageUrlBookmark = 'bigbear.html';
+    const resortIdBookmark = 'bigbear'; // Unique ID for Big Bear in bookmarks
+    const resortNameBookmark = 'Big Bear Mountain Resort'; // Display name
+    const resortPageUrlBookmark = 'bigbear.html'; // Current page
 
     let currentUserIdBookmark = null;
     let isBookmarkedState = false;
     let isProcessingBookmarkState = false;
 
-    // Style variables for the bookmark button
     const bookmarkDefaultButtonColor = 'var(--accent-blue)';
     const bookmarkHoverRemoveColor = 'var(--status-closed)';
     const bookmarkDisabledLoginColor = '#444';
 
     function updateBookmarkButtonState() {
+        // ... (Bookmark UI logic - kept same as previous version) ...
         if (!addParkBtnBookmark) return;
         if (isProcessingBookmarkState) return;
 
@@ -415,7 +470,6 @@
             addParkBtnBookmark.removeEventListener('blur', handleBookmarkMouseOut);
         }
     }
-
     async function checkIfResortIsBookmarked() {
         if (!currentUserIdBookmark) {
             isBookmarkedState = false;
@@ -449,7 +503,8 @@
         addParkBtnBookmark.addEventListener('click', async () => {
             if (!currentUserIdBookmark) {
                 alert('Please log in or create an account to save bookmarks.');
-                window.location.href = 'sign-up_login.html';
+                // Optional: Redirect to login page
+                // window.location.href = 'sign-up_login.html';
                 return;
             }
             if (isProcessingBookmarkState) return;
@@ -488,20 +543,15 @@
         console.error("Bookmark button (#addParkBtn) not found.");
     }
 
-    // --- SCRIPT FOR LIFT STATUSES FROM FIRESTORE ---
-
+    // --- SCRIPT FOR LIFT STATUSES FROM FIRESTORE (remains the same) ---
     const resortDataMap = {
-        'snow-valley': { tabId: 'sv-lifts', firestoreId: 'snow-valley' },
-        'snow-summit': { tabId: 'ss-lifts', firestoreId: 'snow-summit' },
-        'bear-mountain': { tabId: 'bm-lifts', firestoreId: 'bear-mountain' }
+        'snow-valley': { tabId: 'sv-lifts', firestoreId: 'snow-valley', name: "Snow Valley" },
+        'snow-summit': { tabId: 'ss-lifts', firestoreId: 'snow-summit', name: "Snow Summit" },
+        'bear-mountain': { tabId: 'bm-lifts', firestoreId: 'bear-mountain', name: "Bear Mountain" }
     };
 
-    /**
-     * Maps a lift status string to a CSS class.
-     * @param {string} status - The lift status text.
-     * @returns {string} The CSS class for the status.
-     */
     function getStatusClass(status) {
+        // ... (getStatusClass logic - kept same as previous version) ...
         if (!status) return 'status-closed';
         const lowerStatus = status.toLowerCase();
 
@@ -513,55 +563,61 @@
         return 'status-closed';
     }
 
-    /**
-     * Updates the lifts grid in the HTML for a specific resort.
-     * @param {string} tabContentId - The ID of the tab content div (e.g., 'sv-lifts').
-     * @param {Array} liftsData - An array of lift objects from Firestore.
-     */
-    function updateLiftsGrid(tabContentId, liftsData) {
+    function formatLiftTypeForBigBear(typeString) {
+        if (!typeString) return '';
+        // Simple title case for Big Bear lift types for now
+        // Can be expanded if specific formatting is needed like for Mammoth
+        if (typeString === "Double") return "Double Chair";
+        if (typeString === "6 Chair") return "Six Chair";
+        // Add more specific formatting if needed
+        return typeString.split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join(' ');
+    }
+
+
+    function updateLiftsGrid(tabContentId, liftsData, resortName) {
+        // ... (updateLiftsGrid logic - mostly same, but uses formatLiftTypeForBigBear) ...
         const tabContentElement = document.getElementById(tabContentId);
         if (!tabContentElement) {
-            console.error(`Element with ID '${tabContentId}' not found.`);
+            console.error(`Element with ID '${tabContentId}' not found for ${resortName}.`);
             return;
         }
         const grid = tabContentElement.querySelector('.lifts-grid');
         if (!grid) {
-            console.error(`Lifts grid not found in '${tabContentId}'.`);
+            console.error(`Lifts grid not found in '${tabContentId}' for ${resortName}.`);
             return;
         }
 
-        grid.innerHTML = ''; // Clear existing lift items or loading message
+        grid.innerHTML = '';
 
         if (!liftsData || liftsData.length === 0) {
-            grid.innerHTML = '<div class="lift-item"><span>No lift data available.</span><span class="lift-status-badge"></span></div>';
+            grid.innerHTML = `<div class="lift-item"><span>No lift data available for ${resortName}.</span><span class="lift-status-badge"></span></div>`;
             return;
         }
 
+        let visibleLiftsCount = 0;
         liftsData.forEach(lift => {
-            // Filter out Magic Carpets
             const liftNameLower = lift.name ? lift.name.toLowerCase() : '';
-            let liftTypeOriginal = lift.type || ''; // Keep original case for display modifications
+            let liftTypeOriginal = lift.type || '';
             const liftTypeLower = liftTypeOriginal.toLowerCase();
 
 
             if (liftNameLower.includes('magic carpet') || liftTypeLower.includes('magic carpet') || liftNameLower.startsWith('mc ')) {
-                return; // Skip this lift
+                return;
             }
+            visibleLiftsCount++;
 
             const liftItemDiv = document.createElement('div');
             liftItemDiv.className = 'lift-item';
 
             const liftNameSpan = document.createElement('span');
+            liftNameSpan.className = 'lift-name';
             let liftDisplayName = lift.name || 'Unknown Lift';
 
-            // MODIFIED: Specific text replacements for lift types
-            if (liftTypeOriginal && liftTypeOriginal.trim() !== '') {
-                if (liftTypeOriginal === "Double") {
-                    liftTypeOriginal = "Double Chair";
-                } else if (liftTypeOriginal === "6 Chair") {
-                    liftTypeOriginal = "Six Chair";
-                }
-                liftDisplayName += ` (${liftTypeOriginal})`;
+            const formattedType = formatLiftTypeForBigBear(lift.type); // Use specific formatter
+            if (formattedType) {
+                liftDisplayName += ` (${formattedType})`;
             }
             liftNameSpan.textContent = liftDisplayName;
 
@@ -572,88 +628,69 @@
             liftStatusSpan.textContent = lift.status || 'Unknown';
 
             liftItemDiv.appendChild(liftNameSpan);
-            liftItemDiv.appendChild(liftStatusSpan);
+            liftItemDiv.appendChild(liftStatusSpan); // For Big Bear, status is directly appended
             grid.appendChild(liftItemDiv);
         });
 
-        if (grid.children.length === 0) { // If after filtering, the grid is empty
-            grid.innerHTML = '<div class="lift-item"><span>No applicable lift data available.</span><span class="lift-status-badge"></span></div>';
+        if (visibleLiftsCount === 0) {
+            grid.innerHTML = `<div class="lift-item"><span>No applicable lift data available for ${resortName}.</span><span class="lift-status-badge"></span></div>`;
         }
     }
 
-    /**
-     * Fetches resort data from Firestore and updates the UI.
-     */
-    async function displayResortData() {
-        const liftStatusLastUpdatedElem = document.getElementById('liftStatusLastUpdated');
+    const liftStatusLastUpdatedElem = document.getElementById('liftStatusLastUpdated');
+
+    function displayResortData() {
+        // ... (displayResortData logic - kept same as previous version, ensures it uses resortDataMap) ...
         let overallLastUpdatedTimestamp = null;
 
         for (const key in resortDataMap) {
             const resortInfo = resortDataMap[key];
-            const docRef = doc(db, 'resort_conditions', resortInfo.firestoreId);
-
-            try {
-                const docSnap = await getDoc(docRef);
+            const unsub = onSnapshot(doc(db, "resort_conditions", resortInfo.firestoreId), (docSnap) => {
                 if (docSnap.exists()) {
                     const resortData = docSnap.data();
                     if (resortData.lifts) {
-                        updateLiftsGrid(resortInfo.tabId, resortData.lifts);
+                        updateLiftsGrid(resortInfo.tabId, resortData.lifts, resortInfo.name); // Pass resortName
                     } else {
                         console.warn(`No 'lifts' array found for ${resortInfo.firestoreId}`);
-                        updateLiftsGrid(resortInfo.tabId, []);
+                        updateLiftsGrid(resortInfo.tabId, [], resortInfo.name);
                     }
 
-                    if (resortInfo.firestoreId === 'bear-mountain' && resortData.last_updated) {
+                    // Use 'bear-mountain' for the overall last updated time for Big Bear section
+                    if (resortInfo.firestoreId === 'bear-mountain' && resortData.last_updated && liftStatusLastUpdatedElem) {
                         overallLastUpdatedTimestamp = resortData.last_updated;
+                        try {
+                            let timestampToParse = overallLastUpdatedTimestamp;
+                            const isoWithoutZoneRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?$/;
+                            if (isoWithoutZoneRegex.test(overallLastUpdatedTimestamp)) {
+                                timestampToParse = overallLastUpdatedTimestamp + 'Z';
+                            }
+                            const dateObj = new Date(timestampToParse);
+                            const timeFormatOptions = { timeZone: 'America/Los_Angeles', hour: 'numeric', minute: '2-digit', hour12: true, timeZoneName: 'short' };
+                            const dateFormatOptions = { timeZone: 'America/Los_Angeles', month: 'numeric', day: 'numeric', year: '2-digit' };
+                            const formattedTime = dateObj.toLocaleTimeString('en-US', timeFormatOptions);
+                            const formattedDate = dateObj.toLocaleDateString('en-US', dateFormatOptions);
+                            liftStatusLastUpdatedElem.textContent = `Lift Status Last Updated: ${formattedTime} at ${formattedDate}`;
+                        } catch (e) {
+                            console.error("Error formatting timestamp for Big Bear:", e, "Original:", overallLastUpdatedTimestamp);
+                            liftStatusLastUpdatedElem.textContent = "Lift status update time unavailable.";
+                        }
                     }
                 } else {
                     console.error(`No document found for ${resortInfo.firestoreId}`);
-                    updateLiftsGrid(resortInfo.tabId, []);
+                    updateLiftsGrid(resortInfo.tabId, [], resortInfo.name);
+                    if (resortInfo.firestoreId === 'bear-mountain' && liftStatusLastUpdatedElem) {
+                        liftStatusLastUpdatedElem.textContent = "Lift status update time unavailable.";
+                    }
                 }
-            } catch (error) {
+            }, (error) => {
                 console.error(`Error fetching data for ${resortInfo.firestoreId}:`, error);
-                updateLiftsGrid(resortInfo.tabId, []);
-            }
-        }
-
-        if (overallLastUpdatedTimestamp && liftStatusLastUpdatedElem) {
-            try {
-                let timestampToParse = overallLastUpdatedTimestamp;
-                const isoWithoutZoneRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?$/;
-                if (isoWithoutZoneRegex.test(overallLastUpdatedTimestamp)) {
-                    timestampToParse = overallLastUpdatedTimestamp + 'Z';
+                updateLiftsGrid(resortInfo.tabId, [], resortInfo.name);
+                if (resortInfo.firestoreId === 'bear-mountain' && liftStatusLastUpdatedElem) {
+                    liftStatusLastUpdatedElem.textContent = "Error fetching update time.";
                 }
-
-                const dateObj = new Date(timestampToParse);
-
-                const timeFormatOptions = {
-                    timeZone: 'America/Los_Angeles',
-                    hour: 'numeric',
-                    minute: '2-digit',
-                    hour12: true,
-                    timeZoneName: 'short'
-                };
-                const dateFormatOptions = {
-                    timeZone: 'America/Los_Angeles',
-                    month: 'numeric',
-                    day: 'numeric',
-                    year: '2-digit'
-                };
-
-                const formattedTime = dateObj.toLocaleTimeString('en-US', timeFormatOptions);
-                const formattedDate = dateObj.toLocaleDateString('en-US', dateFormatOptions);
-
-                liftStatusLastUpdatedElem.textContent = `Lift Status Last Updated: ${formattedTime} at ${formattedDate}`;
-            } catch (e) {
-                console.error("Error formatting timestamp:", e, "Original timestamp:", overallLastUpdatedTimestamp);
-                liftStatusLastUpdatedElem.textContent = "Lift status update time unavailable.";
-            }
-        } else if (liftStatusLastUpdatedElem) {
-            liftStatusLastUpdatedElem.textContent = "Lift status update time unavailable.";
+            });
         }
     }
-
-    // Call the function to load and display data when the script runs
     displayResortData();
 
 </script>
