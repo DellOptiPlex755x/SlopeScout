@@ -12,7 +12,8 @@ firebase-debug.*.log*
 
 # Environmental Variables
 .env*.local
-
+.env.local
+.*.local
 # Runtime data
 pids
 *.pid
