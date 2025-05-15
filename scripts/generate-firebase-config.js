@@ -15,13 +15,21 @@ const projectId = process.env.FIREBASE_PROJECT_ID;
 const storageBucket = process.env.FIREBASE_STORAGE_BUCKET;
 const messagingSenderId = process.env.FIREBASE_MESSAGING_SENDER_ID;
 const appId = process.env.FIREBASE_APP_ID;
-// const measurementId = process.env.FIREBASE_MEASUREMENT_ID; // Uncomment if used
+const measurementId = process.env.FIREBASE_MEASUREMENT_ID; // Retrieve, will be used if set
 
-// Basic validation
+// Basic validation for core Firebase config values
 if (!apiKey || !authDomain || !projectId || !storageBucket || !messagingSenderId || !appId) {
-    console.error("Error: Missing one or more Firebase environment variables.");
-    console.error("Please ensure FIREBASE_API_KEY, FIREBASE_AUTH_DOMAIN, etc., are set in Vercel.");
+    console.error("Error: Missing one or more core Firebase environment variables.");
+    console.error("Please ensure FIREBASE_API_KEY, FIREBASE_AUTH_DOMAIN, FIREBASE_PROJECT_ID, FIREBASE_STORAGE_BUCKET, FIREBASE_MESSAGING_SENDER_ID, and FIREBASE_APP_ID are set in Vercel.");
     process.exit(1); // Exit with an error code
+}
+
+// Conditionally add measurementId to the config string if it exists
+let measurementIdString = '';
+if (measurementId) {
+    measurementIdString = `    measurementId: "${measurementId}"`;
+} else {
+    measurementIdString = `    // measurementId: "NOT_SET" // Not set in Vercel environment variables`;
 }
 
 // Content for the config.js file
@@ -40,8 +48,8 @@ const firebaseConfig = {
     projectId: "${projectId}",
     storageBucket: "${storageBucket}",
     messagingSenderId: "${messagingSenderId}",
-    appId: "${appId}"
-    // measurementId: "${measurementId}" // Uncomment if you use it and have it set
+    appId: "${appId}",
+${measurementIdString} // measurementId will be included here if set
 };
 
 const app = initializeApp(firebaseConfig);
@@ -63,8 +71,10 @@ try {
     }
 
     fs.writeFileSync(outputPath, configContent.trim());
-    console.log(\`Firebase config.js generated successfully at: \${outputPath}\`);
+    // CORRECTED: Removed unnecessary backslash before backtick
+    console.log(`Firebase config.js generated successfully at: ${outputPath}`);
 } catch (error) {
-    console.error(\`Error writing Firebase config file at \${outputPath}:\`, error);
+    // CORRECTED: Removed unnecessary backslash before backtick
+    console.error(`Error writing Firebase config file at ${outputPath}:`, error);
     process.exit(1); // Exit with an error code
 }
