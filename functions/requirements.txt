@@ -1,0 +1,5 @@
+# functions/requirements.txt
+firebase_functions~=0.2.0  # Or your current version
+firebase-admin>=6.0.0
+requests>=2.25.0
+tzdata # For timezone support like "America/Los_Angeles"

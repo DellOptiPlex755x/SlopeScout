@@ -65,39 +65,36 @@
         /* --- Hero Section --- */
         .hero {
             position: relative;
-            height: 55vh; /* Keep original height */
+            height: 55vh;
             width: 100%;
-            margin-top: 74px; /* Adjust if needed */
-            /* Set background image */
-            background-image: url('/assets/images/mountainImage.jpg'); /* Root-relative path */
+            margin-top: 74px;
+            background-image: url('/assets/images/mountainImage.jpg');
             background-size: cover;
-            background-position: center center; /* Center the image */
-            display: flex; /* Use flex to easily center content */
+            background-position: center center;
+            display: flex;
             justify-content: center;
             align-items: center;
-            text-align: center; /* Center text within flex item */
+            text-align: center;
         }
         .hero-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%);
-            z-index: 0; /* Ensure overlay is behind text */
+            z-index: 0;
         }
         .hero-content {
-            position: relative; /* Keep relative for z-index */
-            z-index: 1; /* Ensure text is above overlay */
+            position: relative;
+            z-index: 1;
             padding: 0 20px;
         }
-        /* --- Restored and Updated H1 Style --- */
         .hero-content h1 {
-            font-size: 117px; /* 90px * 1.3 */
-            font-weight: 700; /* Original weight */
-            letter-spacing: -2px; /* Adjusted slightly */
+            font-size: 117px;
+            font-weight: 700;
+            letter-spacing: -2px;
             line-height: 1.05;
             text-shadow: 0px 5px 15px rgba(0, 0, 0, 0.6);
-            text-transform: uppercase; /* Make text uppercase */
-            color: var(--text-light); /* Ensure text color */
+            text-transform: uppercase;
+            color: var(--text-light);
         }
-        /* --- Removed Parallax Text Styles --- */
 
 
         /* --- Styles for Content Area, Cards, Tabs, Map etc. --- */
@@ -122,11 +119,14 @@
         .tab-content.active { display: block; }
         @keyframes fadeInContent { from { opacity: 0; } to { opacity: 1; } }
         .lifts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 30px; }
-        .lift-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 5px 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.07); font-size: 16px; transition: transform 0.3s ease, background-color 0.3s ease; border-radius: 6px; }
-        .lift-item:hover { transform: translateX(6px); background-color: rgba(255, 255, 255, 0.04); border-bottom-color: transparent; }
-        /* Adjust border for last items in 2-column grid */
+        .lift-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 5px 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.07); font-size: 16px; transition: transform 0.3s ease, background-color 0.3s ease, padding-left 0.3s ease; border-radius: 6px; } /* Added padding-left to transition */
+        .lift-item:hover {
+            transform: translateX(6px);
+            background-color: rgba(255, 255, 255, 0.04);
+            border-bottom-color: transparent;
+            padding-left: 10px; /* MODIFIED: Added left padding on hover */
+        }
         .lifts-grid .lift-item:nth-last-child(-n+2) { border-bottom: none; }
-        /* Ensure the very last odd item also has no border if it's the only one in the last row */
         .lifts-grid .lift-item:nth-child(odd):last-child { border-bottom: none; }
         .lift-status-badge { display: inline-block; padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: 600; letter-spacing: 0.3px; flex-shrink: 0; margin-left: 15px; }
         @keyframes pulseStatus { 0% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.5); } 70% { box-shadow: 0 0 0 7px rgba(52, 199, 89, 0); } 100% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); } }
@@ -136,7 +136,6 @@
         .status-hold { background-color: var(--status-hold); color: #fff; }
         .map-section { margin-top: 40px; }
         .map-header { text-align: left; margin-bottom: 25px; font-size: 24px; font-weight: 600; letter-spacing: -0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 15px; }
-        /* --- MODIFIED: Increased map height by 25% --- */
         .map-container { height: 750px; width: 100%; border-radius: 16px; overflow: hidden; position: relative; }
         .map-container iframe { border-radius: 16px; }
 
@@ -149,42 +148,43 @@
         }
         @media (max-width: 991.98px) {
             .nav-links { display: none; }
-            /* Adjust H1 size for smaller screens */
             .hero-content h1 { font-size: 80px; letter-spacing: -1.5px; }
-            /* --- MODIFIED: Increased map height by 25% --- */
-            .map-container { height: 563px; } /* 450 * 1.25 */
+            .map-container { height: 563px; }
         }
         @media (max-width: 768px) {
-            .hero-content h1 { font-size: 60px; letter-spacing: -1px; } /* Further reduce H1 */
+            .hero-content h1 { font-size: 60px; letter-spacing: -1px; }
             .content-area { padding: 0 25px 40px; margin-top: -50px; }
             .weather-text { font-size: 17px; }
             .lifts-grid { grid-template-columns: 1fr; gap: 5px 0; }
-            /* Adjust border for last items in 1-column grid */
             .lifts-grid .lift-item { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
             .lifts-grid .lift-item:last-child { border-bottom: none; }
-            /* Reset the 2-column border logic for 1-column */
             .lifts-grid .lift-item:nth-last-child(-n+2) { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
             .lifts-grid .lift-item:nth-child(odd):last-child, .lifts-grid .lift-item:nth-child(even):last-child { border-bottom: none; }
-            .lift-item:hover { transform: translateX(4px); }
+            .lift-item:hover {
+                transform: translateX(4px);
+                padding-left: 8px; /* MODIFIED: Adjusted hover padding for smaller screens */
+            }
             .animated-card { padding: 30px; max-width: 100%; }
             .tab-button { padding: 10px 20px; font-size: 16px; }
             .map-header { font-size: 22px; }
         }
         @media (max-width: 576px) {
             nav { padding: 15px 20px; }
-            .hero { margin-top: 60px; /* Adjust if needed */ }
-            .hero-content h1 { font-size: 48px; letter-spacing: -0.5px; } /* Final H1 size */
+            .hero { margin-top: 60px; }
+            .hero-content h1 { font-size: 48px; letter-spacing: -0.5px; }
             .content-area { padding: 0 15px 30px; margin-top: -40px; }
             .weather-icon { width: 35px; font-size: 24px; }
             .weather-text { font-size: 15px; }
             .weather-row { gap: 15px; }
             .add-park-btn { padding: 12px 24px; font-size: 15px; max-width: 250px; }
             .lift-item { font-size: 14px; padding: 10px 0; }
-            .lift-item:hover { transform: translateX(3px); }
+            .lift-item:hover {
+                transform: translateX(3px);
+                padding-left: 6px; /* MODIFIED: Adjusted hover padding for smallest screens */
+            }
             .lift-status-badge { padding: 4px 10px; font-size: 11px; }
             .animated-card { padding: 20px; border-radius: 20px; }
-            /* --- MODIFIED: Increased map height by 25% --- */
-            .map-container { height: 438px; border-radius: 12px; } /* 350 * 1.25 */
+            .map-container { height: 438px; border-radius: 12px; }
             .map-container iframe { border-radius: 12px; }
             .tab-button { padding: 10px 15px; font-size: 15px; }
             .map-header { font-size: 20px; }
@@ -243,43 +243,21 @@
         <div class="tab-content-container">
             <div class="tab-content active" id="sv-lifts">
                 <div class="lifts-grid">
-                    <div class="lift-item"><span>Chair 1 (6 Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 2 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 3 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 6 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 8 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 9 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 11 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 12 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 13 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    </div>
+                    <div class="lift-item"><span>Loading Snow Valley lifts...</span><span class="lift-status-badge"></span></div>
+                </div>
             </div>
             <div class="tab-content" id="ss-lifts">
                 <div class="lifts-grid">
-                    <div class="lift-item"><span>Chair 1 (High-Speed Quad)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 2 (High-Speed Quad)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 3 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 4 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 5 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 6 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 7 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 8 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 9 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 10 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                     </div>
+                    <div class="lift-item"><span>Loading Snow Summit lifts...</span><span class="lift-status-badge"></span></div>
+                </div>
             </div>
             <div class="tab-content" id="bm-lifts">
                 <div class="lifts-grid">
-                    <div class="lift-item"><span>Chair 3 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 4 (Double)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 5 (6 Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 6 (High-Speed Quad)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 7 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 8 (Triple Chair)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
-                    <div class="lift-item"><span>Chair 9 (High-Speed Quad)</span><span class="lift-status-badge status-closed">Closed For Season</span></div>
+                    <div class="lift-item"><span>Loading Bear Mountain lifts...</span><span class="lift-status-badge"></span></div>
                 </div>
             </div>
         </div>
+        <p id="liftStatusLastUpdated" style="text-align: center; font-size: 0.9em; color: var(--text-secondary); margin-top: 20px;">Fetching latest update time...</p>
     </div>
 
     <div class="map-section animated-card" id="trail-map">
@@ -300,57 +278,48 @@
 
     // --- Tab Switching Logic ---
     const tabsContainer = document.querySelector('.tabs-container');
-    // --- MODIFIED: Get references to map elements ---
     const mapIframe = document.getElementById('mapIframe');
     const mapHeaderText = document.getElementById('mapHeaderText');
 
-    if(tabsContainer && mapIframe && mapHeaderText){ // Check if all elements exist
+    if(tabsContainer && mapIframe && mapHeaderText){
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabContents = document.querySelectorAll('.tab-content');
 
-        // --- MODIFIED: Function to update map and header ---
         const updateMap = (button) => {
             const mapUrl = button.dataset.mapUrl;
             const resortName = button.dataset.resortName;
             const targetContentId = button.dataset.tabTarget;
             const targetContent = document.querySelector(targetContentId);
 
-            // Update iframe source
             if(mapUrl) {
                 mapIframe.src = mapUrl;
             } else {
                 console.warn("Map URL not found for button:", button);
-                mapIframe.src = ""; // Clear src if no URL
+                mapIframe.src = "";
             }
 
-            // Update map header text
             if(resortName) {
                 mapHeaderText.textContent = `${resortName} Trail Map`;
             } else {
-                mapHeaderText.textContent = 'Trail Map'; // Default text
+                mapHeaderText.textContent = 'Trail Map';
             }
 
-            // Update active tab content
             tabContents.forEach(content => content.classList.remove('active'));
             if (targetContent) { targetContent.classList.add('active'); }
 
-            // Update active tab button style
             tabButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
         };
 
-        // --- MODIFIED: Add click listener and call updateMap ---
         tabsContainer.addEventListener('click', (e) => {
             if (!e.target.matches('.tab-button')) return;
-            updateMap(e.target); // Call the update function with the clicked button
+            updateMap(e.target);
         });
 
-        // --- MODIFIED: Set initial map based on the default active tab ---
         const initialActiveTab = document.querySelector('.tab-button.active');
         if (initialActiveTab) {
             updateMap(initialActiveTab);
         } else if (tabButtons.length > 0) {
-            // Fallback: if no tab is active by default, activate the first one
             tabButtons[0].classList.add('active');
             updateMap(tabButtons[0]);
         }
@@ -359,13 +328,11 @@
         console.error("Required elements for tab/map switching not found.");
     }
 
-    // --- Button Click ---
-    const addParkBtn = document.getElementById('addParkBtn');
-    if(addParkBtn){
-        // Note: This simple text change might conflict with the Firebase logic below.
-        // The Firebase logic will likely override this. Consider removing this simple listener
-        // if using Firebase, or integrate the 'Added!' feedback into the Firebase handler.
-        // addParkBtn.addEventListener('click', function() { this.textContent = 'Added!'; setTimeout(() => { this.textContent = 'Add to Favorites'; }, 1500); });
+    // This refers to the "Add to Favorites" button in the weather card.
+    // Its Firebase logic is handled in the module script below.
+    const addParkBtnElement = document.getElementById('addParkBtn');
+    if(addParkBtnElement){
+        // No non-Firebase interaction needed here if Firebase logic is primary.
     }
 
 </script>
@@ -374,177 +341,320 @@
     // Import necessary functions from Firebase SDK and your config
     import { auth, db } from '../firebase/config.js'; // Ensure path is correct
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-    import { doc, setDoc, getDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+    import { doc, getDoc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
-    const addParkBtn = document.getElementById('addParkBtn');
-    const resortId = 'bigbear'; // Unique ID for this resort page
-    const resortName = 'Big Bear Mountain Resort'; // Display name for bookmarks
-    const resortPageUrl = 'bigbear.html'; // URL for linking back
+    // Variables for the bookmarking feature
+    const addParkBtnBookmark = document.getElementById('addParkBtn');
+    const resortIdBookmark = 'bigbear';
+    const resortNameBookmark = 'Big Bear Mountain Resort';
+    const resortPageUrlBookmark = 'bigbear.html';
 
-    let currentUserId = null;
-    let isBookmarked = false;
-    let isProcessing = false; // Flag to track if an operation is in progress
+    let currentUserIdBookmark = null;
+    let isBookmarkedState = false;
+    let isProcessingBookmarkState = false;
 
-    // --- NEW: Define colors for clarity ---
-    const defaultButtonColor = 'var(--accent-blue)';
-    const hoverRemoveColor = 'var(--status-closed)'; // Using your existing red color variable
-    const disabledLoginColor = '#444'; // Grey for login prompt
+    // Style variables for the bookmark button
+    const bookmarkDefaultButtonColor = 'var(--accent-blue)';
+    const bookmarkHoverRemoveColor = 'var(--status-closed)';
+    const bookmarkDisabledLoginColor = '#444';
 
-    // --- UPDATED: Function to update button appearance ---
-    function updateButtonState() {
-        if (!addParkBtn) return;
-        if (isProcessing) return; // Don't change appearance during processing
+    function updateBookmarkButtonState() {
+        if (!addParkBtnBookmark) return;
+        if (isProcessingBookmarkState) return;
 
-        // Reset hover text/color explicitly on state update
-        addParkBtn.style.backgroundColor = defaultButtonColor; // Default blue
+        addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor;
 
-        if (isBookmarked) {
-            addParkBtn.textContent = 'Bookmarked';
-            addParkBtn.style.backgroundColor = defaultButtonColor; // Keep blue
-            addParkBtn.disabled = false;
-            // Add hover listeners if not already added
-            addHoverEffect();
+        if (isBookmarkedState) {
+            addParkBtnBookmark.textContent = 'Bookmarked';
+            addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor;
+            addParkBtnBookmark.disabled = false;
+            addBookmarkHoverEffect();
         } else {
-            addParkBtn.textContent = 'Add to Bookmarks';
-            addParkBtn.style.backgroundColor = defaultButtonColor; // Keep blue
-            addParkBtn.disabled = false;
-            // Remove hover listeners if they exist
-            removeHoverEffect();
+            addParkBtnBookmark.textContent = 'Add to Bookmarks';
+            addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor;
+            addParkBtnBookmark.disabled = false;
+            removeBookmarkHoverEffect();
         }
 
-        // Override if user is not logged in
-        if (!currentUserId) {
-            addParkBtn.textContent = 'Login to Bookmark';
-            addParkBtn.style.backgroundColor = disabledLoginColor; // Use specific disabled color
-            addParkBtn.disabled = true;
-            removeHoverEffect(); // No hover effect if logged out
+        if (!currentUserIdBookmark) {
+            addParkBtnBookmark.textContent = 'Login to Bookmark';
+            addParkBtnBookmark.style.backgroundColor = bookmarkDisabledLoginColor;
+            addParkBtnBookmark.disabled = true;
+            removeBookmarkHoverEffect();
         }
     }
 
-    // --- NEW: Functions to handle hover effects ---
-    const handleMouseOver = () => {
-        if (isBookmarked && !isProcessing) { // Only apply if bookmarked and not processing
-            addParkBtn.style.backgroundColor = hoverRemoveColor;
-            addParkBtn.textContent = 'Remove bookmark';
+    const handleBookmarkMouseOver = () => {
+        if (isBookmarkedState && !isProcessingBookmarkState) {
+            addParkBtnBookmark.style.backgroundColor = bookmarkHoverRemoveColor;
+            addParkBtnBookmark.textContent = 'Remove bookmark';
         }
     };
 
-    const handleMouseOut = () => {
-        if (isBookmarked && !isProcessing) { // Only revert if bookmarked and not processing
-            addParkBtn.style.backgroundColor = defaultButtonColor;
-            addParkBtn.textContent = 'Bookmarked';
+    const handleBookmarkMouseOut = () => {
+        if (isBookmarkedState && !isProcessingBookmarkState) {
+            addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor;
+            addParkBtnBookmark.textContent = 'Bookmarked';
         }
     };
 
-    function addHoverEffect() {
-        if (addParkBtn) {
-            addParkBtn.addEventListener('mouseover', handleMouseOver);
-            addParkBtn.addEventListener('mouseout', handleMouseOut);
-            // Add focus/blur for accessibility/touch fallback (optional but good)
-            addParkBtn.addEventListener('focus', handleMouseOver);
-            addParkBtn.addEventListener('blur', handleMouseOut);
+    function addBookmarkHoverEffect() {
+        if (addParkBtnBookmark) {
+            addParkBtnBookmark.addEventListener('mouseover', handleBookmarkMouseOver);
+            addParkBtnBookmark.addEventListener('mouseout', handleBookmarkMouseOut);
+            addParkBtnBookmark.addEventListener('focus', handleBookmarkMouseOver);
+            addParkBtnBookmark.addEventListener('blur', handleBookmarkMouseOut);
         }
     }
 
-    function removeHoverEffect() {
-        if (addParkBtn) {
-            addParkBtn.removeEventListener('mouseover', handleMouseOver);
-            addParkBtn.removeEventListener('mouseout', handleMouseOut);
-            addParkBtn.removeEventListener('focus', handleMouseOver);
-            addParkBtn.removeEventListener('blur', handleMouseOut);
+    function removeBookmarkHoverEffect() {
+        if (addParkBtnBookmark) {
+            addParkBtnBookmark.removeEventListener('mouseover', handleBookmarkMouseOver);
+            addParkBtnBookmark.removeEventListener('mouseout', handleBookmarkMouseOut);
+            addParkBtnBookmark.removeEventListener('focus', handleBookmarkMouseOver);
+            addParkBtnBookmark.removeEventListener('blur', handleBookmarkMouseOut);
         }
     }
 
-
-    // Function to check if the resort is already bookmarked
-    async function checkIfBookmarked() {
-        if (!currentUserId) {
-            isBookmarked = false;
-            updateButtonState();
+    async function checkIfResortIsBookmarked() {
+        if (!currentUserIdBookmark) {
+            isBookmarkedState = false;
+            updateBookmarkButtonState();
             return;
         }
-        const bookmarkRef = doc(db, 'users', currentUserId, 'bookmarks', resortId);
+        const bookmarkDocRef = doc(db, 'users', currentUserIdBookmark, 'bookmarks', resortIdBookmark);
         try {
-            const docSnap = await getDoc(bookmarkRef);
-            isBookmarked = docSnap.exists();
+            const docSnap = await getDoc(bookmarkDocRef);
+            isBookmarkedState = docSnap.exists();
         } catch (error) {
             console.error("Error checking bookmark status:", error);
-            isBookmarked = false;
+            isBookmarkedState = false;
         }
-        updateButtonState();
+        updateBookmarkButtonState();
     }
 
-    // Firebase Auth State Listener
     onAuthStateChanged(auth, async (user) => {
-        isProcessing = false; // Reset processing state on auth change
+        isProcessingBookmarkState = false;
         if (user) {
-            console.log("User logged in:", user.uid);
-            currentUserId = user.uid;
-            await checkIfBookmarked();
+            currentUserIdBookmark = user.uid;
+            await checkIfResortIsBookmarked();
         } else {
-            console.log("User logged out");
-            currentUserId = null;
-            isBookmarked = false;
-            updateButtonState();
+            currentUserIdBookmark = null;
+            isBookmarkedState = false;
+            updateBookmarkButtonState();
         }
     });
 
-    // Button Click Handler
-    if (addParkBtn) {
-        addParkBtn.addEventListener('click', async () => {
-            if (!currentUserId) {
+    if (addParkBtnBookmark) {
+        addParkBtnBookmark.addEventListener('click', async () => {
+            if (!currentUserIdBookmark) {
                 alert('Please log in or create an account to save bookmarks.');
-                window.location.href = 'sign-up_login.html'; // Adjust path if needed
+                window.location.href = 'sign-up_login.html';
                 return;
             }
-            if (isProcessing) return; // Prevent double clicks
+            if (isProcessingBookmarkState) return;
 
-            isProcessing = true; // Set processing flag
-            addParkBtn.disabled = true;
-            // Keep original color during processing, just change text
-            addParkBtn.textContent = 'Processing...';
-            // Temporarily remove hover effect during processing
-            removeHoverEffect();
-            // Ensure background stays default blue during processing
-            addParkBtn.style.backgroundColor = defaultButtonColor;
+            isProcessingBookmarkState = true;
+            addParkBtnBookmark.disabled = true;
+            addParkBtnBookmark.textContent = 'Processing...';
+            removeBookmarkHoverEffect();
+            addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor;
 
-            const bookmarkRef = doc(db, 'users', currentUserId, 'bookmarks', resortId);
+            const bookmarkDocRef = doc(db, 'users', currentUserIdBookmark, 'bookmarks', resortIdBookmark);
 
             try {
-                if (isBookmarked) {
-                    // Remove Bookmark
-                    await deleteDoc(bookmarkRef);
-                    console.log("Bookmark removed successfully!");
-                    isBookmarked = false;
+                if (isBookmarkedState) {
+                    await deleteDoc(bookmarkDocRef);
+                    isBookmarkedState = false;
                 } else {
-                    // Add Bookmark
                     const bookmarkData = {
-                        resortName: resortName,
-                        resortId: resortId,
-                        pageUrl: resortPageUrl,
+                        resortName: resortNameBookmark,
+                        resortId: resortIdBookmark,
+                        pageUrl: resortPageUrlBookmark,
                         bookmarkedAt: serverTimestamp()
                     };
-                    await setDoc(bookmarkRef, bookmarkData);
-                    console.log("Bookmark added successfully!");
-                    isBookmarked = true;
+                    await setDoc(bookmarkDocRef, bookmarkData);
+                    isBookmarkedState = true;
                 }
             } catch (error) {
                 console.error("Error updating bookmark: ", error);
                 alert('Failed to update bookmark. Please try again.');
-                // On error, reset processing and update button to previous state
-                isProcessing = false;
-                updateButtonState(); // Update based on 'isBookmarked' status before the failed attempt
-                return;
+            } finally {
+                isProcessingBookmarkState = false;
+                updateBookmarkButtonState();
             }
-
-            isProcessing = false; // Reset processing flag
-            // Call updateButtonState to set the final correct state ('Bookmarked' or 'Add to Bookmarks')
-            // This will also re-apply hover listeners if needed.
-            updateButtonState();
         });
     } else {
         console.error("Bookmark button (#addParkBtn) not found.");
     }
+
+    // --- SCRIPT FOR LIFT STATUSES FROM FIRESTORE ---
+
+    const resortDataMap = {
+        'snow-valley': { tabId: 'sv-lifts', firestoreId: 'snow-valley' },
+        'snow-summit': { tabId: 'ss-lifts', firestoreId: 'snow-summit' },
+        'bear-mountain': { tabId: 'bm-lifts', firestoreId: 'bear-mountain' }
+    };
+
+    /**
+     * Maps a lift status string to a CSS class.
+     * @param {string} status - The lift status text.
+     * @returns {string} The CSS class for the status.
+     */
+    function getStatusClass(status) {
+        if (!status) return 'status-closed';
+        const lowerStatus = status.toLowerCase();
+
+        if (lowerStatus === 'open') return 'status-open';
+        if (lowerStatus === 'scheduled') return 'status-scheduled';
+        if (lowerStatus.includes('hold') || lowerStatus.includes('standby') || lowerStatus.includes('mechanical')) return 'status-hold';
+        if (lowerStatus.includes('closed')) return 'status-closed';
+
+        return 'status-closed';
+    }
+
+    /**
+     * Updates the lifts grid in the HTML for a specific resort.
+     * @param {string} tabContentId - The ID of the tab content div (e.g., 'sv-lifts').
+     * @param {Array} liftsData - An array of lift objects from Firestore.
+     */
+    function updateLiftsGrid(tabContentId, liftsData) {
+        const tabContentElement = document.getElementById(tabContentId);
+        if (!tabContentElement) {
+            console.error(`Element with ID '${tabContentId}' not found.`);
+            return;
+        }
+        const grid = tabContentElement.querySelector('.lifts-grid');
+        if (!grid) {
+            console.error(`Lifts grid not found in '${tabContentId}'.`);
+            return;
+        }
+
+        grid.innerHTML = ''; // Clear existing lift items or loading message
+
+        if (!liftsData || liftsData.length === 0) {
+            grid.innerHTML = '<div class="lift-item"><span>No lift data available.</span><span class="lift-status-badge"></span></div>';
+            return;
+        }
+
+        liftsData.forEach(lift => {
+            // Filter out Magic Carpets
+            const liftNameLower = lift.name ? lift.name.toLowerCase() : '';
+            let liftTypeOriginal = lift.type || ''; // Keep original case for display modifications
+            const liftTypeLower = liftTypeOriginal.toLowerCase();
+
+
+            if (liftNameLower.includes('magic carpet') || liftTypeLower.includes('magic carpet') || liftNameLower.startsWith('mc ')) {
+                return; // Skip this lift
+            }
+
+            const liftItemDiv = document.createElement('div');
+            liftItemDiv.className = 'lift-item';
+
+            const liftNameSpan = document.createElement('span');
+            let liftDisplayName = lift.name || 'Unknown Lift';
+
+            // MODIFIED: Specific text replacements for lift types
+            if (liftTypeOriginal && liftTypeOriginal.trim() !== '') {
+                if (liftTypeOriginal === "Double") {
+                    liftTypeOriginal = "Double Chair";
+                } else if (liftTypeOriginal === "6 Chair") {
+                    liftTypeOriginal = "Six Chair";
+                }
+                liftDisplayName += ` (${liftTypeOriginal})`;
+            }
+            liftNameSpan.textContent = liftDisplayName;
+
+
+            const liftStatusSpan = document.createElement('span');
+            const statusClass = getStatusClass(lift.status);
+            liftStatusSpan.className = `lift-status-badge ${statusClass}`;
+            liftStatusSpan.textContent = lift.status || 'Unknown';
+
+            liftItemDiv.appendChild(liftNameSpan);
+            liftItemDiv.appendChild(liftStatusSpan);
+            grid.appendChild(liftItemDiv);
+        });
+
+        if (grid.children.length === 0) { // If after filtering, the grid is empty
+            grid.innerHTML = '<div class="lift-item"><span>No applicable lift data available.</span><span class="lift-status-badge"></span></div>';
+        }
+    }
+
+    /**
+     * Fetches resort data from Firestore and updates the UI.
+     */
+    async function displayResortData() {
+        const liftStatusLastUpdatedElem = document.getElementById('liftStatusLastUpdated');
+        let overallLastUpdatedTimestamp = null;
+
+        for (const key in resortDataMap) {
+            const resortInfo = resortDataMap[key];
+            const docRef = doc(db, 'resort_conditions', resortInfo.firestoreId);
+
+            try {
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const resortData = docSnap.data();
+                    if (resortData.lifts) {
+                        updateLiftsGrid(resortInfo.tabId, resortData.lifts);
+                    } else {
+                        console.warn(`No 'lifts' array found for ${resortInfo.firestoreId}`);
+                        updateLiftsGrid(resortInfo.tabId, []);
+                    }
+
+                    if (resortInfo.firestoreId === 'bear-mountain' && resortData.last_updated) {
+                        overallLastUpdatedTimestamp = resortData.last_updated;
+                    }
+                } else {
+                    console.error(`No document found for ${resortInfo.firestoreId}`);
+                    updateLiftsGrid(resortInfo.tabId, []);
+                }
+            } catch (error) {
+                console.error(`Error fetching data for ${resortInfo.firestoreId}:`, error);
+                updateLiftsGrid(resortInfo.tabId, []);
+            }
+        }
+
+        if (overallLastUpdatedTimestamp && liftStatusLastUpdatedElem) {
+            try {
+                let timestampToParse = overallLastUpdatedTimestamp;
+                const isoWithoutZoneRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?$/;
+                if (isoWithoutZoneRegex.test(overallLastUpdatedTimestamp)) {
+                    timestampToParse = overallLastUpdatedTimestamp + 'Z';
+                }
+
+                const dateObj = new Date(timestampToParse);
+
+                const timeFormatOptions = {
+                    timeZone: 'America/Los_Angeles',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true,
+                    timeZoneName: 'short'
+                };
+                const dateFormatOptions = {
+                    timeZone: 'America/Los_Angeles',
+                    month: 'numeric',
+                    day: 'numeric',
+                    year: '2-digit'
+                };
+
+                const formattedTime = dateObj.toLocaleTimeString('en-US', timeFormatOptions);
+                const formattedDate = dateObj.toLocaleDateString('en-US', dateFormatOptions);
+
+                liftStatusLastUpdatedElem.textContent = `Lift Status Last Updated: ${formattedTime} at ${formattedDate}`;
+            } catch (e) {
+                console.error("Error formatting timestamp:", e, "Original timestamp:", overallLastUpdatedTimestamp);
+                liftStatusLastUpdatedElem.textContent = "Lift status update time unavailable.";
+            }
+        } else if (liftStatusLastUpdatedElem) {
+            liftStatusLastUpdatedElem.textContent = "Lift status update time unavailable.";
+        }
+    }
+
+    // Call the function to load and display data when the script runs
+    displayResortData();
 
 </script>
 </body>
