@@ -8,7 +8,7 @@ const path = require('path');
 
 console.log("Starting Firebase config generation...");
 
-// Retrieve environment variables (ensure these are set in Vercel project settings)
+// Retrieve environment variables
 const apiKey = process.env.FIREBASE_API_KEY;
 const authDomain = process.env.FIREBASE_AUTH_DOMAIN;
 const projectId = process.env.FIREBASE_PROJECT_ID;
@@ -64,17 +64,15 @@ export { app, auth, db };
 const outputPath = path.join(__dirname, '../assets/firebase/config.js');
 
 try {
-    // Ensure the directory exists (optional, but good practice)
+    // Ensure the directory exists (optional)
     const outputDir = path.dirname(outputPath);
     if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true });
     }
 
     fs.writeFileSync(outputPath, configContent.trim());
-    // CORRECTED: Removed unnecessary backslash before backtick
     console.log(`Firebase config.js generated successfully at: ${outputPath}`);
 } catch (error) {
-    // CORRECTED: Removed unnecessary backslash before backtick
     console.error(`Error writing Firebase config file at ${outputPath}:`, error);
     process.exit(1); // Exit with an error code
 }

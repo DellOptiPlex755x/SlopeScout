@@ -8,7 +8,7 @@ service cloud.firestore {
     // Anyone can read this data for website
     match /resort_conditions/{resortId} {
       allow read: if true;
-      // Write access should ideally be restricted to your Cloud Function.
+      // Write access should ideally be restricted to Cloud Function.
       // Admin SDK bypasses these rules, so this rule mainly documents intent
       // or helps if we had non-admin writes you wanted to allow/deny.
       // For now, explicitly denying client write is safest.

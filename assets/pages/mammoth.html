@@ -17,7 +17,7 @@
             --accent-blue: #007aff;
             --status-open: #34c759;
             --status-closed: #ff3b30; /* Used for Closed and Closed For Season */
-            --status-scheduled: #ff9500;
+            --status-scheduled: #ff9500; /* Used for Scheduled, Expected, Under Maintenance */
             --status-hold: #5e5ce6; /* For Hold, Standby, Mechanical etc. */
             --transition-speed: 0.3s;
         }
@@ -69,6 +69,7 @@
             width: 100%;
             margin-top: 74px; /* Adjust if needed */
             background-image: url('/assets/images/mountainImage.jpg');
+            background-color: #333; /* Fallback color */
             background-size: cover;
             background-position: center center;
             display: flex;
@@ -121,20 +122,20 @@
         .lifts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 30px; }
         .lift-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 5px 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.07); font-size: 16px; transition: transform 0.3s ease, background-color 0.3s ease, padding-left 0.3s ease; border-radius: 6px; }
         .lift-item:hover { transform: translateX(6px); background-color: rgba(255, 255, 255, 0.04); border-bottom-color: transparent; padding-left: 10px; }
-        .lifts-grid .lift-item:nth-last-child(-n+2) { border-bottom: none; }
-        .lifts-grid .lift-item:nth-child(odd):last-child { border-bottom: none; }
-        .lift-name { flex-grow: 1; }
+        .lifts-grid .lift-item:nth-last-child(-n+2) { border-bottom: none; } /* For 2-column layout */
+        .lifts-grid .lift-item:nth-child(odd):last-child { border-bottom: none; } /* If last item is odd in a 2-column layout */
+        .lift-name { flex-grow: 1; color: var(--text-light); }
         .lift-details { display: flex; align-items: center; }
-        .lift-status-badge { display: inline-block; padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: 600; letter-spacing: 0.3px; flex-shrink: 0; margin-left: 15px; }
+        .lift-status-badge { display: inline-block; padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: 600; letter-spacing: 0.3px; flex-shrink: 0; margin-left: 15px; text-align: center; min-width: 80px; /* Ensure consistent width */ }
         @keyframes pulseStatus { 0% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.5); } 70% { box-shadow: 0 0 0 7px rgba(52, 199, 89, 0); } 100% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); } }
         .status-open { background-color: var(--status-open); color: #fff; animation: pulseStatus 2.5s infinite cubic-bezier(0.66, 0, 0, 1); }
         .status-closed { background-color: var(--status-closed); color: #fff; }
-        .status-scheduled { background-color: var(--status-scheduled); color: #fff; }
+        .status-scheduled { background-color: var(--status-scheduled); color: #fff; } /* Covers Scheduled, Expected, Under Maintenance */
         .status-hold { background-color: var(--status-hold); color: #fff; }
         .map-section { margin-top: 40px; }
         .map-header { text-align: left; margin-bottom: 25px; font-size: 24px; font-weight: 600; letter-spacing: -0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 15px; }
-        .map-container { height: 600px; width: 100%; border-radius: 16px; overflow: hidden; position: relative; }
-        .map-container iframe { border-radius: 16px; }
+        .map-container { height: 600px; width: 100%; border-radius: 16px; overflow: hidden; position: relative; background-color: var(--secondary-dark); /* Placeholder bg */ }
+        .map-container iframe { border-radius: 16px; border: none; }
 
         /* --- Responsive Styles --- */
         @media (min-width: 992px) {
@@ -144,7 +145,7 @@
             .tab-button { padding: 15px 30px; font-size: 19px;}
         }
         @media (max-width: 991.98px) {
-            .nav-links { display: none; }
+            .nav-links { display: none; } /* Hide nav links, implement hamburger if needed */
             .hero-content h1 { font-size: 80px; letter-spacing: -1.5px; }
             .map-container { height: 500px; }
         }
@@ -153,8 +154,10 @@
             .content-area { padding: 0 25px 40px; margin-top: -50px; }
             .weather-text { font-size: 17px; }
             .lifts-grid { grid-template-columns: 1fr; gap: 5px 0; }
+            /* Adjust border for single column */
             .lifts-grid .lift-item { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
             .lifts-grid .lift-item:last-child { border-bottom: none; }
+            /* Remove 2-column specific rules */
             .lifts-grid .lift-item:nth-last-child(-n+2) { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
             .lifts-grid .lift-item:nth-child(odd):last-child, .lifts-grid .lift-item:nth-child(even):last-child { border-bottom: none; }
             .lift-item:hover { transform: translateX(4px); padding-left: 8px; }
@@ -174,7 +177,7 @@
             .add-park-btn { padding: 12px 24px; font-size: 15px; max-width: 250px; }
             .lift-item { font-size: 14px; padding: 10px 0; }
             .lift-item:hover { transform: translateX(3px); padding-left: 6px; }
-            .lift-status-badge { padding: 4px 10px; font-size: 11px; }
+            .lift-status-badge { padding: 4px 10px; font-size: 11px; min-width: 70px; }
             .animated-card { padding: 20px; border-radius: 20px; }
             .map-container { height: 350px; border-radius: 12px; }
             .map-container iframe { border-radius: 12px; }
@@ -189,8 +192,7 @@
     <a href="../../index.html" rel="noopener noreferrer" class="logo">SlopeScout</a>
     <div class="nav-links">
         <a href="../../index.html" rel="noopener noreferrer">Home</a>
-        <a href="explore.html">Explore</a>
-        <a href="bookmarks.html">Bookmarks</a>
+        <a href="explore.html">Explore</a> <a href="bookmarks.html">Bookmarks</a>
         <a href="profile.html">Profile</a>
     </div>
 </nav>
@@ -258,81 +260,94 @@
     <div class="map-section animated-card" id="trail-map-section">
         <h2 class="map-header" id="mapHeaderText">Main Lodge Trail Map</h2>
         <div class="map-container">
-            <iframe id="mapIframe" src="https://vicomap-cdn.resorts-interactive.com/map/1819?menu=3.8,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftStatusColorHold=%23FFCC00&liftStatusColorPatrolHold=%23FFCC00&liftStatusColorMechanicalHold=%23FFCC00&liftStatusColorWindHold=%23FFCC00&liftStatusColorLightingHold=%23FFCC00&liftStatusColorScheduled=cyan&liftStatusColorAnticipatedWeatherImpact=cyan&liftStatusColorExpected=cyan&backgroundOpacity=0.7" width="100%" height="100%" frameborder="0" loading="lazy"></iframe>
+            <iframe id="mapIframe" src="https://vicomap-cdn.resorts-interactive.com/map/1819?menu=3.8,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftStatusColorHold=%23FFCC00&liftStatusColorPatrolHold=%23FFCC00&liftStatusColorMechanicalHold=%23FFCC00&liftStatusColorWindHold=%23FFCC00&liftStatusColorLightingHold=%23FFCC00&liftStatusColorScheduled=cyan&liftStatusColorAnticipatedWeatherImpact=cyan&liftStatusColorExpected=cyan&backgroundOpacity=0.7" width="100%" height="100%" frameborder="0" loading="lazy" title="Trail Map"></iframe>
         </div>
     </div>
 </div>
 
 <script>
     // --- Intersection Observer for Scroll Animations ---
-    const animatedElements = document.querySelectorAll('.animated-card');
-    const observerOptions = { threshold: 0.1 };
-    const observerCallback = (entries, observer) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } }); };
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    animatedElements.forEach(el => observer.observe(el));
-
-    // --- Tab Switching Logic (also handles map updates) ---
-    const tabsContainer = document.querySelector('.tabs-container');
-    const mapIframe = document.getElementById('mapIframe');
-    const mapHeaderText = document.getElementById('mapHeaderText');
-
-    if(tabsContainer && mapIframe && mapHeaderText){
-        const tabButtons = document.querySelectorAll('.tab-button');
-        const tabContents = document.querySelectorAll('.tab-content');
-
-        const updateActiveTabAndMap = (button) => {
-            const mapUrl = button.dataset.mapUrl;
-            const lodgeName = button.dataset.lodgeName;
-            const targetContentId = button.dataset.tabTarget;
-            const targetContent = document.querySelector(targetContentId);
-
-            if(mapUrl) {
-                mapIframe.src = mapUrl;
-            } else {
-                console.warn("Map URL not found for button:", button);
-                mapIframe.src = "";
-            }
-
-            if(lodgeName) {
-                mapHeaderText.textContent = `${lodgeName} Trail Map`;
-            } else {
-                mapHeaderText.textContent = 'Trail Map';
-            }
-
-            tabContents.forEach(content => content.classList.remove('active'));
-            if (targetContent) { targetContent.classList.add('active'); }
-
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
+    document.addEventListener('DOMContentLoaded', () => {
+        const animatedElements = document.querySelectorAll('.animated-card');
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }; // Trigger a bit earlier
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
         };
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        animatedElements.forEach(el => observer.observe(el));
 
-        tabsContainer.addEventListener('click', (e) => {
-            if (!e.target.matches('.tab-button')) return;
-            updateActiveTabAndMap(e.target);
-        });
+        // --- Tab Switching Logic (also handles map updates) ---
+        const tabsContainer = document.querySelector('.tabs-container');
+        const mapIframe = document.getElementById('mapIframe');
+        const mapHeaderText = document.getElementById('mapHeaderText');
 
-        const initialActiveTab = document.querySelector('.tab-button.active');
-        if (initialActiveTab) {
-            updateActiveTabAndMap(initialActiveTab);
-        } else if (tabButtons.length > 0) {
-            tabButtons[0].classList.add('active');
-            updateActiveTabAndMap(tabButtons[0]);
+        if (tabsContainer && mapIframe && mapHeaderText) {
+            const tabButtons = tabsContainer.querySelectorAll('.tab-button'); // More specific selector
+            const tabContents = document.querySelectorAll('.tab-content'); // Assuming these are direct children or appropriately selected
+
+            const updateActiveTabAndMap = (button) => {
+                if (!button) return; // Guard clause
+
+                const mapUrl = button.dataset.mapUrl;
+                const lodgeName = button.dataset.lodgeName;
+                const targetContentId = button.dataset.tabTarget;
+                const targetContent = document.querySelector(targetContentId);
+
+                if (mapUrl) {
+                    mapIframe.src = mapUrl;
+                } else {
+                    console.warn("Map URL not found for button:", button);
+                    mapIframe.src = "about:blank"; // Clear iframe or show a placeholder
+                }
+
+                mapHeaderText.textContent = lodgeName ? `${lodgeName} Trail Map` : 'Trail Map';
+
+                tabContents.forEach(content => content.classList.remove('active'));
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                } else {
+                    console.warn(`Target content not found for ID: ${targetContentId}`);
+                }
+
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            };
+
+            tabsContainer.addEventListener('click', (e) => {
+                const clickedButton = e.target.closest('.tab-button'); // Handle clicks on child elements of button
+                if (!clickedButton) return;
+                updateActiveTabAndMap(clickedButton);
+            });
+
+            // Set initial active tab and map
+            const initialActiveTab = tabsContainer.querySelector('.tab-button.active');
+            if (initialActiveTab) {
+                updateActiveTabAndMap(initialActiveTab);
+            } else if (tabButtons.length > 0) {
+                tabButtons[0].classList.add('active'); // Make first tab active if none are
+                updateActiveTabAndMap(tabButtons[0]);
+            }
+        } else {
+            console.error("Required elements for tab/map switching not found (tabsContainer, mapIframe, or mapHeaderText).");
         }
-
-    } else {
-        console.error("Required elements for tab/map switching not found (tabsContainer, mapIframe, or mapHeaderText).");
-    }
+    });
 </script>
 
 <script type="module">
-    // Import necessary functions from Firebase SDK and your config
+    // Import necessary functions from Firebase SDK and config
+    // IMPORTANT: Ensure '../firebase/config.js' path is correct and the file exists.
     import { auth, db } from '../firebase/config.js';
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
     import { doc, getDoc, setDoc, deleteDoc, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
     // --- Weather API Configuration (Open-Meteo) ---
-    const MAMMOTH_LATITUDE = 37.6389; // Mammoth Mountain specific
-    const MAMMOTH_LONGITUDE = -119.0262; // Mammoth Mountain specific (West is negative)
+    const MAMMOTH_LATITUDE = 37.6389;
+    const MAMMOTH_LONGITUDE = -119.0262;
     const weatherApiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${MAMMOTH_LATITUDE}&longitude=${MAMMOTH_LONGITUDE}&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FLos_Angeles`;
 
     const tempValueEl = document.getElementById('tempValue');
@@ -340,49 +355,27 @@
     const windValueEl = document.getElementById('windValue');
     const windDirectionEl = document.getElementById('windDirection');
 
-    // WMO Weather code descriptions (simplified)
-    // Full list: https://www.nodc.noaa.gov/archive/arc0021/0002199/1.1/data/0-data/HTML/WMO-CODE/WMO4677.HTM
+    // WMO Weather code descriptions
     function getWeatherDescription(code) {
         const descriptions = {
-            0: 'Clear sky',
-            1: 'Mainly clear',
-            2: 'Partly cloudy',
-            3: 'Overcast',
-            45: 'Fog',
-            48: 'Depositing rime fog',
-            51: 'Light drizzle',
-            53: 'Drizzle',
-            55: 'Dense drizzle',
-            56: 'Light freezing drizzle',
-            57: 'Freezing drizzle',
-            61: 'Slight rain',
-            63: 'Rain',
-            65: 'Heavy rain',
-            66: 'Light freezing rain',
-            67: 'Freezing rain',
-            71: 'Slight snow fall',
-            73: 'Snow fall',
-            75: 'Heavy snow fall',
-            77: 'Snow grains',
-            80: 'Slight rain showers',
-            81: 'Rain showers',
-            82: 'Violent rain showers',
-            85: 'Slight snow showers',
-            86: 'Snow showers',
-            95: 'Thunderstorm',
-            96: 'Thunderstorm with slight hail',
-            99: 'Thunderstorm with heavy hail',
+            0: 'Clear sky', 1: 'Mainly clear', 2: 'Partly cloudy', 3: 'Overcast',
+            45: 'Fog', 48: 'Depositing rime fog',
+            51: 'Light drizzle', 53: 'Drizzle', 55: 'Dense drizzle',
+            56: 'Light freezing drizzle', 57: 'Freezing drizzle',
+            61: 'Slight rain', 63: 'Rain', 65: 'Heavy rain',
+            66: 'Light freezing rain', 67: 'Freezing rain',
+            71: 'Slight snow fall', 73: 'Snow fall', 75: 'Heavy snow fall', 77: 'Snow grains',
+            80: 'Slight rain showers', 81: 'Rain showers', 82: 'Violent rain showers',
+            85: 'Slight snow showers', 86: 'Snow showers',
+            95: 'Thunderstorm', 96: 'Thunderstorm with slight hail', 99: 'Thunderstorm with heavy hail',
         };
         return descriptions[code] || 'N/A';
     }
 
-
     async function fetchWeatherData() {
         try {
             const response = await fetch(weatherApiUrl);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const data = await response.json();
 
             if (data.current) {
@@ -391,19 +384,14 @@
                 if (windValueEl) windValueEl.textContent = Math.round(data.current.wind_speed_10m);
                 if (windDirectionEl) windDirectionEl.textContent = degToCompass(data.current.wind_direction_10m);
             } else {
-                console.warn("Current weather data not found in Open-Meteo response.");
-                if(tempValueEl) tempValueEl.textContent = "N/A";
-                if(conditionValueEl) conditionValueEl.textContent = "N/A";
-                if(windValueEl) windValueEl.textContent = "N/A";
-                if(windDirectionEl) windDirectionEl.textContent = "";
+                console.warn("Current weather data not found.");
+                [tempValueEl, conditionValueEl, windValueEl].forEach(el => { if (el) el.textContent = "N/A"; });
+                if (windDirectionEl) windDirectionEl.textContent = "";
             }
-
         } catch (error) {
-            console.error("Error fetching weather data from Open-Meteo:", error);
-            if(tempValueEl) tempValueEl.textContent = "Error";
-            if(conditionValueEl) conditionValueEl.textContent = "Error";
-            if(windValueEl) windValueEl.textContent = "Error";
-            if(windDirectionEl) windDirectionEl.textContent = "";
+            console.error("Error fetching weather data:", error);
+            [tempValueEl, conditionValueEl, windValueEl].forEach(el => { if (el) el.textContent = "Error"; });
+            if (windDirectionEl) windDirectionEl.textContent = "";
         }
     }
 
@@ -415,25 +403,24 @@
 
     fetchWeatherData(); // Fetch weather on page load
 
-
-    // --- Bookmark Feature (remains the same as previous version) ---
+    // --- Bookmark Feature ---
     const addParkBtnBookmark = document.getElementById('addParkBtn');
-    const resortIdBookmark = 'mammoth-mountain';
+    const resortIdBookmark = 'mammoth-mountain'; // Unique ID for this resort
     const resortNameBookmark = 'Mammoth Mountain';
-    const resortPageUrlBookmark = 'mammoth.html';
+    const resortPageUrlBookmark = 'mammoth.html'; // Relative URL to this page
 
     let currentUserIdBookmark = null;
     let isBookmarkedState = false;
     let isProcessingBookmarkState = false;
 
     const bookmarkDefaultButtonColor = 'var(--accent-blue)';
-    const bookmarkHoverRemoveColor = 'var(--status-closed)';
-    const bookmarkDisabledLoginColor = '#444';
+    const bookmarkHoverRemoveColor = 'var(--status-closed)'; // Red for remove
+    const bookmarkDisabledLoginColor = '#444'; // Darker grey for disabled
 
     function updateBookmarkButtonUI() {
         if (!addParkBtnBookmark) return;
-        removeBookmarkHoverEffect();
-        addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor;
+        removeBookmarkHoverEffect(); // Clear existing listeners first
+        addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor; // Reset color
 
         if (!currentUserIdBookmark) {
             addParkBtnBookmark.textContent = 'Login to Bookmark';
@@ -442,7 +429,7 @@
         } else if (isBookmarkedState) {
             addParkBtnBookmark.textContent = 'Bookmarked';
             addParkBtnBookmark.disabled = false;
-            addBookmarkHoverEffect();
+            addBookmarkHoverEffect(); // Add hover effect to show "Remove"
         } else {
             addParkBtnBookmark.textContent = 'Add to Bookmarks';
             addParkBtnBookmark.disabled = false;
@@ -467,8 +454,8 @@
         if (addParkBtnBookmark) {
             addParkBtnBookmark.addEventListener('mouseover', handleBookmarkMouseOver);
             addParkBtnBookmark.addEventListener('mouseout', handleBookmarkMouseOut);
-            addParkBtnBookmark.addEventListener('focus', handleBookmarkMouseOver);
-            addParkBtnBookmark.addEventListener('blur', handleBookmarkMouseOut);
+            addParkBtnBookmark.addEventListener('focus', handleBookmarkMouseOver); // For accessibility
+            addParkBtnBookmark.addEventListener('blur', handleBookmarkMouseOut);   // For accessibility
         }
     }
 
@@ -492,19 +479,19 @@
             isBookmarkedState = docSnap.exists();
         } catch (error) {
             console.error("Error checking bookmark status:", error);
-            isBookmarkedState = false;
+            isBookmarkedState = false; // Assume not bookmarked on error
         }
         updateBookmarkButtonUI();
     }
 
     onAuthStateChanged(auth, async (user) => {
-        isProcessingBookmarkState = false;
+        isProcessingBookmarkState = false; // Reset processing state on auth change
         if (user) {
             currentUserIdBookmark = user.uid;
             await checkIfResortIsBookmarked();
         } else {
             currentUserIdBookmark = null;
-            isBookmarkedState = false;
+            isBookmarkedState = false; // Clear bookmark state if logged out
             updateBookmarkButtonUI();
         }
     });
@@ -512,30 +499,31 @@
     if (addParkBtnBookmark) {
         addParkBtnBookmark.addEventListener('click', async () => {
             if (!currentUserIdBookmark) {
+                // Consider a more user-friendly way to prompt login, e.g., a modal
                 alert('Please log in or create an account to save bookmarks.');
                 return;
             }
-            if (isProcessingBookmarkState) return;
+            if (isProcessingBookmarkState) return; // Prevent multiple clicks
 
             isProcessingBookmarkState = true;
-            addParkBtnBookmark.disabled = true;
+            addParkBtnBookmark.disabled = true; // Disable button during processing
             const originalText = addParkBtnBookmark.textContent;
             addParkBtnBookmark.textContent = 'Processing...';
-            removeBookmarkHoverEffect();
-            addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor;
+            removeBookmarkHoverEffect(); // Remove hover while processing
+            addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor; // Reset color
 
             const bookmarkDocRef = doc(db, 'users', currentUserIdBookmark, 'bookmarks', resortIdBookmark);
 
             try {
-                if (isBookmarkedState) {
+                if (isBookmarkedState) { // If currently bookmarked, remove it
                     await deleteDoc(bookmarkDocRef);
                     isBookmarkedState = false;
-                } else {
+                } else { // If not bookmarked, add it
                     const bookmarkData = {
                         resortName: resortNameBookmark,
                         resortId: resortIdBookmark,
-                        pageUrl: resortPageUrlBookmark,
-                        bookmarkedAt: serverTimestamp()
+                        pageUrl: resortPageUrlBookmark, // Store the relative URL
+                        bookmarkedAt: serverTimestamp() // Firestore server timestamp
                     };
                     await setDoc(bookmarkDocRef, bookmarkData);
                     isBookmarkedState = true;
@@ -543,10 +531,10 @@
             } catch (error) {
                 console.error("Error updating bookmark: ", error);
                 alert('Failed to update bookmark. Please try again.');
-                addParkBtnBookmark.textContent = originalText;
+                addParkBtnBookmark.textContent = originalText; // Restore original text on error
             } finally {
-                isProcessingBookmarkState = false;
-                updateBookmarkButtonUI();
+                isProcessingBookmarkState = false; // Reset processing state
+                updateBookmarkButtonUI(); // Update button UI based on new state
             }
         });
     } else {
@@ -561,27 +549,30 @@
     };
 
     function getStatusClass(status) {
-        if (!status) return 'status-closed';
+        if (!status) return 'status-closed'; // Default to closed if status is undefined or empty
         const lowerStatus = status.toLowerCase();
 
         if (lowerStatus === 'open') return 'status-open';
+        // "Expected" status will now be displayed as "Under Maintenance" but will use 'status-scheduled' class.
         if (lowerStatus === 'scheduled' || lowerStatus === 'expected') return 'status-scheduled';
         if (lowerStatus.includes('hold') || lowerStatus.includes('standby') || lowerStatus.includes('mechanical') || lowerStatus.includes('wind') || lowerStatus.includes('electrical') || lowerStatus.includes('patrol')) return 'status-hold';
-        if (lowerStatus.includes('closed')) return 'status-closed';
+        if (lowerStatus.includes('closed')) return 'status-closed'; // Catches "Closed" and "Closed For Season"
 
-        return 'status-closed';
+        return 'status-closed'; // Fallback for unknown statuses
     }
 
     function formatLiftType(typeString) {
         if (!typeString) return '';
+        // Standardize common variations and then capitalize
         const lowerType = typeString.toLowerCase();
-        if (lowerType === "high-speed 6 chair") return "High-Speed Six Chair";
+        if (lowerType === "high-speed 6 chair" || lowerType === "high speed six pack") return "High-Speed Six Chair";
         if (lowerType === "6 chair") return "Six Chair";
-        if (lowerType === "high-speed quad") return "High-Speed Quad";
+        if (lowerType === "high-speed quad" || lowerType === "high speed quad") return "High-Speed Quad";
         if (lowerType === "quad chair") return "Quad Chair";
         if (lowerType === "triple chair") return "Triple Chair";
         if (lowerType === "double") return "Double Chair";
         if (lowerType === "gondola") return "Gondola";
+        // General capitalization for other types
         return typeString.split(' ')
             .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
             .join(' ');
@@ -600,7 +591,7 @@
             return;
         }
 
-        grid.innerHTML = '';
+        grid.innerHTML = ''; // Clear previous lift items
 
         if (!liftsData || liftsData.length === 0) {
             grid.innerHTML = `<div class="lift-item"><span>No lift data available for ${lodgeName}.</span><span class="lift-status-badge"></span></div>`;
@@ -609,11 +600,13 @@
 
         let visibleLiftsCount = 0;
         liftsData.forEach(lift => {
+            // Filter out magic carpets or other non-chairlift conveyances if desired
             const liftNameLower = lift.name ? lift.name.toLowerCase() : '';
             const liftTypeLower = lift.type ? lift.type.toLowerCase() : '';
 
+            // Example: Skip lifts named 'Magic Carpet' or of type 'Magic Carpet' or starting with 'MC '
             if (liftNameLower.includes('magic carpet') || liftTypeLower.includes('magic carpet') || liftNameLower.startsWith('mc ')) {
-                return;
+                return; // Skip this lift
             }
             visibleLiftsCount++;
 
@@ -624,9 +617,9 @@
             liftNameSpan.className = 'lift-name';
 
             let liftDisplayName = lift.name || 'Unknown Lift';
-            const formattedType = formatLiftType(lift.type);
+            const formattedType = formatLiftType(lift.type); // Format the type
             if (formattedType) {
-                liftDisplayName += ` (${formattedType})`;
+                liftDisplayName += ` (${formattedType})`; // Append formatted type if available
             }
             liftNameSpan.textContent = liftDisplayName;
 
@@ -634,9 +627,15 @@
             liftDetailsDiv.className = 'lift-details';
 
             const liftStatusSpan = document.createElement('span');
-            const statusClass = getStatusClass(lift.status);
+            const originalStatus = lift.status || 'Unknown'; // Get the original status from data
+            const statusClass = getStatusClass(originalStatus); // Determine class based on original status
             liftStatusSpan.className = `lift-status-badge ${statusClass}`;
-            liftStatusSpan.textContent = lift.status || 'Unknown';
+
+            let displayText = originalStatus;
+            if (originalStatus.toLowerCase() === 'expected') {
+                displayText = 'Under Maintenance';
+            }
+            liftStatusSpan.textContent = displayText;
 
             liftItemDiv.appendChild(liftNameSpan);
             liftDetailsDiv.appendChild(liftStatusSpan);
@@ -644,14 +643,17 @@
             grid.appendChild(liftItemDiv);
         });
 
-        if (visibleLiftsCount === 0) {
-            grid.innerHTML = `<div class="lift-item"><span>No applicable lift data available for ${lodgeName}.</span><span class="lift-status-badge"></span></div>`;
+        if (visibleLiftsCount === 0 && liftsData.length > 0) { // If all lifts were filtered out but data existed
+            grid.innerHTML = `<div class="lift-item"><span>No applicable chairlifts or gondolas listed for ${lodgeName}.</span><span class="lift-status-badge"></span></div>`;
+        } else if (visibleLiftsCount === 0) { // If no data or all filtered and no original data
+            grid.innerHTML = `<div class="lift-item"><span>No lift data available for ${lodgeName}.</span><span class="lift-status-badge"></span></div>`;
         }
     }
 
     const liftStatusLastUpdatedElem = document.getElementById('liftStatusLastUpdated');
 
     function displayLodgeData(lodgeFirestoreId, lodgeInfo) {
+        // Listen for real-time updates from Firestore
         const unsub = onSnapshot(doc(db, "resort_conditions", lodgeFirestoreId), (docSnap) => {
             if (docSnap.exists()) {
                 const lodgeData = docSnap.data();
@@ -659,22 +661,38 @@
                     updateLiftsGrid(lodgeInfo.tabId, lodgeData.lifts, lodgeInfo.name);
                 } else {
                     console.warn(`No 'lifts' array found for ${lodgeFirestoreId}`);
-                    updateLiftsGrid(lodgeInfo.tabId, [], lodgeInfo.name);
+                    updateLiftsGrid(lodgeInfo.tabId, [], lodgeInfo.name); // Display empty state
                 }
 
+                // Update last updated time, preferably only for the primary lodge or a global timestamp
                 if (lodgeFirestoreId === 'main-lodge' && lodgeData.last_updated && liftStatusLastUpdatedElem) {
                     try {
                         let timestampToParse = lodgeData.last_updated;
-                        const isoWithoutZoneRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?$/;
-                        if (isoWithoutZoneRegex.test(lodgeData.last_updated)) {
-                            timestampToParse = lodgeData.last_updated + 'Z';
+                        // Check if it's a Firestore Timestamp object
+                        if (timestampToParse && typeof timestampToParse.toDate === 'function') {
+                            timestampToParse = timestampToParse.toDate(); // Convert to JS Date
+                        } else if (typeof timestampToParse === 'string') {
+                            // Attempt to parse ISO string, add 'Z' if it's missing for UTC
+                            const isoWithoutZoneRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?$/;
+                            if (isoWithoutZoneRegex.test(timestampToParse)) {
+                                timestampToParse = timestampToParse + 'Z';
+                            }
+                            timestampToParse = new Date(timestampToParse);
+                        } else if (typeof timestampToParse === 'number') { // Assuming seconds or milliseconds
+                            timestampToParse = new Date(timestampToParse * (timestampToParse > 1e12 ? 1 : 1000));
                         }
-                        const dateObj = new Date(timestampToParse);
-                        const timeFormatOptions = { timeZone: 'America/Los_Angeles', hour: 'numeric', minute: '2-digit', hour12: true, timeZoneName: 'short' };
-                        const dateFormatOptions = { timeZone: 'America/Los_Angeles', month: 'numeric', day: 'numeric', year: '2-digit' };
-                        const formattedTime = dateObj.toLocaleTimeString('en-US', timeFormatOptions);
-                        const formattedDate = dateObj.toLocaleDateString('en-US', dateFormatOptions);
-                        liftStatusLastUpdatedElem.textContent = `Lift Status Last Updated: ${formattedTime} at ${formattedDate}`;
+
+
+                        if (timestampToParse instanceof Date && !isNaN(timestampToParse)) {
+                            const timeFormatOptions = { timeZone: 'America/Los_Angeles', hour: 'numeric', minute: '2-digit', hour12: true };
+                            const dateFormatOptions = { timeZone: 'America/Los_Angeles', month: 'numeric', day: 'numeric' }; // Simpler date
+                            const formattedTime = timestampToParse.toLocaleTimeString('en-US', timeFormatOptions);
+                            const formattedDate = timestampToParse.toLocaleDateString('en-US', dateFormatOptions);
+                            liftStatusLastUpdatedElem.textContent = `Lift Status Last Updated: ${formattedTime} on ${formattedDate} (PT)`;
+                        } else {
+                            throw new Error("Invalid date after parsing attempts.");
+                        }
+
                     } catch (e) {
                         console.error("Error formatting timestamp for Mammoth:", e, "Original:", lodgeData.last_updated);
                         liftStatusLastUpdatedElem.textContent = "Lift status update time unavailable.";
@@ -682,20 +700,23 @@
                 }
             } else {
                 console.error(`No document found for ${lodgeFirestoreId}`);
-                updateLiftsGrid(lodgeInfo.tabId, [], lodgeInfo.name);
+                updateLiftsGrid(lodgeInfo.tabId, [], lodgeInfo.name); // Display empty state
                 if (lodgeFirestoreId === 'main-lodge' && liftStatusLastUpdatedElem) {
                     liftStatusLastUpdatedElem.textContent = "Lift status update time unavailable.";
                 }
             }
         }, (error) => {
             console.error(`Error fetching data for ${lodgeFirestoreId}:`, error);
-            updateLiftsGrid(lodgeInfo.tabId, [], lodgeInfo.name);
+            updateLiftsGrid(lodgeInfo.tabId, [], lodgeInfo.name); // Display error state
             if (lodgeFirestoreId === 'main-lodge' && liftStatusLastUpdatedElem) {
                 liftStatusLastUpdatedElem.textContent = "Error fetching update time.";
             }
         });
+        // Note: `unsub` can be called later to stop listening, e.g., when the component unmounts in a framework context.
+        // For a simple page like this, it might not be strictly necessary unless you navigate away or reload content dynamically.
     }
 
+    // Initialize fetching and display for all configured lodges
     for (const key in mammothLodgeDataMap) {
         const lodgeInfo = mammothLodgeDataMap[key];
         displayLodgeData(lodgeInfo.firestoreId, lodgeInfo);

@@ -265,7 +265,7 @@
     cancelEmailUpdateButton?.addEventListener('click', () => { if(updateEmailForm) updateEmailForm.reset(); toggleUpdateForm(updateEmailForm, contactInfoDisplayGroup, false); });
     cancelPasswordUpdateButton?.addEventListener('click', () => { if(updatePasswordForm) updatePasswordForm.reset(); toggleUpdateForm(updatePasswordForm, securityInfoDisplayGroup, false); });
 
-    // *** NEW: Show/Hide Delete Confirmation Form ***
+    // *** Show/Hide Delete Confirmation Form ***
     showDeleteFormButton?.addEventListener('click', () => {
         if(deleteAccountPrompt) deleteAccountPrompt.style.display = 'none';
         if(deleteAccountForm) deleteAccountForm.style.display = 'block';
@@ -324,7 +324,7 @@
             });
      });
 
-     // *** NEW: Handle Delete Account Form Submission ***
+     // *** Handle Delete Account Form Submission ***
      deleteAccountForm?.addEventListener('submit', (e) => {
         e.preventDefault();
         clearMessages('delete');
@@ -351,9 +351,7 @@
         reauthenticateUser(currentPassword)
             .then(() => {
                 console.log("Re-authentication successful for delete. Deleting user account...");
-                // IMPORTANT: You MUST delete associated user data (Firestore, Storage etc.) BEFORE this step,
-                // usually via Cloud Functions triggered by user deletion for reliability.
-                // This client-side code ONLY deletes the Auth record.
+
                 return deleteUser(user);
             })
             .then(() => {

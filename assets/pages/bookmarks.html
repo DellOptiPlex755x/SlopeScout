@@ -134,7 +134,7 @@
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
-        /* NEW: Style for the fading out state */
+        /* Style for the fading out state */
         .bookmark-card.fading-out {
             opacity: 0;
             transform: scale(0.95); /* Optional: slightly shrink */
@@ -183,7 +183,7 @@
 </div>
 
 <script type="module">
-    // Import necessary functions from Firebase SDK and your config
+    // Import necessary functions from Firebase SDK and config
     import { auth, db } from '../firebase/config.js'; // Ensure path is correct
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
     import { collection, query, getDocs, orderBy, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"; // Added doc, deleteDoc
@@ -219,7 +219,7 @@
         });
     }
 
-    // --- UPDATED: Function to handle bookmark deletion (No confirmation, with fade-out) ---
+    // --- Function to handle bookmark deletion (No confirmation, with fade-out) ---
     async function deleteBookmark(bookmarkId) {
         if (!currentUserId) { console.error("User not logged in, cannot delete."); alert("You must be logged in to delete bookmarks."); return; }
         if (!bookmarkId) { console.error("Bookmark ID is missing."); return; }

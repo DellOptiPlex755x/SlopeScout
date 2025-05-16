@@ -3,9 +3,9 @@ import firebase_admin
 from firebase_admin import firestore
 from firebase_functions import scheduler_fn, options
 
-import pyResort # Your updated pyResort.py (pyResort_single_collection_v5)
+import pyResort # Updated pyResort.py
 
-options.set_global_options(region="us-central1") # Ensure this matches your Firestore region
+options.set_global_options(region="us-central1")
 
 @scheduler_fn.on_schedule(
     schedule="every 5 minutes",

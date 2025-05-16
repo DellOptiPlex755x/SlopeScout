@@ -17,8 +17,8 @@
             --accent-blue: #007aff;
             --status-open: #34c759;
             --status-closed: #ff3b30; /* Used for Closed and Closed For Season */
-            --status-scheduled: #ff9500;
-            --status-hold: #5e5ce6;
+            --status-scheduled: #ff9500; /* Used for Scheduled, Expected, Under Maintenance */
+            --status-hold: #5e5ce6; /* For Hold, Standby, Mechanical etc. */
             --transition-speed: 0.3s;
         }
 
@@ -67,8 +67,9 @@
             position: relative;
             height: 55vh;
             width: 100%;
-            margin-top: 74px;
+            margin-top: 74px; /* Adjust if needed */
             background-image: url('/assets/images/mountainImage.jpg');
+            background-color: #333; /* Fallback color */
             background-size: cover;
             background-position: center center;
             display: flex;
@@ -86,6 +87,7 @@
             z-index: 1;
             padding: 0 20px;
         }
+        /* --- H1 Style --- */
         .hero-content h1 {
             font-size: 117px;
             font-weight: 700;
@@ -95,7 +97,6 @@
             text-transform: uppercase;
             color: var(--text-light);
         }
-
 
         /* --- Styles for Content Area, Cards, Tabs, Map etc. --- */
         .content-area { position: relative; margin-top: -60px; padding: 0 40px 60px; z-index: 5; }
@@ -126,20 +127,20 @@
             border-bottom-color: transparent;
             padding-left: 10px;
         }
-        .lifts-grid .lift-item:nth-last-child(-n+2) { border-bottom: none; }
-        .lifts-grid .lift-item:nth-child(odd):last-child { border-bottom: none; }
-        .lift-name { flex-grow: 1; }
+        .lifts-grid .lift-item:nth-last-child(-n+2) { border-bottom: none; } /* For 2-column layout */
+        .lifts-grid .lift-item:nth-child(odd):last-child { border-bottom: none; } /* If last item is odd in a 2-column layout */
+        .lift-name { flex-grow: 1; color: var(--text-light); }
         .lift-details { display: flex; align-items: center; }
-        .lift-status-badge { display: inline-block; padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: 600; letter-spacing: 0.3px; flex-shrink: 0; margin-left: 15px; }
+        .lift-status-badge { display: inline-block; padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: 600; letter-spacing: 0.3px; flex-shrink: 0; margin-left: 15px; text-align: center; min-width: 80px; /* Ensure consistent width */ }
         @keyframes pulseStatus { 0% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.5); } 70% { box-shadow: 0 0 0 7px rgba(52, 199, 89, 0); } 100% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); } }
         .status-open { background-color: var(--status-open); color: #fff; animation: pulseStatus 2.5s infinite cubic-bezier(0.66, 0, 0, 1); }
         .status-closed { background-color: var(--status-closed); color: #fff; }
-        .status-scheduled { background-color: var(--status-scheduled); color: #fff; }
+        .status-scheduled { background-color: var(--status-scheduled); color: #fff; } /* Covers Scheduled, Expected, Under Maintenance */
         .status-hold { background-color: var(--status-hold); color: #fff; }
         .map-section { margin-top: 40px; }
         .map-header { text-align: left; margin-bottom: 25px; font-size: 24px; font-weight: 600; letter-spacing: -0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 15px; }
-        .map-container { height: 750px; width: 100%; border-radius: 16px; overflow: hidden; position: relative; }
-        .map-container iframe { border-radius: 16px; }
+        .map-container { height: 750px; width: 100%; border-radius: 16px; overflow: hidden; position: relative; background-color: var(--secondary-dark); /* Placeholder bg */ }
+        .map-container iframe { border-radius: 16px; border: none; }
 
         /* --- Responsive Styles --- */
         @media (min-width: 992px) {
@@ -149,18 +150,20 @@
             .tab-button { padding: 15px 30px; font-size: 19px;}
         }
         @media (max-width: 991.98px) {
-            .nav-links { display: none; }
+            .nav-links { display: none; } /* Hide nav links */
             .hero-content h1 { font-size: 80px; letter-spacing: -1.5px; }
-            .map-container { height: 563px; }
+            .map-container { height: 563px; } /* Adjusted for proportion */
         }
         @media (max-width: 768px) {
             .hero-content h1 { font-size: 60px; letter-spacing: -1px; }
             .content-area { padding: 0 25px 40px; margin-top: -50px; }
             .weather-text { font-size: 17px; }
             .lifts-grid { grid-template-columns: 1fr; gap: 5px 0; }
+            /* Adjust border for single column */
             .lifts-grid .lift-item { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
             .lifts-grid .lift-item:last-child { border-bottom: none; }
-            .lifts-grid .lift-item:nth-last-child(-n+2) { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+            /* Remove 2-column specific rules */
+            .lifts-grid .lift-item:nth-last-child(-n+2) { border-bottom: 1px solid rgba(255, 255, 255, 0.07); } /* Re-apply for last two if they become single */
             .lifts-grid .lift-item:nth-child(odd):last-child, .lifts-grid .lift-item:nth-child(even):last-child { border-bottom: none; }
             .lift-item:hover {
                 transform: translateX(4px);
@@ -169,6 +172,7 @@
             .animated-card { padding: 30px; max-width: 100%; }
             .tab-button { padding: 10px 20px; font-size: 16px; }
             .map-header { font-size: 22px; }
+            .map-container { height: 450px; } /* Adjusted for proportion */
         }
         @media (max-width: 576px) {
             nav { padding: 15px 20px; }
@@ -184,9 +188,9 @@
                 transform: translateX(3px);
                 padding-left: 6px;
             }
-            .lift-status-badge { padding: 4px 10px; font-size: 11px; }
+            .lift-status-badge { padding: 4px 10px; font-size: 11px; min-width: 70px;}
             .animated-card { padding: 20px; border-radius: 20px; }
-            .map-container { height: 438px; border-radius: 12px; }
+            .map-container { height: 350px; border-radius: 12px; } /* Adjusted for proportion */
             .map-container iframe { border-radius: 12px; }
             .tab-button { padding: 10px 15px; font-size: 15px; }
             .map-header { font-size: 20px; }
@@ -198,8 +202,8 @@
 <nav>
     <a href="../../index.html" rel="noopener noreferrer" class="logo">SlopeScout</a>
     <div class="nav-links">
-        <a href="../../index.html" rel="noopener noreferrer">Home</a> <a href="explore.html">Explore</a>
-        <a href="bookmarks.html">Bookmarks</a>
+        <a href="../../index.html" rel="noopener noreferrer">Home</a>
+        <a href="explore.html">Explore</a> <a href="bookmarks.html">Bookmarks</a>
         <a href="profile.html">Profile</a>
     </div>
 </nav>
@@ -217,7 +221,7 @@
             <div class="weather-row"><div class="weather-icon"><i class="fas fa-cloud-sun"></i></div><div class="weather-text">Conditions: <span id="conditionValue">--</span></div></div>
             <div class="weather-row"><div class="weather-icon"><i class="fas fa-wind"></i></div><div class="weather-text">Wind: <span id="windValue">--</span> mph <span id="windDirection">--</span></div></div>
         </div>
-        <button class="add-park-btn" id="addParkBtn">Add to Favorites</button>
+        <button class="add-park-btn" id="addParkBtn">Add to Bookmarks</button>
     </div>
 
     <div class="resorts-tab-section animated-card" id="resorts">
@@ -225,19 +229,19 @@
             <button class="tab-button active"
                     data-tab-target="#sv-lifts"
                     data-resort-name="Snow Valley"
-                    data-map-url="https://vicomap-cdn.resorts-interactive.com/map/1825?menu=3.0,3.1,3.2,3.4,3.5,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftHighlightOpacity=0.2&backgroundOpacity=1.0">
+                    data-firestore-id="snow-valley" data-map-url="https://vicomap-cdn.resorts-interactive.com/map/1825?menu=3.0,3.1,3.2,3.4,3.5,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftHighlightOpacity=0.2&backgroundOpacity=1.0">
                 SNOW VALLEY
             </button>
             <button class="tab-button"
                     data-tab-target="#ss-lifts"
                     data-resort-name="Snow Summit"
-                    data-map-url="https://vicomap-cdn.resorts-interactive.com/map/1818?menu=3.0,3.1,3.2,3.4,3.5,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftHighlightOpacity=0.2&backgroundOpacity=1.0">
+                    data-firestore-id="snow-summit" data-map-url="https://vicomap-cdn.resorts-interactive.com/map/1818?menu=3.0,3.1,3.2,3.4,3.5,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftHighlightOpacity=0.2&backgroundOpacity=1.0">
                 SNOW SUMMIT
             </button>
             <button class="tab-button"
                     data-tab-target="#bm-lifts"
                     data-resort-name="Bear Mountain"
-                    data-map-url="https://vicomap-cdn.resorts-interactive.com/map/1808?menu=3.0,3.1,3.2,3.4,3.5,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftHighlightOpacity=0.2&backgroundOpacity=1.0">
+                    data-firestore-id="bear-mountain" data-map-url="https://vicomap-cdn.resorts-interactive.com/map/1808?menu=3.0,3.1,3.2,3.4,3.5,3.10,3.14&openLiftAnimation=true&openLiftColor=green&liftHighlightOpacity=0.2&backgroundOpacity=1.0">
                 BEAR MOUNTAIN
             </button>
         </div>
@@ -262,81 +266,94 @@
     </div>
 
     <div class="map-section animated-card" id="trail-map">
-        <h2 class="map-header" id="mapHeaderText">Trail Map</h2> <div class="map-container">
-        <iframe id="mapIframe" src="" width="100%" height="100%" frameborder="0" loading="lazy"></iframe>
-    </div>
+        <h2 class="map-header" id="mapHeaderText">Trail Map</h2>
+        <div class="map-container">
+            <iframe id="mapIframe" src="" width="100%" height="100%" frameborder="0" loading="lazy" title="Trail Map"></iframe>
+        </div>
     </div>
 </div>
 
 <script>
     // --- Intersection Observer for Scroll Animations ---
-    const animatedElements = document.querySelectorAll('.animated-card');
-    const observerOptions = { threshold: 0.1 };
-    const observerCallback = (entries, observer) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } }); };
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    animatedElements.forEach(el => observer.observe(el));
-
-    // --- Tab Switching Logic ---
-    const tabsContainer = document.querySelector('.tabs-container');
-    const mapIframe = document.getElementById('mapIframe');
-    const mapHeaderText = document.getElementById('mapHeaderText');
-
-    if(tabsContainer && mapIframe && mapHeaderText){
-        const tabButtons = document.querySelectorAll('.tab-button');
-        const tabContents = document.querySelectorAll('.tab-content');
-
-        const updateMapAndTabs = (button) => { // Renamed for clarity
-            const mapUrl = button.dataset.mapUrl;
-            const resortName = button.dataset.resortName;
-            const targetContentId = button.dataset.tabTarget;
-            const targetContent = document.querySelector(targetContentId);
-
-            if(mapUrl) {
-                mapIframe.src = mapUrl;
-            } else {
-                console.warn("Map URL not found for button:", button);
-                mapIframe.src = "";
-            }
-
-            if(resortName) {
-                mapHeaderText.textContent = `${resortName} Trail Map`;
-            } else {
-                mapHeaderText.textContent = 'Trail Map';
-            }
-
-            tabContents.forEach(content => content.classList.remove('active'));
-            if (targetContent) { targetContent.classList.add('active'); }
-
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
+    document.addEventListener('DOMContentLoaded', () => {
+        const animatedElements = document.querySelectorAll('.animated-card');
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
         };
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        animatedElements.forEach(el => observer.observe(el));
 
-        tabsContainer.addEventListener('click', (e) => {
-            if (!e.target.matches('.tab-button')) return;
-            updateMapAndTabs(e.target);
-        });
+        // --- Tab Switching Logic ---
+        const tabsContainer = document.querySelector('.tabs-container');
+        const mapIframe = document.getElementById('mapIframe');
+        const mapHeaderText = document.getElementById('mapHeaderText');
 
-        const initialActiveTab = document.querySelector('.tab-button.active');
-        if (initialActiveTab) {
-            updateMapAndTabs(initialActiveTab);
-        } else if (tabButtons.length > 0) {
-            tabButtons[0].classList.add('active');
-            updateMapAndTabs(tabButtons[0]);
+        if (tabsContainer && mapIframe && mapHeaderText) {
+            const tabButtons = tabsContainer.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            const updateMapAndTabs = (button) => {
+                if (!button) return;
+
+                const mapUrl = button.dataset.mapUrl;
+                const resortName = button.dataset.resortName; // Use data-resort-name
+                const targetContentId = button.dataset.tabTarget;
+                const targetContent = document.querySelector(targetContentId);
+
+                if (mapUrl) {
+                    mapIframe.src = mapUrl;
+                } else {
+                    console.warn("Map URL not found for button:", button);
+                    mapIframe.src = "about:blank";
+                }
+
+                mapHeaderText.textContent = resortName ? `${resortName} Trail Map` : 'Trail Map';
+
+                tabContents.forEach(content => content.classList.remove('active'));
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                } else {
+                    console.warn(`Target content not found for ID: ${targetContentId}`);
+                }
+
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            };
+
+            tabsContainer.addEventListener('click', (e) => {
+                const clickedButton = e.target.closest('.tab-button');
+                if (!clickedButton) return;
+                updateMapAndTabs(clickedButton);
+            });
+
+            const initialActiveTab = tabsContainer.querySelector('.tab-button.active');
+            if (initialActiveTab) {
+                updateMapAndTabs(initialActiveTab);
+            } else if (tabButtons.length > 0) {
+                tabButtons[0].classList.add('active');
+                updateMapAndTabs(tabButtons[0]);
+            }
+        } else {
+            console.error("Required elements for tab/map switching not found.");
         }
-    } else {
-        console.error("Required elements for tab/map switching not found.");
-    }
+    });
 </script>
 
 <script type="module">
-    // Import necessary functions from Firebase SDK and your config
-    import { auth, db } from '../firebase/config.js'; // Ensure path is correct
+    // Import necessary functions from Firebase SDK and config
+    import { auth, db } from '../firebase/config.js';
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
     import { doc, getDoc, setDoc, deleteDoc, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
     // --- Weather API Configuration (Open-Meteo for Big Bear) ---
     const BIGBEAR_LATITUDE = 34.2364;
-    const BIGBEAR_LONGITUDE = -116.8893; // West is negative
+    const BIGBEAR_LONGITUDE = -116.8893;
     const weatherApiUrl_BigBear = `https://api.open-meteo.com/v1/forecast?latitude=${BIGBEAR_LATITUDE}&longitude=${BIGBEAR_LONGITUDE}&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FLos_Angeles`;
 
     const tempValueEl_BigBear = document.getElementById('tempValue');
@@ -344,7 +361,7 @@
     const windValueEl_BigBear = document.getElementById('windValue');
     const windDirectionEl_BigBear = document.getElementById('windDirection');
 
-    // WMO Weather code descriptions (simplified)
+    // WMO Weather code descriptions
     function getWeatherDescription_BigBear(code) {
         const descriptions = {
             0: 'Clear', 1: 'Mainly Clear', 2: 'Partly Cloudy', 3: 'Overcast',
@@ -374,18 +391,14 @@
                 if (windValueEl_BigBear) windValueEl_BigBear.textContent = Math.round(data.current.wind_speed_10m);
                 if (windDirectionEl_BigBear) windDirectionEl_BigBear.textContent = degToCompass_BigBear(data.current.wind_direction_10m);
             } else {
-                console.warn("Current weather data not found in Open-Meteo response for Big Bear.");
-                if(tempValueEl_BigBear) tempValueEl_BigBear.textContent = "N/A";
-                if(conditionValueEl_BigBear) conditionValueEl_BigBear.textContent = "N/A";
-                if(windValueEl_BigBear) windValueEl_BigBear.textContent = "N/A";
-                if(windDirectionEl_BigBear) windDirectionEl_BigBear.textContent = "";
+                console.warn("Current weather data not found for Big Bear.");
+                [tempValueEl_BigBear, conditionValueEl_BigBear, windValueEl_BigBear].forEach(el => { if (el) el.textContent = "N/A"; });
+                if (windDirectionEl_BigBear) windDirectionEl_BigBear.textContent = "";
             }
         } catch (error) {
             console.error("Error fetching Big Bear weather data:", error);
-            if(tempValueEl_BigBear) tempValueEl_BigBear.textContent = "Error";
-            if(conditionValueEl_BigBear) conditionValueEl_BigBear.textContent = "Error";
-            if(windValueEl_BigBear) windValueEl_BigBear.textContent = "Error";
-            if(windDirectionEl_BigBear) windDirectionEl_BigBear.textContent = "";
+            [tempValueEl_BigBear, conditionValueEl_BigBear, windValueEl_BigBear].forEach(el => { if (el) el.textContent = "Error"; });
+            if (windDirectionEl_BigBear) windDirectionEl_BigBear.textContent = "";
         }
     }
 
@@ -395,14 +408,13 @@
         return arr[(val % 16)];
     }
 
-    fetchWeatherData_BigBear(); // Fetch weather on page load
+    fetchWeatherData_BigBear();
 
-
-    // --- Bookmark Feature (remains the same) ---
+    // --- Bookmark Feature ---
     const addParkBtnBookmark = document.getElementById('addParkBtn');
     const resortIdBookmark = 'bigbear'; // Unique ID for Big Bear in bookmarks
-    const resortNameBookmark = 'Big Bear Mountain Resort'; // Display name
-    const resortPageUrlBookmark = 'bigbear.html'; // Current page
+    const resortNameBookmark = 'Big Bear Mountain Resort';
+    const resortPageUrlBookmark = 'bigbear.html';
 
     let currentUserIdBookmark = null;
     let isBookmarkedState = false;
@@ -412,42 +424,34 @@
     const bookmarkHoverRemoveColor = 'var(--status-closed)';
     const bookmarkDisabledLoginColor = '#444';
 
-    function updateBookmarkButtonState() {
-        // ... (Bookmark UI logic - kept same as previous version) ...
+    function updateBookmarkButtonUI() {
         if (!addParkBtnBookmark) return;
-        if (isProcessingBookmarkState) return;
-
+        removeBookmarkHoverEffect();
         addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor;
-
-        if (isBookmarkedState) {
-            addParkBtnBookmark.textContent = 'Bookmarked';
-            addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor;
-            addParkBtnBookmark.disabled = false;
-            addBookmarkHoverEffect();
-        } else {
-            addParkBtnBookmark.textContent = 'Add to Bookmarks';
-            addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor;
-            addParkBtnBookmark.disabled = false;
-            removeBookmarkHoverEffect();
-        }
 
         if (!currentUserIdBookmark) {
             addParkBtnBookmark.textContent = 'Login to Bookmark';
             addParkBtnBookmark.style.backgroundColor = bookmarkDisabledLoginColor;
             addParkBtnBookmark.disabled = true;
-            removeBookmarkHoverEffect();
+        } else if (isBookmarkedState) {
+            addParkBtnBookmark.textContent = 'Bookmarked';
+            addParkBtnBookmark.disabled = false;
+            addBookmarkHoverEffect();
+        } else {
+            addParkBtnBookmark.textContent = 'Add to Bookmarks';
+            addParkBtnBookmark.disabled = false;
         }
     }
 
     const handleBookmarkMouseOver = () => {
-        if (isBookmarkedState && !isProcessingBookmarkState) {
+        if (isBookmarkedState && !isProcessingBookmarkState && addParkBtnBookmark) {
             addParkBtnBookmark.style.backgroundColor = bookmarkHoverRemoveColor;
-            addParkBtnBookmark.textContent = 'Remove bookmark';
+            addParkBtnBookmark.textContent = 'Remove Bookmark';
         }
     };
 
     const handleBookmarkMouseOut = () => {
-        if (isBookmarkedState && !isProcessingBookmarkState) {
+        if (isBookmarkedState && !isProcessingBookmarkState && addParkBtnBookmark) {
             addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor;
             addParkBtnBookmark.textContent = 'Bookmarked';
         }
@@ -471,9 +475,9 @@
         }
     }
     async function checkIfResortIsBookmarked() {
-        if (!currentUserIdBookmark) {
+        if (!currentUserIdBookmark || !db) {
             isBookmarkedState = false;
-            updateBookmarkButtonState();
+            updateBookmarkButtonUI();
             return;
         }
         const bookmarkDocRef = doc(db, 'users', currentUserIdBookmark, 'bookmarks', resortIdBookmark);
@@ -484,7 +488,7 @@
             console.error("Error checking bookmark status:", error);
             isBookmarkedState = false;
         }
-        updateBookmarkButtonState();
+        updateBookmarkButtonUI();
     }
 
     onAuthStateChanged(auth, async (user) => {
@@ -495,7 +499,7 @@
         } else {
             currentUserIdBookmark = null;
             isBookmarkedState = false;
-            updateBookmarkButtonState();
+            updateBookmarkButtonUI();
         }
     });
 
@@ -503,14 +507,13 @@
         addParkBtnBookmark.addEventListener('click', async () => {
             if (!currentUserIdBookmark) {
                 alert('Please log in or create an account to save bookmarks.');
-                // Optional: Redirect to login page
-                // window.location.href = 'sign-up_login.html';
                 return;
             }
             if (isProcessingBookmarkState) return;
 
             isProcessingBookmarkState = true;
             addParkBtnBookmark.disabled = true;
+            const originalText = addParkBtnBookmark.textContent;
             addParkBtnBookmark.textContent = 'Processing...';
             removeBookmarkHoverEffect();
             addParkBtnBookmark.style.backgroundColor = bookmarkDefaultButtonColor;
@@ -534,16 +537,17 @@
             } catch (error) {
                 console.error("Error updating bookmark: ", error);
                 alert('Failed to update bookmark. Please try again.');
+                addParkBtnBookmark.textContent = originalText;
             } finally {
                 isProcessingBookmarkState = false;
-                updateBookmarkButtonState();
+                updateBookmarkButtonUI();
             }
         });
     } else {
-        console.error("Bookmark button (#addParkBtn) not found.");
+        console.error("Bookmark button (#addParkBtn) not found in bigbear.html.");
     }
 
-    // --- SCRIPT FOR LIFT STATUSES FROM FIRESTORE (remains the same) ---
+    // --- SCRIPT FOR LIFT STATUSES FROM FIRESTORE ---
     const resortDataMap = {
         'snow-valley': { tabId: 'sv-lifts', firestoreId: 'snow-valley', name: "Snow Valley" },
         'snow-summit': { tabId: 'ss-lifts', firestoreId: 'snow-summit', name: "Snow Summit" },
@@ -551,13 +555,13 @@
     };
 
     function getStatusClass(status) {
-        // ... (getStatusClass logic - kept same as previous version) ...
         if (!status) return 'status-closed';
         const lowerStatus = status.toLowerCase();
 
         if (lowerStatus === 'open') return 'status-open';
-        if (lowerStatus === 'scheduled') return 'status-scheduled';
-        if (lowerStatus.includes('hold') || lowerStatus.includes('standby') || lowerStatus.includes('mechanical')) return 'status-hold';
+        // "Expected" status will use 'status-scheduled' class.
+        if (lowerStatus === 'scheduled' || lowerStatus === 'expected') return 'status-scheduled';
+        if (lowerStatus.includes('hold') || lowerStatus.includes('standby') || lowerStatus.includes('mechanical') || lowerStatus.includes('wind') || lowerStatus.includes('electrical') || lowerStatus.includes('patrol')) return 'status-hold';
         if (lowerStatus.includes('closed')) return 'status-closed';
 
         return 'status-closed';
@@ -565,11 +569,14 @@
 
     function formatLiftTypeForBigBear(typeString) {
         if (!typeString) return '';
-        // Simple title case for Big Bear lift types for now
-        // Can be expanded if specific formatting is needed like for Mammoth
-        if (typeString === "Double") return "Double Chair";
-        if (typeString === "6 Chair") return "Six Chair";
-        // Add more specific formatting if needed
+        const lowerType = typeString.toLowerCase();
+        if (lowerType === "high-speed 6 chair" || lowerType === "high speed six pack") return "High-Speed Six Chair";
+        if (lowerType === "6 chair") return "Six Chair";
+        if (lowerType === "high-speed quad" || lowerType === "high speed quad") return "High-Speed Quad";
+        if (lowerType === "quad chair") return "Quad Chair";
+        if (lowerType === "triple chair") return "Triple Chair";
+        if (lowerType === "double") return "Double Chair";
+        if (lowerType === "gondola") return "Gondola";
         return typeString.split(' ')
             .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
             .join(' ');
@@ -577,7 +584,6 @@
 
 
     function updateLiftsGrid(tabContentId, liftsData, resortName) {
-        // ... (updateLiftsGrid logic - mostly same, but uses formatLiftTypeForBigBear) ...
         const tabContentElement = document.getElementById(tabContentId);
         if (!tabContentElement) {
             console.error(`Element with ID '${tabContentId}' not found for ${resortName}.`);
@@ -599,9 +605,7 @@
         let visibleLiftsCount = 0;
         liftsData.forEach(lift => {
             const liftNameLower = lift.name ? lift.name.toLowerCase() : '';
-            let liftTypeOriginal = lift.type || '';
-            const liftTypeLower = liftTypeOriginal.toLowerCase();
-
+            const liftTypeLower = lift.type ? lift.type.toLowerCase() : '';
 
             if (liftNameLower.includes('magic carpet') || liftTypeLower.includes('magic carpet') || liftNameLower.startsWith('mc ')) {
                 return;
@@ -615,77 +619,100 @@
             liftNameSpan.className = 'lift-name';
             let liftDisplayName = lift.name || 'Unknown Lift';
 
-            const formattedType = formatLiftTypeForBigBear(lift.type); // Use specific formatter
+            const formattedType = formatLiftTypeForBigBear(lift.type);
             if (formattedType) {
                 liftDisplayName += ` (${formattedType})`;
             }
             liftNameSpan.textContent = liftDisplayName;
 
+            const liftDetailsDiv = document.createElement('div'); // Create this div for Big Bear too
+            liftDetailsDiv.className = 'lift-details';
 
             const liftStatusSpan = document.createElement('span');
-            const statusClass = getStatusClass(lift.status);
+            const originalStatus = lift.status || 'Unknown';
+            const statusClass = getStatusClass(originalStatus);
             liftStatusSpan.className = `lift-status-badge ${statusClass}`;
-            liftStatusSpan.textContent = lift.status || 'Unknown';
+
+            let displayText = originalStatus;
+            if (originalStatus.toLowerCase() === 'expected') {
+                displayText = 'Under Maintenance';
+            }
+            liftStatusSpan.textContent = displayText;
+
 
             liftItemDiv.appendChild(liftNameSpan);
-            liftItemDiv.appendChild(liftStatusSpan); // For Big Bear, status is directly appended
+            liftDetailsDiv.appendChild(liftStatusSpan); // Append status span to details div
+            liftItemDiv.appendChild(liftDetailsDiv); // Append details div to item
             grid.appendChild(liftItemDiv);
         });
 
-        if (visibleLiftsCount === 0) {
-            grid.innerHTML = `<div class="lift-item"><span>No applicable lift data available for ${resortName}.</span><span class="lift-status-badge"></span></div>`;
+        if (visibleLiftsCount === 0 && liftsData.length > 0) {
+            grid.innerHTML = `<div class="lift-item"><span>No applicable chairlifts or gondolas listed for ${resortName}.</span><span class="lift-status-badge"></span></div>`;
+        } else if (visibleLiftsCount === 0) {
+            grid.innerHTML = `<div class="lift-item"><span>No lift data available for ${resortName}.</span><span class="lift-status-badge"></span></div>`;
         }
     }
 
     const liftStatusLastUpdatedElem = document.getElementById('liftStatusLastUpdated');
 
     function displayResortData() {
-        // ... (displayResortData logic - kept same as previous version, ensures it uses resortDataMap) ...
-        let overallLastUpdatedTimestamp = null;
+        let overallLastUpdatedTimestamp = null; // To store the latest timestamp across resorts if needed, or use specific one.
 
         for (const key in resortDataMap) {
             const resortInfo = resortDataMap[key];
+            // Firestore listener for each resort
             const unsub = onSnapshot(doc(db, "resort_conditions", resortInfo.firestoreId), (docSnap) => {
                 if (docSnap.exists()) {
                     const resortData = docSnap.data();
                     if (resortData.lifts) {
-                        updateLiftsGrid(resortInfo.tabId, resortData.lifts, resortInfo.name); // Pass resortName
+                        updateLiftsGrid(resortInfo.tabId, resortData.lifts, resortInfo.name);
                     } else {
                         console.warn(`No 'lifts' array found for ${resortInfo.firestoreId}`);
                         updateLiftsGrid(resortInfo.tabId, [], resortInfo.name);
                     }
 
-                    // Use 'bear-mountain' for the overall last updated time for Big Bear section
+                    // For Big Bear, we'll use the 'bear-mountain' last_updated for the overall display.
                     if (resortInfo.firestoreId === 'bear-mountain' && resortData.last_updated && liftStatusLastUpdatedElem) {
-                        overallLastUpdatedTimestamp = resortData.last_updated;
+                        overallLastUpdatedTimestamp = resortData.last_updated; // Keep this for potential future use or logging
                         try {
-                            let timestampToParse = overallLastUpdatedTimestamp;
-                            const isoWithoutZoneRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?$/;
-                            if (isoWithoutZoneRegex.test(overallLastUpdatedTimestamp)) {
-                                timestampToParse = overallLastUpdatedTimestamp + 'Z';
+                            let timestampToParse = resortData.last_updated;
+                            if (timestampToParse && typeof timestampToParse.toDate === 'function') {
+                                timestampToParse = timestampToParse.toDate();
+                            } else if (typeof timestampToParse === 'string') {
+                                const isoWithoutZoneRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?$/;
+                                if (isoWithoutZoneRegex.test(timestampToParse)) {
+                                    timestampToParse = timestampToParse + 'Z';
+                                }
+                                timestampToParse = new Date(timestampToParse);
+                            } else if (typeof timestampToParse === 'number') {
+                                timestampToParse = new Date(timestampToParse * (timestampToParse > 1e12 ? 1 : 1000));
                             }
-                            const dateObj = new Date(timestampToParse);
-                            const timeFormatOptions = { timeZone: 'America/Los_Angeles', hour: 'numeric', minute: '2-digit', hour12: true, timeZoneName: 'short' };
-                            const dateFormatOptions = { timeZone: 'America/Los_Angeles', month: 'numeric', day: 'numeric', year: '2-digit' };
-                            const formattedTime = dateObj.toLocaleTimeString('en-US', timeFormatOptions);
-                            const formattedDate = dateObj.toLocaleDateString('en-US', dateFormatOptions);
-                            liftStatusLastUpdatedElem.textContent = `Lift Status Last Updated: ${formattedTime} at ${formattedDate}`;
+
+                            if (timestampToParse instanceof Date && !isNaN(timestampToParse)) {
+                                const timeFormatOptions = { timeZone: 'America/Los_Angeles', hour: 'numeric', minute: '2-digit', hour12: true };
+                                const dateFormatOptions = { timeZone: 'America/Los_Angeles', month: 'numeric', day: 'numeric' };
+                                const formattedTime = timestampToParse.toLocaleTimeString('en-US', timeFormatOptions);
+                                const formattedDate = timestampToParse.toLocaleDateString('en-US', dateFormatOptions);
+                                liftStatusLastUpdatedElem.textContent = `Lift Status Last Updated: ${formattedTime} on ${formattedDate} (PT)`;
+                            } else {
+                                throw new Error("Invalid date after parsing attempts for Big Bear.");
+                            }
                         } catch (e) {
-                            console.error("Error formatting timestamp for Big Bear:", e, "Original:", overallLastUpdatedTimestamp);
+                            console.error("Error formatting timestamp for Big Bear:", e, "Original:", resortData.last_updated);
                             liftStatusLastUpdatedElem.textContent = "Lift status update time unavailable.";
                         }
                     }
                 } else {
                     console.error(`No document found for ${resortInfo.firestoreId}`);
                     updateLiftsGrid(resortInfo.tabId, [], resortInfo.name);
-                    if (resortInfo.firestoreId === 'bear-mountain' && liftStatusLastUpdatedElem) {
+                    if (resortInfo.firestoreId === 'bear-mountain' && liftStatusLastUpdatedElem) { // Check if it's the one controlling the display
                         liftStatusLastUpdatedElem.textContent = "Lift status update time unavailable.";
                     }
                 }
             }, (error) => {
                 console.error(`Error fetching data for ${resortInfo.firestoreId}:`, error);
                 updateLiftsGrid(resortInfo.tabId, [], resortInfo.name);
-                if (resortInfo.firestoreId === 'bear-mountain' && liftStatusLastUpdatedElem) {
+                if (resortInfo.firestoreId === 'bear-mountain' && liftStatusLastUpdatedElem) { // Check if it's the one controlling the display
                     liftStatusLastUpdatedElem.textContent = "Error fetching update time.";
                 }
             });
